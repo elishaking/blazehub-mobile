@@ -13,6 +13,9 @@ class Landing extends StatefulWidget {
 }
 
 class _LandingState extends State<Landing> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final userData = UserSignupData();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,13 +25,66 @@ class _LandingState extends State<Landing> {
       body: StoreConnector<AppState, _ViewModel>(
         converter: (Store<AppState> store) => _ViewModel.create(store),
         builder: (BuildContext context, _ViewModel model) {
-          return Center(
-            child: Text("${model.authState.isAuthenticated}"),
+          return Container(
+            padding: EdgeInsets.symmetric(
+              vertical: 15,
+              horizontal: 30,
+            ),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  TextFormField(
+                    decoration: InputDecoration(
+                      labelText: "first name",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    onSaved: (String newText) {
+                      userData.firstName = newText;
+                    },
+                    validator: (String text) {
+                      if (text.isEmpty) return requiredFieldError('first name');
+
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 10),
+                  RaisedButton(
+                    color: Theme.of(context).primaryColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text('Sign Up'),
+                    onPressed: () {
+                      if (_formKey.currentState.validate()) {
+                        _formKey.currentState.save();
+
+                        // model.signupUser(userData.email, userData.password);
+                      }
+                    },
+                  )
+                ],
+              ),
+            ),
           );
         },
       ),
     );
   }
+
+  String requiredFieldError(String fieldName) => 'Your $fieldName is required';
+}
+
+class UserSignupData {
+  String firstName = '';
+  String lastName = '';
+  String email = '';
+  String password = '';
+
+  UserSignupData({this.firstName, this.lastName, this.email, this.password});
 }
 
 class _ViewModel {
