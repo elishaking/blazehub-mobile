@@ -22,15 +22,16 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'BlazeHub',
         theme: ThemeData(
-            // primarySwatch: Colors.green,
-            primaryColor: Color(0xff7c62a9),
-            buttonTheme: ButtonThemeData(
-              buttonColor: Color(0xff7c62a9),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              textTheme: ButtonTextTheme.primary,
-            )),
+          // primarySwatch: Colors.green,
+          primaryColor: Color(0xff7c62a9),
+          buttonTheme: ButtonThemeData(
+            buttonColor: Color(0xff7c62a9),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            textTheme: ButtonTextTheme.primary,
+          ),
+        ),
         home: Landing(),
       ),
     );
