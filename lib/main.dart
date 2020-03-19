@@ -1,3 +1,4 @@
+import 'package:blazehub/pages/landing.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -11,7 +12,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: Text("hello, world"),
+      home: Landing(),
     );
   }
 }
