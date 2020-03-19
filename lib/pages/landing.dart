@@ -48,7 +48,54 @@ class _LandingState extends State<Landing> {
                       return null;
                     },
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 20),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      labelText: "last name",
+                    ),
+                    onSaved: (String newText) {
+                      userData.lastName = newText;
+                    },
+                    validator: (String text) {
+                      if (text.isEmpty) return requiredFieldError('last name');
+
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      labelText: "email",
+                    ),
+                    onSaved: (String newText) {
+                      userData.email = newText;
+                    },
+                    validator: (String text) {
+                      if (text.isEmpty)
+                        return requiredFieldError('email');
+                      else if (!RegExp(r'^[a-z]+@[a-z]+\.[a-z]+$')
+                          .hasMatch(text.toLowerCase())) {
+                        return 'Please enter a valid email';
+                      }
+
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      labelText: "password",
+                    ),
+                    onSaved: (String newText) {
+                      userData.password = newText;
+                    },
+                    validator: (String text) {
+                      if (text.isEmpty) return requiredFieldError('password');
+
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 20),
                   RaisedButton(
                     child: Text('Sign Up'),
                     onPressed: () {
