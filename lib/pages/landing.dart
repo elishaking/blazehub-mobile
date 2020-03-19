@@ -1,5 +1,7 @@
 import 'package:blazehub/actions/auth.dart';
+import 'package:blazehub/services/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
 import 'package:blazehub/models/app.dart';
@@ -17,8 +19,13 @@ class _LandingState extends State<Landing> {
       appBar: AppBar(
         title: Text("BlazeHub"),
       ),
-      body: Center(
-        child: Text("hello, world"),
+      body: StoreConnector<AppState, _ViewModel>(
+        converter: (Store<AppState> store) => _ViewModel.create(store),
+        builder: (BuildContext context, _ViewModel model) {
+          return Center(
+            child: Text("${model.authState.isAuthenticated}"),
+          );
+        },
       ),
     );
   }
@@ -26,18 +33,24 @@ class _LandingState extends State<Landing> {
 
 class _ViewModel {
   final AuthState authState;
-  final Function signinUser;
+  Store<AppState> _store;
 
-  _ViewModel({this.authState, this.signinUser});
+  _ViewModel(store, {this.authState}) : _store = store;
 
   factory _ViewModel.create(Store<AppState> store) {
-    _signinUser(email, password) {
-      signupUser(email, password)(store.dispatch);
-    }
-
     return _ViewModel(
+      store,
       authState: store.state.authState,
-      signinUser: _signinUser,
     );
+  }
+
+  signupUser(String email, String password) async {
+    final firebaseUser = await authService.signupWithEmail(email, password);
+    final user = AuthUser(
+      email: firebaseUser.email,
+      username: firebaseUser.displayName,
+    );
+
+    _store.dispatch(SetCurrentUser(user));
   }
 }
