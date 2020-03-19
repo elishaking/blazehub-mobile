@@ -53,10 +53,6 @@ class _LandingState extends State<Landing> {
                   ),
                   SizedBox(height: 10),
                   RaisedButton(
-                    color: Theme.of(context).primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
                     child: Text('Sign Up'),
                     onPressed: () {
                       if (_formKey.currentState.validate()) {
