@@ -25,88 +25,92 @@ class _LandingState extends State<Landing> {
       body: StoreConnector<AppState, _ViewModel>(
         converter: (Store<AppState> store) => _ViewModel.create(store),
         builder: (BuildContext context, _ViewModel model) {
-          return Container(
-            padding: EdgeInsets.symmetric(
-              vertical: 15,
-              horizontal: 30,
-            ),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: "first name",
+          return Center(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(
+                vertical: 15,
+                horizontal: 30,
+              ),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  // mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: "first name",
+                      ),
+                      onSaved: (String newText) {
+                        userData.firstName = newText;
+                      },
+                      validator: (String text) {
+                        if (text.isEmpty)
+                          return requiredFieldError('first name');
+
+                        return null;
+                      },
                     ),
-                    onSaved: (String newText) {
-                      userData.firstName = newText;
-                    },
-                    validator: (String text) {
-                      if (text.isEmpty) return requiredFieldError('first name');
+                    SizedBox(height: 20),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: "last name",
+                      ),
+                      onSaved: (String newText) {
+                        userData.lastName = newText;
+                      },
+                      validator: (String text) {
+                        if (text.isEmpty)
+                          return requiredFieldError('last name');
 
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 20),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: "last name",
+                        return null;
+                      },
                     ),
-                    onSaved: (String newText) {
-                      userData.lastName = newText;
-                    },
-                    validator: (String text) {
-                      if (text.isEmpty) return requiredFieldError('last name');
+                    SizedBox(height: 20),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: "email",
+                      ),
+                      onSaved: (String newText) {
+                        userData.email = newText;
+                      },
+                      validator: (String text) {
+                        if (text.isEmpty)
+                          return requiredFieldError('email');
+                        else if (!RegExp(r'^[a-z]+@[a-z]+\.[a-z]+$')
+                            .hasMatch(text.toLowerCase())) {
+                          return 'Please enter a valid email';
+                        }
 
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 20),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: "email",
+                        return null;
+                      },
                     ),
-                    onSaved: (String newText) {
-                      userData.email = newText;
-                    },
-                    validator: (String text) {
-                      if (text.isEmpty)
-                        return requiredFieldError('email');
-                      else if (!RegExp(r'^[a-z]+@[a-z]+\.[a-z]+$')
-                          .hasMatch(text.toLowerCase())) {
-                        return 'Please enter a valid email';
-                      }
+                    SizedBox(height: 20),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: "password",
+                      ),
+                      onSaved: (String newText) {
+                        userData.password = newText;
+                      },
+                      validator: (String text) {
+                        if (text.isEmpty) return requiredFieldError('password');
 
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 20),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: "password",
+                        return null;
+                      },
                     ),
-                    onSaved: (String newText) {
-                      userData.password = newText;
-                    },
-                    validator: (String text) {
-                      if (text.isEmpty) return requiredFieldError('password');
+                    SizedBox(height: 20),
+                    RaisedButton(
+                      child: Text('Sign Up'),
+                      onPressed: () {
+                        if (_formKey.currentState.validate()) {
+                          _formKey.currentState.save();
 
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 20),
-                  RaisedButton(
-                    child: Text('Sign Up'),
-                    onPressed: () {
-                      if (_formKey.currentState.validate()) {
-                        _formKey.currentState.save();
-
-                        // model.signupUser(userData.email, userData.password);
-                      }
-                    },
-                  )
-                ],
+                          // model.signupUser(userData.email, userData.password);
+                        }
+                      },
+                    )
+                  ],
+                ),
               ),
             ),
           );
