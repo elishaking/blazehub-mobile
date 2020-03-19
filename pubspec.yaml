@@ -32,6 +32,8 @@ dependencies:
   firebase_auth:
   google_sign_in:
 
+  flutter_redux:
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
