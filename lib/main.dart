@@ -24,6 +24,11 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           // primarySwatch: Colors.green,
           primaryColor: Color(0xff7c62a9),
+          inputDecorationTheme: InputDecorationTheme(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
           buttonTheme: ButtonThemeData(
             buttonColor: Color(0xff7c62a9),
             shape: RoundedRectangleBorder(

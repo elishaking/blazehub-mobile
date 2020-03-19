@@ -38,9 +38,6 @@ class _LandingState extends State<Landing> {
                   TextFormField(
                     decoration: InputDecoration(
                       labelText: "first name",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
                     ),
                     onSaved: (String newText) {
                       userData.firstName = newText;
