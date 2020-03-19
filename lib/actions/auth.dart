@@ -1,4 +1,3 @@
-// todo: implement auth actions
 import 'package:blazehub/models/auth.dart';
 
 class GetErrors {
