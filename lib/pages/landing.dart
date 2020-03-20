@@ -16,6 +16,8 @@ class _LandingState extends State<Landing> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final userData = UserSignupData();
 
+  bool _loading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,21 +101,32 @@ class _LandingState extends State<Landing> {
                       },
                     ),
                     SizedBox(height: 20),
-                    RaisedButton(
-                      child: Text('Sign Up'),
-                      onPressed: () async {
-                        if (_formKey.currentState.validate()) {
-                          _formKey.currentState.save();
+                    _loading
+                        ? CircularProgressIndicator()
+                        : RaisedButton(
+                            child: Text('Sign Up'),
+                            onPressed: () async {
+                              if (_formKey.currentState.validate()) {
+                                _formKey.currentState.save();
 
-                          try {
-                            final signedUp = await model.signupUser(userData);
-                            print(signedUp);
-                          } catch (err) {
-                            print(err);
-                          }
-                        }
-                      },
-                    ),
+                                setState(() {
+                                  _loading = true;
+                                });
+
+                                try {
+                                  final signedUp =
+                                      await model.signupUser(userData);
+                                  print(signedUp);
+                                } catch (err) {
+                                  print(err);
+                                }
+
+                                setState(() {
+                                  _loading = false;
+                                });
+                              }
+                            },
+                          ),
                     SizedBox(height: 20),
                     FlatButton(
                       onPressed: () {
