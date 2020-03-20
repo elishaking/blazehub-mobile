@@ -101,11 +101,19 @@ class _LandingState extends State<Landing> {
                     SizedBox(height: 20),
                     RaisedButton(
                       child: Text('Sign Up'),
-                      onPressed: () {
+                      onPressed: () async {
                         if (_formKey.currentState.validate()) {
                           _formKey.currentState.save();
 
-                          // model.signupUser(userData.email, userData.password);
+                          try {
+                            final signedUp = await model.signupUser(
+                              userData.email,
+                              userData.password,
+                            );
+                            print(signedUp);
+                          } catch (err) {
+                            print(err);
+                          }
                         }
                       },
                     )
@@ -144,13 +152,18 @@ class _ViewModel {
     );
   }
 
-  signupUser(String email, String password) async {
+  Future<bool> signupUser(String email, String password) async {
     final firebaseUser = await authService.signupWithEmail(email, password);
+
+    if (firebaseUser == null) return false;
+
     final user = AuthUser(
       email: firebaseUser.email,
       username: firebaseUser.displayName,
     );
 
     _store.dispatch(SetCurrentUser(user));
+
+    return true;
   }
 }
