@@ -22,6 +22,7 @@ class LandingViewModel {
 
     if (user == null) return false;
 
+    // TODO: replace this dispatch with getErrors onFail
     _store.dispatch(SetCurrentUser(user));
 
     return true;
