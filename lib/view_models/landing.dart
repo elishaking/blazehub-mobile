@@ -17,15 +17,10 @@ class LandingViewModel {
     );
   }
 
-  Future<bool> signupUser(String email, String password) async {
-    final firebaseUser = await authService.signupWithEmail(email, password);
+  Future<bool> signupUser(UserSignupData userData) async {
+    final user = await authService.signupWithEmail(userData);
 
-    if (firebaseUser == null) return false;
-
-    final user = AuthUser(
-      email: firebaseUser.email,
-      username: firebaseUser.displayName,
-    );
+    if (user == null) return false;
 
     _store.dispatch(SetCurrentUser(user));
 

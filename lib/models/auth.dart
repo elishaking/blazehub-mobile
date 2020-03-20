@@ -6,8 +6,8 @@ class AuthUser {
   final String lastName;
   final String email;
   final String username;
-  final int iat;
-  final int exp;
+  // final int iat;
+  // final int exp;
 
   AuthUser({
     @required this.id,
@@ -15,8 +15,8 @@ class AuthUser {
     @required this.lastName,
     @required this.email,
     @required this.username,
-    @required this.iat,
-    @required this.exp,
+    // @required this.iat,
+    // @required this.exp,
   });
 
   AuthUser copyWith({
@@ -34,8 +34,8 @@ class AuthUser {
         lastName: lastName ?? this.lastName,
         email: email ?? this.email,
         username: username ?? this.username,
-        iat: iat ?? this.iat,
-        exp: exp ?? this.exp,
+        // iat: iat ?? this.iat,
+        // exp: exp ?? this.exp,
       );
 }
 
@@ -87,4 +87,23 @@ class AuthState {
         user: user ?? this.user,
         errors: errors ?? this.errors,
       );
+}
+
+class UserSignupData {
+  String firstName = '';
+  String lastName = '';
+  String email = '';
+  String password = '';
+  String username = '';
+
+  UserSignupData({this.firstName, this.lastName, this.email, this.password});
+
+  toJSON() {
+    return {
+      'firstName': firstName,
+      'lastName': lastName,
+      'email': email,
+      'username': username,
+    };
+  }
 }

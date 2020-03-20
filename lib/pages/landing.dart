@@ -1,3 +1,4 @@
+import 'package:blazehub/models/auth.dart';
 import 'package:blazehub/view_models/landing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -104,10 +105,7 @@ class _LandingState extends State<Landing> {
                           _formKey.currentState.save();
 
                           try {
-                            final signedUp = await model.signupUser(
-                              userData.email,
-                              userData.password,
-                            );
+                            final signedUp = await model.signupUser(userData);
                             print(signedUp);
                           } catch (err) {
                             print(err);
@@ -126,13 +124,4 @@ class _LandingState extends State<Landing> {
   }
 
   String requiredFieldError(String fieldName) => 'Your $fieldName is required';
-}
-
-class UserSignupData {
-  String firstName = '';
-  String lastName = '';
-  String email = '';
-  String password = '';
-
-  UserSignupData({this.firstName, this.lastName, this.email, this.password});
 }
