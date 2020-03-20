@@ -11,6 +11,26 @@ class _Post {
   _Post({this.text});
 }
 
+class AppColors {
+  static final primary = Color(0xff7c62a9);
+  static final light = Color(0xffe7dff1);
+}
+
+const months = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec'
+];
+
 class Home extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _post = _Post();
@@ -28,6 +48,9 @@ class Home extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
             children: <Widget>[
               CreatePostForm(formKey: _formKey, post: _post),
+              SizedBox(
+                height: 20,
+              ),
               ..._buildPosts(model),
             ],
           ),
@@ -46,16 +69,38 @@ class Home extends StatelessWidget {
     final List<Container> postsWidget = [];
 
     posts.forEach((postKey, post) {
+      final date = DateTime.fromMillisecondsSinceEpoch(post.date);
+
       postsWidget.add(
         Container(
+          margin: EdgeInsets.only(bottom: 15),
+          decoration: BoxDecoration(
+            border: Border.all(color: AppColors.light),
+            borderRadius: BorderRadius.circular(10),
+          ),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               ListTile(
                 leading: Icon(Icons.person),
-                title: Text('${post.user.firstName} ${post.user.lastName}'),
-                subtitle: Text(post.date.toString()),
+                title: Text(
+                  '${post.user.firstName} ${post.user.lastName}',
+                  style: TextStyle(
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                subtitle: Text('${months[date.month - 1]} ${date.day}'),
               ),
-              Text(post.text),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Text(
+                  post.text,
+                ),
+              ),
+              SizedBox(
+                height: 16,
+              )
             ],
           ),
         ),
@@ -82,7 +127,7 @@ class CreatePostForm extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(
-          color: Color(0xffe7dff1),
+          color: AppColors.light,
         ),
         borderRadius: BorderRadius.circular(10),
       ),
@@ -92,7 +137,7 @@ class CreatePostForm extends StatelessWidget {
           Container(
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             decoration: BoxDecoration(
-              color: Color(0xffe7dff1),
+              color: AppColors.light,
               borderRadius: BorderRadius.vertical(
                 top: Radius.circular(10),
                 bottom: Radius.circular(0),
