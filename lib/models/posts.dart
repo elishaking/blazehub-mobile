@@ -26,8 +26,9 @@ class Post {
     return Post(
       id: json['id'],
       text: json['text'],
-      date: int.parse(json['date']),
-      imageUrl: json['imageUrl'],
+      date: json['date'],
+      imageUrl:
+          json['imageUrl'].runtimeType == String ? false : json['imageUrl'],
       isBookmarked: json['isBookmarked'] ?? false,
       user: AuthUser.fromJSON(json['user']),
     );
@@ -40,9 +41,9 @@ class PostState {
   PostState({@required this.posts});
 
   PostState copyWith({Map<String, Post> posts}) {
-    final newPosts = posts.map(
-      (postKey, post) => MapEntry(postKey, post),
-    )..addEntries(posts.entries);
+    final newPosts = this.posts.map(
+          (postKey, post) => MapEntry(postKey, post),
+        )..addEntries(posts.entries);
 
     return PostState(posts: newPosts);
   }

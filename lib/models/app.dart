@@ -19,6 +19,6 @@ class AppState {
           errors: null,
         ),
         postsState = PostState(
-          posts: null,
+          posts: Map<String, Post>(),
         );
 }

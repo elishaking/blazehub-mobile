@@ -28,11 +28,40 @@ class Home extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
             children: <Widget>[
               CreatePostForm(formKey: _formKey, post: _post),
+              ..._buildPosts(model),
             ],
           ),
         );
       },
     );
+  }
+
+  List<Container> _buildPosts(HomeViewModel model) {
+    if (!HomeViewModel.listeningForNewPosts) model.listenForNewPosts();
+
+    final posts = model.postsState.posts;
+
+    if (posts == null) return [];
+
+    final List<Container> postsWidget = [];
+
+    posts.forEach((postKey, post) {
+      postsWidget.add(
+        Container(
+          child: Column(
+            children: <Widget>[
+              ListTile(
+                leading: Icon(Icons.person),
+                title: Text('${post.user.firstName} ${post.user.lastName}'),
+                subtitle: Text(post.date.toString()),
+              ),
+              Text(post.text),
+            ],
+          ),
+        ),
+      );
+    });
+    return postsWidget;
   }
 }
 
