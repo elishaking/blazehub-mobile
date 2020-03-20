@@ -28,6 +28,11 @@ class PostState {
 
   PostState({@required this.posts});
 
-  PostState.initialState(Map<String, Post> posts)
-      : posts = Map.unmodifiable(posts);
+  PostState copyWith({Map<String, Post> posts}) {
+    final newPosts = posts.map(
+      (postKey, post) => MapEntry(postKey, post),
+    )..addEntries(posts.entries);
+
+    return PostState(posts: newPosts);
+  }
 }

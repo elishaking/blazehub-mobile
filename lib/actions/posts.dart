@@ -1,7 +1,7 @@
-import 'package:blazehub/pages/home.dart';
+import 'package:blazehub/models/posts.dart';
 
 class SetPosts {
-  final Map<String, dynamic> payload;
+  final Map<String, Post> payload;
 
   SetPosts(this.payload);
 }

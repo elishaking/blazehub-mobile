@@ -5,15 +5,15 @@ import 'package:redux/redux.dart';
 import 'package:blazehub/models/app.dart';
 import 'package:blazehub/view_models/home.dart';
 
-class Post {
+class _Post {
   String text;
 
-  Post({this.text});
+  _Post({this.text});
 }
 
 class Home extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final _post = Post();
+  final _post = _Post();
 
   @override
   Widget build(BuildContext context) {
