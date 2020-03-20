@@ -1,4 +1,5 @@
 import 'package:blazehub/models/app.dart';
+import 'package:blazehub/pages/home.dart';
 import 'package:blazehub/reducers/root.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
             textTheme: ButtonTextTheme.primary,
           ),
         ),
-        home: Landing(),
+        home: Home(),
       ),
     );
   }
