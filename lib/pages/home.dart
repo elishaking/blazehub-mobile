@@ -27,77 +27,94 @@ class Home extends StatelessWidget {
           body: ListView(
             padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
             children: <Widget>[
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Color(0xffe7dff1),
-                  ),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                      decoration: BoxDecoration(
-                        color: Color(0xffe7dff1),
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(10),
-                          bottom: Radius.circular(0),
-                        ),
-                      ),
-                      child: Text(
-                        "Create Post",
-                        style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                    Form(
-                      key: _formKey,
-                      child: Column(
-                        children: <Widget>[
-                          TextFormField(
-                            minLines: 4,
-                            maxLines: 7,
-                            decoration: InputDecoration(
-                              prefixIcon: Icon(Icons.person),
-                              hintText: "Share your thoughts",
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 10),
-                              border: InputBorder.none,
-                            ),
-                            onSaved: (String text) {
-                              _post.text = text;
-                            },
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: ButtonBar(
-                              children: <Widget>[
-                                RaisedButton(
-                                  onPressed: () {
-                                    if (_formKey.currentState.validate()) {
-                                      _formKey.currentState.save();
-                                    }
-                                  },
-                                  child: Text('Post'),
-                                )
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ),
+              CreatePostForm(formKey: _formKey, post: _post),
             ],
           ),
         );
       },
+    );
+  }
+}
+
+class CreatePostForm extends StatelessWidget {
+  const CreatePostForm({
+    Key key,
+    @required GlobalKey<FormState> formKey,
+    @required _Post post,
+  })  : _formKey = formKey,
+        _post = post,
+        super(key: key);
+
+  final GlobalKey<FormState> _formKey;
+  final _Post _post;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Color(0xffe7dff1),
+        ),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            decoration: BoxDecoration(
+              color: Color(0xffe7dff1),
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(10),
+                bottom: Radius.circular(0),
+              ),
+            ),
+            child: Text(
+              "Create Post",
+              style: TextStyle(
+                color: Theme.of(context).primaryColor,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          Form(
+            key: _formKey,
+            child: Column(
+              children: <Widget>[
+                TextFormField(
+                  minLines: 4,
+                  maxLines: 7,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.person),
+                    hintText: "Share your thoughts",
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    border: InputBorder.none,
+                  ),
+                  onSaved: (String text) {
+                    _post.text = text;
+                  },
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: ButtonBar(
+                    children: <Widget>[
+                      RaisedButton(
+                        onPressed: () {
+                          if (_formKey.currentState.validate()) {
+                            _formKey.currentState.save();
+                          }
+                        },
+                        child: Text('Post'),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }
