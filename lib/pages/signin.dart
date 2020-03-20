@@ -1,4 +1,5 @@
 import 'package:blazehub/models/auth.dart';
+import 'package:blazehub/pages/landing.dart';
 import 'package:blazehub/utils/errors.dart';
 import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
@@ -69,10 +70,10 @@ class Signin extends StatelessWidget {
                     FlatButton(
                       onPressed: () {
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (BuildContext context) => Signin(),
+                          builder: (BuildContext context) => Landing(),
                         ));
                       },
-                      child: Text('Sign In'),
+                      child: Text('Sign Up'),
                     )
                   ],
                 ),

@@ -38,7 +38,7 @@ class AuthUser {
         // exp: exp ?? this.exp,
       );
 
-  factory AuthUser.fromJSON(Map<String, dynamic> json) {
+  factory AuthUser.fromJSON(Map<dynamic, dynamic> json) {
     return AuthUser(
       id: json['id'],
       firstName: json['firstName'],
