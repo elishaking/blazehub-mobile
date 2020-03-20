@@ -21,6 +21,17 @@ class Post {
     this.likes,
     this.comments,
   });
+
+  factory Post.fromJSON(Map<dynamic, dynamic> json) {
+    return Post(
+      id: json['id'],
+      text: json['text'],
+      date: int.parse(json['date']),
+      imageUrl: json['imageUrl'],
+      isBookmarked: json['isBookmarked'] ?? false,
+      user: AuthUser.fromJSON(json['user']),
+    );
+  }
 }
 
 class PostState {

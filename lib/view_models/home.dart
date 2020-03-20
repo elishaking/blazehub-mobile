@@ -1,3 +1,6 @@
+import 'package:blazehub/actions/posts.dart';
+import 'package:blazehub/models/posts.dart';
+import 'package:blazehub/services/posts.dart';
 import 'package:redux/redux.dart';
 
 import 'package:blazehub/models/app.dart';
@@ -14,5 +17,16 @@ class HomeViewModel {
       store,
       authState: store.state.authState,
     );
+  }
+
+  void listenForNewPosts() {
+    postsService.newPostAdded().listen((onData) {
+      final newPostData = onData.snapshot.value;
+      newPostData['id'] = onData.snapshot.key;
+
+      final newPost = Post.fromJSON(newPostData);
+
+      _store.dispatch(SetPosts({newPost.id: newPost}));
+    });
   }
 }
