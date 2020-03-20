@@ -1,3 +1,4 @@
+import 'package:blazehub/models/auth.dart';
 import 'package:blazehub/utils/errors.dart';
 import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
@@ -5,13 +6,6 @@ import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:blazehub/models/app.dart';
 import 'package:blazehub/view_models/signin.dart';
-
-class UserSigninData {
-  String email = '';
-  String password = '';
-
-  UserSigninData({this.email, this.password});
-}
 
 class Signin extends StatelessWidget {
   final userData = UserSigninData();
@@ -120,8 +114,8 @@ class _SigninButtonState extends State<SigninButton> {
                 });
 
                 try {
-                  final signedUp = await widget.model.signinUser(
-                      widget.userData.email, widget.userData.password);
+                  final signedUp =
+                      await widget.model.signinUser(widget.userData);
                   print(signedUp);
                 } catch (err) {
                   print(err);

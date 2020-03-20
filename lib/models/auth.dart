@@ -117,3 +117,10 @@ class UserSignupData {
     };
   }
 }
+
+class UserSigninData {
+  String email = '';
+  String password = '';
+
+  UserSigninData({this.email, this.password});
+}

@@ -34,14 +34,14 @@ class _AuthService {
     }
   }
 
-  Future<AuthUser> signinWithEmail(String email, String password) async {
+  Future<AuthUser> signinWithEmail(UserSigninData userData) async {
     try {
       await _auth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
+        email: userData.email,
+        password: userData.password,
       );
 
-      final userKey = _getUserKey(email);
+      final userKey = _getUserKey(userData.email);
       final user = await _getUserFromDatabase(userKey);
 
       return user;
