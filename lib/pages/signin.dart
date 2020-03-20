@@ -65,7 +65,24 @@ class Signin extends StatelessWidget {
                       },
                     ),
                     SizedBox(height: 20),
-                    SigninButton(model, _formKey, userData),
+                    model.authState.loading
+                        ? CircularProgressIndicator()
+                        : RaisedButton(
+                            child: Text('Sign Up'),
+                            onPressed: () async {
+                              if (_formKey.currentState.validate()) {
+                                _formKey.currentState.save();
+
+                                try {
+                                  final signedUp =
+                                      await model.signinUser(userData);
+                                  print(signedUp);
+                                } catch (err) {
+                                  print(err);
+                                }
+                              }
+                            },
+                          ),
                     SizedBox(height: 20),
                     FlatButton(
                       onPressed: () {

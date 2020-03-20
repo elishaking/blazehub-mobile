@@ -9,6 +9,7 @@ class AppState {
   AppState.initialState()
       : authState = AuthState(
           isAuthenticated: false,
+          loading: false,
           user: null,
           errors: null,
         );

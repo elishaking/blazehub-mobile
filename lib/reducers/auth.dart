@@ -8,6 +8,11 @@ AuthState authReducer(AuthState authState, action) {
         user: (action as SetCurrentUser).payload,
       );
 
+    case UpdateLoading:
+      return authState.copyWith(
+        loading: (action as UpdateLoading).payload,
+      );
+
     case GetErrors:
       return authState.copyWith(
         errors: (action as GetErrors).payload,

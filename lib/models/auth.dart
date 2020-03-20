@@ -78,22 +78,26 @@ class AuthErrors {
 
 class AuthState {
   final bool isAuthenticated;
+  final bool loading;
   final AuthUser user;
   final AuthErrors errors;
 
   AuthState({
     @required this.isAuthenticated,
+    @required this.loading,
     @required this.user,
     @required this.errors,
   });
 
   AuthState copyWith({
     bool isAuthenticated,
+    bool loading,
     AuthUser user,
     AuthErrors errors,
   }) =>
       AuthState(
         isAuthenticated: isAuthenticated ?? this.isAuthenticated,
+        loading: loading ?? this.loading,
         user: user ?? this.user,
         errors: errors ?? this.errors,
       );

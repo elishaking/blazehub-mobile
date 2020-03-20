@@ -19,12 +19,16 @@ class SigninViewModel {
   }
 
   Future<bool> signinUser(UserSigninData userData) async {
+    _store.dispatch(UpdateLoading(true));
+    bool isSuccessful = true;
+
     final user = await authService.signinWithEmail(userData);
 
-    if (user == null) return false;
+    if (user == null) isSuccessful = false;
 
     _store.dispatch(SetCurrentUser(user));
+    _store.dispatch(UpdateLoading(false));
 
-    return true;
+    return isSuccessful;
   }
 }

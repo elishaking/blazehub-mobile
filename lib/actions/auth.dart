@@ -6,6 +6,12 @@ class GetErrors {
   GetErrors(this.payload);
 }
 
+class UpdateLoading {
+  final bool payload;
+
+  UpdateLoading(this.payload);
+}
+
 class SetCurrentUser {
   final AuthUser payload;
 
