@@ -4,7 +4,7 @@ import 'package:firebase_database/firebase_database.dart';
 
 class _AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseDatabase _database = FirebaseDatabase();
+  final DatabaseReference _dbRef = FirebaseDatabase().reference();
 
   Future<AuthUser> signupWithEmail(UserSignupData userData) async {
     try {
@@ -13,7 +13,7 @@ class _AuthService {
         password: userData.password,
       );
 
-      final userKey = userData.email.replaceAll(".", "~").replaceAll("@", "~~");
+      final userKey = _getUserKey(userData.email);
 
       userData.username =
           '${userData.firstName.replaceAll(" ", "")}.${userData.lastName.replaceAll(" ", "")}'
@@ -28,8 +28,26 @@ class _AuthService {
         email: userData.email,
         username: userData.username,
       );
-    } catch (e) {
-      print(e.toString());
+    } catch (err) {
+      print(err.toString());
+      return null;
+    }
+  }
+
+  Future<AuthUser> signinWithEmail(String email, String password) async {
+    try {
+      await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      final userKey = _getUserKey(email);
+      final user = await _getUserFromDatabase(userKey);
+
+      return user;
+    } catch (err) {
+      print(err.toString());
+
       return null;
     }
   }
@@ -38,24 +56,38 @@ class _AuthService {
     UserSignupData userData,
     String userKey,
   ) {
-    final dbRef = _database.reference();
-
-    return dbRef.child('users').child(userKey).set(userData.toJSON()).then((_) {
+    return _dbRef
+        .child('users')
+        .child(userKey)
+        .set(userData.toJSON())
+        .then((_) {
       // create default blazebot friend
       const data = {
         "blazebot": {
           "name": "BlazeBot",
         }
       };
-      return dbRef.child('friends').child(userKey).set(data);
+      return _dbRef.child('friends').child(userKey).set(data);
     }).then((_) {
-      return dbRef
+      return _dbRef
           .child('profiles')
           .child(userKey)
           .child('username')
           .set(userData.username);
     });
   }
+
+  Future<AuthUser> _getUserFromDatabase(String userKey) {
+    return _dbRef.child('users').child(userKey).once().then((userSnapshot) {
+      final userData = userSnapshot.value;
+      userData['id'] = userSnapshot.key;
+
+      return AuthUser.fromJSON(userData);
+    });
+  }
+
+  String _getUserKey(String email) =>
+      email.replaceAll(".", "~").replaceAll("@", "~~");
 }
 
 final authService = new _AuthService();

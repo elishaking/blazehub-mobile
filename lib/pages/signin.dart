@@ -1,6 +1,9 @@
-import 'package:blazehub/models/app.dart';
 import 'package:flutter/material.dart';
+import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+
+import 'package:blazehub/models/app.dart';
+import 'package:blazehub/view_models/signin.dart';
 
 class Signin extends StatelessWidget {
   @override
@@ -9,9 +12,11 @@ class Signin extends StatelessWidget {
       appBar: AppBar(
         title: Text("BlazeHub"),
       ),
-      body: StoreConnector<AppState, AppState>(
-        builder: null,
-        converter: null,
+      body: StoreConnector<AppState, SigninViewModel>(
+        converter: (Store<AppState> store) => SigninViewModel.create(store),
+        builder: (BuildContext context, SigninViewModel model) {
+          return Center(child: Text("hello"));
+        },
       ),
     );
   }

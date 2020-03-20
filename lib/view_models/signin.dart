@@ -1,3 +1,5 @@
+import 'package:blazehub/actions/auth.dart';
+import 'package:blazehub/services/auth.dart';
 import 'package:redux/redux.dart';
 
 import 'package:blazehub/models/app.dart';
@@ -16,5 +18,13 @@ class SigninViewModel {
     );
   }
 
-  Future<bool> signinUser(String email, String password) {}
+  Future<bool> signinUser(UserSignupData userData) async {
+    final user = await authService.signupWithEmail(userData);
+
+    if (user == null) return false;
+
+    _store.dispatch(SetCurrentUser(user));
+
+    return true;
+  }
 }

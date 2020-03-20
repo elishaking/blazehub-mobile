@@ -37,6 +37,16 @@ class AuthUser {
         // iat: iat ?? this.iat,
         // exp: exp ?? this.exp,
       );
+
+  factory AuthUser.fromJSON(Map<String, dynamic> json) {
+    return AuthUser(
+      id: json['id'],
+      firstName: json['firstName'],
+      lastName: json['lastName'],
+      email: json['email'],
+      username: json['username'],
+    );
+  }
 }
 
 class AuthErrors {
