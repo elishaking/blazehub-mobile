@@ -18,8 +18,8 @@ class SigninViewModel {
     );
   }
 
-  Future<bool> signinUser(UserSignupData userData) async {
-    final user = await authService.signupWithEmail(userData);
+  Future<bool> signinUser(String email, String password) async {
+    final user = await authService.signinWithEmail(email, password);
 
     if (user == null) return false;
 
