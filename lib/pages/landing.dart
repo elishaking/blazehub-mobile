@@ -1,4 +1,5 @@
 import 'package:blazehub/models/auth.dart';
+import 'package:blazehub/pages/signin.dart';
 import 'package:blazehub/view_models/landing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -112,6 +113,15 @@ class _LandingState extends State<Landing> {
                           }
                         }
                       },
+                    ),
+                    SizedBox(height: 20),
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (BuildContext context) => Signin(),
+                        ));
+                      },
+                      child: Text('Sign In'),
                     )
                   ],
                 ),
