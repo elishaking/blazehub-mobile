@@ -1,11 +1,9 @@
-import 'package:blazehub/actions/auth.dart';
-import 'package:blazehub/services/auth.dart';
+import 'package:blazehub/view_models/landing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
 import 'package:blazehub/models/app.dart';
-import 'package:blazehub/models/auth.dart';
 
 class Landing extends StatefulWidget {
   @override
@@ -22,9 +20,9 @@ class _LandingState extends State<Landing> {
       appBar: AppBar(
         title: Text("BlazeHub"),
       ),
-      body: StoreConnector<AppState, _ViewModel>(
-        converter: (Store<AppState> store) => _ViewModel.create(store),
-        builder: (BuildContext context, _ViewModel model) {
+      body: StoreConnector<AppState, LandingViewModel>(
+        converter: (Store<AppState> store) => LandingViewModel.create(store),
+        builder: (BuildContext context, LandingViewModel model) {
           return Center(
             child: SingleChildScrollView(
               padding: EdgeInsets.symmetric(
@@ -137,33 +135,4 @@ class UserSignupData {
   String password = '';
 
   UserSignupData({this.firstName, this.lastName, this.email, this.password});
-}
-
-class _ViewModel {
-  final AuthState authState;
-  Store<AppState> _store;
-
-  _ViewModel(store, {this.authState}) : _store = store;
-
-  factory _ViewModel.create(Store<AppState> store) {
-    return _ViewModel(
-      store,
-      authState: store.state.authState,
-    );
-  }
-
-  Future<bool> signupUser(String email, String password) async {
-    final firebaseUser = await authService.signupWithEmail(email, password);
-
-    if (firebaseUser == null) return false;
-
-    final user = AuthUser(
-      email: firebaseUser.email,
-      username: firebaseUser.displayName,
-    );
-
-    _store.dispatch(SetCurrentUser(user));
-
-    return true;
-  }
 }
