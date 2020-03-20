@@ -1,5 +1,6 @@
 import 'package:blazehub/models/auth.dart';
 import 'package:blazehub/pages/signin.dart';
+import 'package:blazehub/utils/errors.dart';
 import 'package:blazehub/view_models/landing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -145,6 +146,4 @@ class _LandingState extends State<Landing> {
       ),
     );
   }
-
-  String requiredFieldError(String fieldName) => 'Your $fieldName is required';
 }

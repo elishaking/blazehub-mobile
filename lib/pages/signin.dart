@@ -1,3 +1,4 @@
+import 'package:blazehub/utils/errors.dart';
 import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -88,8 +89,6 @@ class Signin extends StatelessWidget {
       ),
     );
   }
-
-  String requiredFieldError(String fieldName) => 'Your $fieldName is required';
 }
 
 class SigninButton extends StatefulWidget {
