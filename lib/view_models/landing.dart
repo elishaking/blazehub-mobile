@@ -18,13 +18,17 @@ class LandingViewModel {
   }
 
   Future<bool> signupUser(UserSignupData userData) async {
+    _store.dispatch(UpdateLoading(true));
+    bool isSuccessful = true;
+
     final user = await authService.signupWithEmail(userData);
 
-    if (user == null) return false;
+    if (user == null) isSuccessful = false;
 
     // TODO: replace this dispatch with getErrors onFail
     _store.dispatch(SetCurrentUser(user));
+    _store.dispatch(UpdateLoading(false));
 
-    return true;
+    return isSuccessful;
   }
 }
