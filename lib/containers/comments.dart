@@ -1,4 +1,5 @@
 import 'package:blazehub/models/posts.dart';
+import 'package:blazehub/values/colors.dart';
 import 'package:blazehub/view_models/home.dart';
 import 'package:flutter/material.dart';
 
@@ -30,7 +31,12 @@ class Comments extends StatelessWidget {
                 child: TextFormField(
                   decoration: InputDecoration(
                     hintText: 'Write a comment',
-                    border: InputBorder.none,
+                    filled: true,
+                    fillColor: AppColors.light,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: BorderSide.none,
+                    ),
                   ),
                 ),
               ),
