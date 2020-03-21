@@ -1,3 +1,4 @@
+import 'package:blazehub/containers/comments.dart';
 import 'package:blazehub/models/posts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -159,7 +160,12 @@ class PostWidget extends StatelessWidget {
                     Icons.mode_comment,
                     size: 20,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (BuildContext context) => Comments(model, post),
+                      fullscreenDialog: true,
+                    ));
+                  },
                 ),
                 Text(post.comments.length.toString()),
                 Flexible(
