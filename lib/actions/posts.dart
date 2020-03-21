@@ -11,3 +11,9 @@ class SetPost {
 
   SetPost(this.payload);
 }
+
+class UpdatePost {
+  final Post payload;
+
+  UpdatePost(this.payload);
+}

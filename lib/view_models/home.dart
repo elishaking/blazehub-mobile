@@ -39,7 +39,11 @@ class HomeViewModel {
     listeningForNewPosts = true;
   }
 
-  Future<bool> togglePostLike(String postID, String userID, bool liked) {
-    return postsService.togglePostLike(postID, userID, liked);
+  Future<bool> togglePostLike(String postID, String userID, bool liked) async {
+    final isSuccessful =
+        await postsService.togglePostLike(postID, userID, liked);
+
+    // if(isSuccessful)
+    //   _store.dispatch(SetP)
   }
 }
