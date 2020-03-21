@@ -7,7 +7,9 @@ class Comments extends StatelessWidget {
   final HomeViewModel model;
   final Post post;
 
-  const Comments(this.model, Post post, {Key key})
+  final _formKey = GlobalKey<FormState>();
+
+  Comments(this.model, Post post, {Key key})
       : this.post = post,
         super(key: key);
 
@@ -24,23 +26,21 @@ class Comments extends StatelessWidget {
       bottomSheet: Container(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Form(
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Flexible(
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    hintText: 'Write a comment',
-                    filled: true,
-                    fillColor: AppColors.light,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                ),
+          key: _formKey,
+          child: TextFormField(
+            decoration: InputDecoration(
+              hintText: 'Write a comment',
+              filled: true,
+              fillColor: AppColors.light,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20),
+                borderSide: BorderSide.none,
               ),
-            ],
+              suffixIcon: IconButton(
+                icon: Icon(Icons.send),
+                onPressed: () {},
+              ),
+            ),
           ),
         ),
       ),
