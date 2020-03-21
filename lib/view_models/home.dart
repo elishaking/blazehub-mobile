@@ -38,4 +38,8 @@ class HomeViewModel {
 
     listeningForNewPosts = true;
   }
+
+  Future<bool> togglePostLike(String postID, String userID, bool liked) {
+    return postsService.togglePostLike(postID, userID, liked);
+  }
 }
