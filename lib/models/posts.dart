@@ -8,8 +8,8 @@ class Post {
   bool imageUrl;
   bool isBookmarked;
   AuthUser user;
-  dynamic likes;
-  dynamic comments;
+  Map<dynamic, dynamic> likes;
+  Map<dynamic, dynamic> comments;
 
   Post({
     @required this.id,
@@ -31,6 +31,8 @@ class Post {
           json['imageUrl'].runtimeType == String ? false : json['imageUrl'],
       isBookmarked: json['isBookmarked'] ?? false,
       user: AuthUser.fromJSON(json['user']),
+      likes: json['likes'] ?? Map<dynamic, dynamic>(),
+      comments: json['comments'] ?? Map<dynamic, dynamic>(),
     );
   }
 }

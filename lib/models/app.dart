@@ -1,3 +1,4 @@
+import 'package:blazehub/data/user.dart';
 import 'package:blazehub/models/auth.dart';
 import 'package:blazehub/models/posts.dart';
 import 'package:flutter/foundation.dart';
@@ -15,7 +16,7 @@ class AppState {
       : authState = AuthState(
           isAuthenticated: false,
           loading: false,
-          user: null,
+          user: UserData.user,
           errors: null,
         ),
         postsState = PostState(

@@ -99,7 +99,60 @@ class Home extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                height: 16,
+                height: 20,
+              ),
+              Container(
+                height: 1,
+                color: AppColors.light,
+              ),
+              // SizedBox(
+              //   height: 20,
+              // ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Row(
+                  children: <Widget>[
+                    IconButton(
+                      color: post.likes[model.authState.user.firstName] == null
+                          ? Colors.grey
+                          : AppColors.primary,
+                      icon: Icon(
+                        Icons.thumb_up,
+                        size: 20,
+                      ),
+                      onPressed: () {},
+                    ),
+                    Text(post.likes.length.toString()),
+                    SizedBox(
+                      width: 21,
+                    ),
+                    IconButton(
+                      color:
+                          post.comments[model.authState.user.firstName] == null
+                              ? Colors.grey
+                              : AppColors.primary,
+                      icon: Icon(
+                        Icons.mode_comment,
+                        size: 20,
+                      ),
+                      onPressed: () {},
+                    ),
+                    Text(post.comments.length.toString()),
+                    Flexible(
+                      child: Container(),
+                    ),
+                    IconButton(
+                      color:
+                          post.isBookmarked ? AppColors.primary : Colors.grey,
+                      icon: Icon(
+                        Icons.bookmark,
+                        size: 20,
+                      ),
+                      onPressed: () {},
+                    ),
+                  ],
+                ),
               )
             ],
           ),
