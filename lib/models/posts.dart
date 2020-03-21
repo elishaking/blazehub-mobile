@@ -52,3 +52,15 @@ class PostState {
     return PostState(posts: newPosts);
   }
 }
+
+class Comment {
+  final int date;
+  final String text;
+  final AuthUser user;
+
+  Comment({
+    @required this.date,
+    @required this.text,
+    @required this.user,
+  });
+}
