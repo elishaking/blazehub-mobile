@@ -1,3 +1,4 @@
+import 'package:blazehub/models/posts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
@@ -59,107 +60,120 @@ class Home extends StatelessWidget {
     );
   }
 
-  List<Container> _buildPosts(HomeViewModel model) {
+  List<PostWidget> _buildPosts(HomeViewModel model) {
     if (!HomeViewModel.listeningForNewPosts) model.listenForNewPosts();
 
     final posts = model.postsState.posts;
 
     if (posts == null) return [];
 
-    final List<Container> postsWidget = [];
+    final List<PostWidget> postsWidget = [];
 
     posts.forEach((postKey, post) {
-      final date = DateTime.fromMillisecondsSinceEpoch(post.date);
-
       postsWidget.add(
-        Container(
-          margin: EdgeInsets.only(bottom: 15),
-          decoration: BoxDecoration(
-            border: Border.all(color: AppColors.light),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              ListTile(
-                leading: Icon(Icons.person),
-                title: Text(
-                  '${post.user.firstName} ${post.user.lastName}',
-                  style: TextStyle(
-                    color: AppColors.primary,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                subtitle: Text('${months[date.month - 1]} ${date.day}'),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Text(
-                  post.text,
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                height: 1,
-                color: AppColors.light,
-              ),
-              // SizedBox(
-              //   height: 20,
-              // ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: Row(
-                  children: <Widget>[
-                    IconButton(
-                      color: post.likes[model.authState.user.firstName] == null
-                          ? Colors.grey
-                          : AppColors.primary,
-                      icon: Icon(
-                        Icons.thumb_up,
-                        size: 20,
-                      ),
-                      onPressed: () {},
-                    ),
-                    Text(post.likes.length.toString()),
-                    SizedBox(
-                      width: 21,
-                    ),
-                    IconButton(
-                      color:
-                          post.comments[model.authState.user.firstName] == null
-                              ? Colors.grey
-                              : AppColors.primary,
-                      icon: Icon(
-                        Icons.mode_comment,
-                        size: 20,
-                      ),
-                      onPressed: () {},
-                    ),
-                    Text(post.comments.length.toString()),
-                    Flexible(
-                      child: Container(),
-                    ),
-                    IconButton(
-                      color:
-                          post.isBookmarked ? AppColors.primary : Colors.grey,
-                      icon: Icon(
-                        Icons.bookmark,
-                        size: 20,
-                      ),
-                      onPressed: () {},
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
+        PostWidget(post, model),
       );
     });
     return postsWidget;
+  }
+}
+
+class PostWidget extends StatelessWidget {
+  const PostWidget(
+    this.post,
+    this.model, {
+    Key key,
+  }) : super(key: key);
+
+  final Post post;
+  final HomeViewModel model;
+
+  @override
+  Widget build(BuildContext context) {
+    final date = DateTime.fromMillisecondsSinceEpoch(post.date);
+
+    return Container(
+      margin: EdgeInsets.only(bottom: 15),
+      decoration: BoxDecoration(
+        border: Border.all(color: AppColors.light),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          ListTile(
+            leading: Icon(Icons.person),
+            title: Text(
+              '${post.user.firstName} ${post.user.lastName}',
+              style: TextStyle(
+                color: AppColors.primary,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            subtitle: Text('${months[date.month - 1]} ${date.day}'),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Text(
+              post.text,
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Container(
+            height: 1,
+            color: AppColors.light,
+          ),
+          // SizedBox(
+          //   height: 20,
+          // ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: Row(
+              children: <Widget>[
+                IconButton(
+                  color: post.likes[model.authState.user.firstName] == null
+                      ? Colors.grey
+                      : AppColors.primary,
+                  icon: Icon(
+                    Icons.thumb_up,
+                    size: 20,
+                  ),
+                  onPressed: () {},
+                ),
+                Text(post.likes.length.toString()),
+                SizedBox(
+                  width: 21,
+                ),
+                IconButton(
+                  color: post.comments[model.authState.user.firstName] == null
+                      ? Colors.grey
+                      : AppColors.primary,
+                  icon: Icon(
+                    Icons.mode_comment,
+                    size: 20,
+                  ),
+                  onPressed: () {},
+                ),
+                Text(post.comments.length.toString()),
+                Flexible(
+                  child: Container(),
+                ),
+                IconButton(
+                  color: post.isBookmarked ? AppColors.primary : Colors.grey,
+                  icon: Icon(
+                    Icons.bookmark,
+                    size: 20,
+                  ),
+                  onPressed: () {},
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
 
