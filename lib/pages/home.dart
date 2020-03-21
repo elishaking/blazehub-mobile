@@ -91,6 +91,7 @@ class PostWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final date = DateTime.fromMillisecondsSinceEpoch(post.date);
+    final postLiked = post.likes[model.authState.user.id] != null;
 
     return Container(
       margin: EdgeInsets.only(bottom: 15),
@@ -133,14 +134,18 @@ class PostWidget extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 IconButton(
-                  color: post.likes[model.authState.user.firstName] == null
-                      ? Colors.grey
-                      : AppColors.primary,
+                  color: postLiked ? AppColors.primary : Colors.grey,
                   icon: Icon(
                     Icons.thumb_up,
                     size: 20,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    model.togglePostLike(
+                      post.id,
+                      model.authState.user.id,
+                      postLiked,
+                    );
+                  },
                 ),
                 Text(post.likes.length.toString()),
                 SizedBox(

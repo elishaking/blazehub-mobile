@@ -43,7 +43,18 @@ class HomeViewModel {
     final isSuccessful =
         await postsService.togglePostLike(postID, userID, liked);
 
-    // if(isSuccessful)
-    //   _store.dispatch(SetP)
+    if (isSuccessful) {
+      final newPost = _store.state.postsState.posts[postID];
+      if (liked)
+        newPost.likes.remove(userID);
+      else
+        newPost.likes.putIfAbsent(userID, () => 1);
+
+      _store.dispatch(UpdatePost(newPost));
+
+      return true;
+    }
+
+    return false;
   }
 }

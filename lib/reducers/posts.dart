@@ -10,7 +10,10 @@ PostState postsReducer(PostState postState, action) {
 
     case UpdatePost:
       final newPost = (action as UpdatePost).payload;
-      return postState.copyWith()..posts.update(newPost.id, (_) => newPost);
+      final updatedState = postState.copyWith();
+      updatedState.posts[newPost.id] = newPost;
+
+      return updatedState;
 
     default:
       return postState;

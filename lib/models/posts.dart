@@ -45,7 +45,9 @@ class PostState {
   PostState copyWith({Map<String, Post> posts}) {
     final newPosts = this.posts.map(
           (postKey, post) => MapEntry(postKey, post),
-        )..addEntries(posts.entries);
+        );
+
+    if (posts != null) newPosts.addEntries(posts.entries);
 
     return PostState(posts: newPosts);
   }
