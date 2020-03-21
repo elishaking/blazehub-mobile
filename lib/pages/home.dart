@@ -1,5 +1,6 @@
 import 'package:blazehub/containers/comments.dart';
 import 'package:blazehub/models/posts.dart';
+import 'package:blazehub/values/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
@@ -11,11 +12,6 @@ class _Post {
   String text;
 
   _Post({this.text});
-}
-
-class AppColors {
-  static final primary = Color(0xff7c62a9);
-  static final light = Color(0xffe7dff1);
 }
 
 const months = [
