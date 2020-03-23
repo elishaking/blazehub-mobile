@@ -16,7 +16,14 @@ class Comments extends StatelessWidget {
     final keys = post.comments.keys.toList();
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.close),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
       body: ListView.builder(
         padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
         itemCount: post.comments.length,

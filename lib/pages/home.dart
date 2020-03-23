@@ -44,7 +44,7 @@ class Home extends StatelessWidget {
   }
 
   List<PostWidget> _buildPosts(HomeViewModel model) {
-    if (!HomeViewModel.listeningForNewPosts) model.listenForNewPosts();
+    model.listenForNewPosts();
 
     final posts = model.postsState.posts;
 

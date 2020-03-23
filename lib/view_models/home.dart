@@ -6,12 +6,14 @@ import 'package:redux/redux.dart';
 import 'package:blazehub/models/app.dart';
 import 'package:blazehub/models/auth.dart';
 
+final postListener = postsService.newPostAdded();
+
 class HomeViewModel {
   final AuthState authState;
   final PostState postsState;
   final Store<AppState> _store;
 
-  static bool listeningForNewPosts = false;
+  // static bool listeningForNewPosts = false;
 
   HomeViewModel(Store<AppState> store, {this.authState, this.postsState})
       : _store = store;
@@ -25,7 +27,8 @@ class HomeViewModel {
   }
 
   void listenForNewPosts() {
-    postsService.newPostAdded().listen((onData) {
+    // TODO: dispose this stream
+    postListener.listen((onData) {
       // print(onData.snapshot.value);
       final newPostData = onData.snapshot.value;
       newPostData['id'] = onData.snapshot.key;
@@ -36,7 +39,7 @@ class HomeViewModel {
       print(_store.state.postsState.posts.keys.length);
     });
 
-    listeningForNewPosts = true;
+    // listeningForNewPosts = true;
   }
 
   Future<bool> togglePostLike(String postID, String userID, bool liked) async {
