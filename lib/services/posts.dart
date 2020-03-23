@@ -7,15 +7,15 @@ class PostsService {
     return _dbRef.child('posts').onChildAdded;
   }
 
-  Future<bool> togglePostLike(String postID, String userID, bool liked) async {
+  Future<bool> toggleLike(String postID, String userID, bool liked) async {
     try {
-      final togglePostLikeRef =
+      final toggleLikeRef =
           _dbRef.child('posts').child(postID).child('likes').child(userID);
 
       if (liked)
-        await togglePostLikeRef.remove();
+        await toggleLikeRef.remove();
       else
-        await togglePostLikeRef.set(1);
+        await toggleLikeRef.set(1);
 
       return true;
     } catch (err) {

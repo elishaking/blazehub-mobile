@@ -40,8 +40,7 @@ class HomeViewModel {
   }
 
   Future<bool> togglePostLike(String postID, String userID, bool liked) async {
-    final isSuccessful =
-        await postsService.togglePostLike(postID, userID, liked);
+    final isSuccessful = await postsService.toggleLike(postID, userID, liked);
 
     if (isSuccessful) {
       final newPost = _store.state.postsState.posts[postID];
