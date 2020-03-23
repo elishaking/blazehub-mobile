@@ -56,4 +56,8 @@ class HomeViewModel {
 
     return false;
   }
+
+  Future<bool> addPostComment(Comment comment, String postID) async {
+    return await postsService.addComment(comment, postID);
+  }
 }
