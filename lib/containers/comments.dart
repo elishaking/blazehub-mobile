@@ -7,12 +7,9 @@ import 'package:flutter/material.dart';
 class Comments extends StatelessWidget {
   final HomeViewModel model;
   final Post post;
+  final newComment = {'text': ''};
 
-  final _formKey = GlobalKey<FormState>();
-
-  Comments(this.model, Post post, {Key key})
-      : this.post = post,
-        super(key: key);
+  Comments(this.model, Post post) : this.post = post;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +26,7 @@ class Comments extends StatelessWidget {
 
           return Container(
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            margin: EdgeInsets.only(bottom: 15),
             decoration: BoxDecoration(
               color:
                   fromUser ? AppColors.primary.withAlpha(200) : AppColors.light,
@@ -41,7 +39,7 @@ class Comments extends StatelessWidget {
                   '${comment.user.firstName} ${comment.user.lastName}',
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
-                    color: fromUser ? Colors.white : AppColors.light,
+                    color: fromUser ? Colors.white : AppColors.primary,
                   ),
                 ),
                 SizedBox(
@@ -50,7 +48,7 @@ class Comments extends StatelessWidget {
                 Text(
                   comment.text,
                   style: TextStyle(
-                    color: fromUser ? Colors.white : AppColors.light,
+                    color: fromUser ? Colors.white : AppColors.primary,
                   ),
                 ),
                 SizedBox(
@@ -64,7 +62,7 @@ class Comments extends StatelessWidget {
                     color: fromUser ? Colors.white70 : Colors.black54,
                     fontSize: Theme.of(context).textTheme.caption.fontSize,
                   ),
-                )
+                ),
               ],
             ),
           );
@@ -73,8 +71,10 @@ class Comments extends StatelessWidget {
       bottomSheet: Container(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Form(
-          key: _formKey,
           child: TextFormField(
+            onChanged: (String text) {
+              newComment['text'] = text;
+            },
             decoration: InputDecoration(
               hintText: 'Write a comment',
               filled: true,
@@ -85,7 +85,9 @@ class Comments extends StatelessWidget {
               ),
               suffixIcon: IconButton(
                 icon: Icon(Icons.send),
-                onPressed: () {},
+                onPressed: () {
+                  print(model.authState.user.id);
+                },
               ),
             ),
           ),
