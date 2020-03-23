@@ -6,14 +6,19 @@ import 'package:redux/redux.dart';
 import 'package:blazehub/models/app.dart';
 import 'package:blazehub/models/auth.dart';
 
-final postListener = postsService.newPostAdded();
+final postStream = postsService.newPostAdded();
+bool listeningForNewPosts = false;
+var postListener;
+
+bool listeningForComments = false;
+var commentListener;
+
+// final
 
 class HomeViewModel {
   final AuthState authState;
   final PostState postsState;
   final Store<AppState> _store;
-
-  // static bool listeningForNewPosts = false;
 
   HomeViewModel(Store<AppState> store, {this.authState, this.postsState})
       : _store = store;
@@ -28,7 +33,9 @@ class HomeViewModel {
 
   void listenForNewPosts() {
     // TODO: dispose this stream
-    postListener.listen((onData) {
+    if (listeningForNewPosts) return;
+
+    postListener = postStream.listen((onData) {
       // print(onData.snapshot.value);
       final newPostData = onData.snapshot.value;
       newPostData['id'] = onData.snapshot.key;
@@ -39,7 +46,24 @@ class HomeViewModel {
       print(_store.state.postsState.posts.keys.length);
     });
 
-    // listeningForNewPosts = true;
+    listeningForNewPosts = true;
+  }
+
+  void cancelPostListener() {
+    postListener.cancel();
+    listeningForNewPosts = false;
+  }
+
+  void listenForComments() {
+    if (listeningForComments) return;
+
+    listeningForComments = true;
+  }
+
+  void cancelCommentListener() {
+    commentListener.cancel();
+
+    listeningForComments = false;
   }
 
   Future<bool> togglePostLike(String postID, String userID, bool liked) async {
