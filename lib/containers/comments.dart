@@ -86,7 +86,15 @@ class Comments extends StatelessWidget {
               suffixIcon: IconButton(
                 icon: Icon(Icons.send),
                 onPressed: () {
-                  print(model.authState.user.id);
+                  if (newComment['text'].isNotEmpty) {
+                    final comment = Comment(
+                      date: DateTime.now().millisecondsSinceEpoch,
+                      text: newComment['text'],
+                      user: model.authState.user,
+                    );
+
+                    model.addPostComment(comment, post.id);
+                  }
                 },
               ),
             ),
