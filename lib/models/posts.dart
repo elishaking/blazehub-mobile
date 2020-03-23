@@ -32,7 +32,9 @@ class Post {
       isBookmarked: json['isBookmarked'] ?? false,
       user: AuthUser.fromJSON(json['user']),
       likes: json['likes'] ?? Map<dynamic, dynamic>(),
-      comments: json['comments'] ?? Map<dynamic, dynamic>(),
+      comments: json['comments'] == null
+          ? Map<dynamic, dynamic>()
+          : Comment.fromMap(json['comments']),
     );
   }
 }
@@ -63,4 +65,25 @@ class Comment {
     @required this.text,
     @required this.user,
   });
+
+  factory Comment.fromJSON(Map<dynamic, dynamic> json) {
+    return Comment(
+      date: json['date'],
+      text: json['text'],
+      user: AuthUser.fromJSON(json['user']),
+    );
+  }
+
+  static Map<dynamic, Comment> fromMap(Map<dynamic, dynamic> json) {
+    final comments = Map<dynamic, Comment>();
+
+    json.keys.forEach((commentKey) {
+      comments.putIfAbsent(
+        commentKey,
+        () => Comment.fromJSON(json[commentKey]),
+      );
+    });
+
+    return comments;
+  }
 }

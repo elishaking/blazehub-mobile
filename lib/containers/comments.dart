@@ -1,4 +1,5 @@
 import 'package:blazehub/models/posts.dart';
+import 'package:blazehub/utils/date.dart';
 import 'package:blazehub/values/colors.dart';
 import 'package:blazehub/view_models/home.dart';
 import 'package:flutter/material.dart';
@@ -15,12 +16,58 @@ class Comments extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final keys = post.comments.keys.toList();
+
     return Scaffold(
       appBar: AppBar(),
       body: ListView.builder(
+        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
         itemCount: post.comments.length,
-        itemBuilder: (BuildContext context, int count) {
-          return Container();
+        itemBuilder: (BuildContext context, int index) {
+          final Comment comment = post.comments[keys[index]];
+          final fromUser = comment.user.id == model.authState.user.id;
+
+          return Container(
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            decoration: BoxDecoration(
+              color:
+                  fromUser ? AppColors.primary.withAlpha(200) : AppColors.light,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  '${comment.user.firstName} ${comment.user.lastName}',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: fromUser ? Colors.white : AppColors.light,
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  comment.text,
+                  style: TextStyle(
+                    color: fromUser ? Colors.white : AppColors.light,
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  getMonthDayFromInt(comment.date),
+                  textAlign: TextAlign.end,
+                  textWidthBasis: TextWidthBasis.longestLine,
+                  style: TextStyle(
+                    color: fromUser ? Colors.white70 : Colors.black54,
+                    fontSize: Theme.of(context).textTheme.caption.fontSize,
+                  ),
+                )
+              ],
+            ),
+          );
         },
       ),
       bottomSheet: Container(

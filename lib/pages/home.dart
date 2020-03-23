@@ -1,5 +1,6 @@
 import 'package:blazehub/containers/comments.dart';
 import 'package:blazehub/models/posts.dart';
+import 'package:blazehub/utils/date.dart';
 import 'package:blazehub/values/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -13,21 +14,6 @@ class _Post {
 
   _Post({this.text});
 }
-
-const months = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec'
-];
 
 class Home extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -87,7 +73,6 @@ class PostWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final date = DateTime.fromMillisecondsSinceEpoch(post.date);
     final postLiked = post.likes[model.authState.user.id] != null;
 
     return Container(
@@ -108,7 +93,7 @@ class PostWidget extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            subtitle: Text('${months[date.month - 1]} ${date.day}'),
+            subtitle: Text(getMonthDayFromInt(post.date)),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
