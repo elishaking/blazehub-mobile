@@ -40,6 +40,10 @@ class PostsService {
       return false;
     }
   }
+
+  Stream<Event> newCommentAdded(String postID) {
+    return _dbRef.child('posts').child(postID).child('comments').onChildAdded;
+  }
 }
 
 final PostsService postsService = PostsService();

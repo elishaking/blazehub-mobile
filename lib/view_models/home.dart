@@ -54,8 +54,18 @@ class HomeViewModel {
     listeningForNewPosts = false;
   }
 
-  void listenForComments() {
+  void listenForComments(String postID) {
     if (listeningForComments) return;
+
+    commentListener = postsService.newCommentAdded(postID).listen((onData) {
+      final newComment = Comment.fromJSON(onData.snapshot.value);
+
+      final newPost = _store.state.postsState.posts[postID];
+      newPost.comments.putIfAbsent(onData.snapshot.key, () => newComment);
+
+      _store.dispatch(UpdatePost(newPost));
+      print(_store.state.postsState.posts[postID].comments.keys.length);
+    });
 
     listeningForComments = true;
   }

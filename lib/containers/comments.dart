@@ -9,7 +9,9 @@ class Comments extends StatelessWidget {
   final Post post;
   final newComment = {'text': ''};
 
-  Comments(this.model, Post post) : this.post = post;
+  Comments(this.model, Post post) : this.post = post {
+    model.listenForComments(post.id);
+  }
 
   @override
   Widget build(BuildContext context) {
