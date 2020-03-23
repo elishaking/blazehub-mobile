@@ -1,3 +1,4 @@
+import 'package:blazehub/models/posts.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class PostsService {
@@ -19,6 +20,23 @@ class PostsService {
 
       return true;
     } catch (err) {
+      print(err);
+      return false;
+    }
+  }
+
+  Future<bool> addComment(Comment comment, String postID) async {
+    try {
+      await _dbRef
+          .child('posts')
+          .child(postID)
+          .child('comments')
+          .push()
+          .set(comment.toJSON());
+
+      return true;
+    } catch (err) {
+      print(err);
       return false;
     }
   }

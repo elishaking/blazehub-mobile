@@ -86,4 +86,12 @@ class Comment {
 
     return comments;
   }
+
+  Map<dynamic, dynamic> toJSON() {
+    return {
+      'text': text,
+      'date': date,
+      'user': user.toJSON(),
+    };
+  }
 }

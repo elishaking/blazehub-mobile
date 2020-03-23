@@ -47,6 +47,16 @@ class AuthUser {
       username: json['username'],
     );
   }
+
+  Map<dynamic, dynamic> toJSON() {
+    return {
+      'id': id,
+      'firstName': firstName,
+      'lastName': lastName,
+      'email': email,
+      'username': username,
+    };
+  }
 }
 
 class AuthErrors {
