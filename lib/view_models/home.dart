@@ -20,6 +20,8 @@ class HomeViewModel {
   final PostState postsState;
   final Store<AppState> _store;
 
+  Stream postCommentsStream;
+
   HomeViewModel(Store<AppState> store, {this.authState, this.postsState})
       : _store = store;
 
@@ -55,20 +57,22 @@ class HomeViewModel {
   }
 
   Stream listenForComments(String postID) {
-    // if (listeningForComments) return;
+    if (listeningForComments) return postCommentsStream;
 
-    // commentListener = postsService.newCommentAdded(postID).listen((onData) {
-    //   final newComment = Comment.fromJSON(onData.snapshot.value);
+    postCommentsStream = postsService.newCommentAdded(postID);
+    commentListener = postCommentsStream.listen((onData) {
+      final newComment = Comment.fromJSON(onData.snapshot.value);
 
-    //   final newPost = _store.state.postsState.posts[postID];
-    //   newPost.comments.putIfAbsent(onData.snapshot.key, () => newComment);
+      final newPost = _store.state.postsState.posts[postID];
+      newPost.comments.putIfAbsent(onData.snapshot.key, () => newComment);
 
-    //   _store.dispatch(UpdatePost(newPost));
-    //   print(_store.state.postsState.posts[postID].comments.keys.length);
-    // });
+      _store.dispatch(UpdatePost(newPost));
+      print(_store.state.postsState.posts[postID].comments.keys.length);
+    });
 
-    // listeningForComments = true;
-    return postsService.newCommentAdded(postID);
+    listeningForComments = true;
+
+    return postCommentsStream;
   }
 
   void cancelCommentListener() {

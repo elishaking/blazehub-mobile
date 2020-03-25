@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:blazehub/models/posts.dart';
 import 'package:blazehub/utils/date.dart';
 import 'package:blazehub/values/colors.dart';
@@ -7,11 +9,8 @@ import 'package:flutter/material.dart';
 class Comments extends StatefulWidget {
   final HomeViewModel model;
   final Post post;
-  final List<Comment> comments;
 
-  Comments(this.model, Post post)
-      : this.post = post,
-        comments = List<Comment>();
+  Comments(this.model, Post post) : this.post = post;
 
   @override
   _CommentsState createState() => _CommentsState();
@@ -27,9 +26,24 @@ class _CommentsState extends State<Comments> {
   //   super.didUpdateWidget(oldWidget);
   // }
 
+  final List<Comment> comments = List<Comment>();
+  Stream commentsStream;
+
+  @override
+  void initState() {
+    super.initState();
+
+    commentsStream = widget.model.listenForComments(widget.post.id);
+    commentsStream.listen(
+      (onData) => {
+        setState(() => comments.add(Comment.fromJSON(onData.snapshot.value)))
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final keys = widget.post.comments.keys.toList();
+    // final keys = widget.post.comments.keys.toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -41,7 +55,8 @@ class _CommentsState extends State<Comments> {
         ),
       ),
       body: StreamBuilder<dynamic>(
-          stream: widget.model.listenForComments(widget.post.id),
+          stream:
+              commentsStream, //widget.model.listenForComments(widget.post.id),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Center(
@@ -50,13 +65,14 @@ class _CommentsState extends State<Comments> {
             }
 
             final comment = Comment.fromJSON(snapshot.data.snapshot.value);
-            widget.comments.add(comment);
+            comments.add(comment);
 
             return ListView.builder(
               padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
               itemCount: widget.post.comments.length,
               itemBuilder: (BuildContext context, int index) {
-                final Comment comment = widget.post.comments[keys[index]];
+                // final Comment comment = widget.post.comments[keys[index]];
+                final Comment comment = comments[index];
                 final fromUser =
                     comment.user.id == widget.model.authState.user.id;
 
@@ -141,5 +157,10 @@ class _CommentsState extends State<Comments> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }
