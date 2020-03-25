@@ -20,64 +20,68 @@ class Comments extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.close),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-      ),
-      body: post.comments.length == 0
-          ? Center(
-              child: Text("No Comments"),
-            )
-          : StoreConnector<AppState, HomeViewModel>(
-              converter: (Store<AppState> store) => HomeViewModel.create(store),
-              builder: (context, model) {
-                return CommentList(
-                    model.postsState.posts[post.id], model.authState.user);
-              }),
-      bottomSheet: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: Form(
-          child: TextFormField(
-            controller: _editingController,
-            onChanged: (String text) {
-              newComment['text'] = text;
-            },
-            decoration: InputDecoration(
-              hintText: 'Write a comment',
-              filled: true,
-              fillColor: AppColors.light,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20),
-                borderSide: BorderSide.none,
-              ),
-              suffixIcon: IconButton(
-                icon: Icon(Icons.send),
+    return StoreConnector<AppState, HomeViewModel>(
+        converter: (Store<AppState> store) => HomeViewModel.create(store),
+        builder: (context, model) {
+          return Scaffold(
+            appBar: AppBar(
+              leading: IconButton(
+                icon: Icon(Icons.close),
                 onPressed: () {
-                  if (newComment['text'].isNotEmpty) {
-                    final comment = Comment(
-                      date: DateTime.now().millisecondsSinceEpoch,
-                      text: newComment['text'],
-                      user: model.authState.user,
-                    );
-
-                    model.addPostComment(comment, post.id).then((isSuccessful) {
-                      if (isSuccessful) {
-                        _editingController.clear();
-                      }
-                    });
-                  }
+                  Navigator.of(context).pop();
                 },
               ),
             ),
-          ),
-        ),
-      ),
-    );
+            body: model.postsState.posts[post.id].comments.length == 0
+                ? Center(
+                    child: Text("No Comments"),
+                  )
+                : CommentList(
+                    model.postsState.posts[post.id],
+                    model.authState.user,
+                  ),
+            bottomSheet: Container(
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Form(
+                child: TextFormField(
+                  controller: _editingController,
+                  onChanged: (String text) {
+                    newComment['text'] = text;
+                  },
+                  decoration: InputDecoration(
+                    hintText: 'Write a comment',
+                    filled: true,
+                    fillColor: AppColors.light,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: BorderSide.none,
+                    ),
+                    suffixIcon: IconButton(
+                      icon: Icon(Icons.send),
+                      onPressed: () {
+                        if (newComment['text'].isNotEmpty) {
+                          final comment = Comment(
+                            date: DateTime.now().millisecondsSinceEpoch,
+                            text: newComment['text'],
+                            user: model.authState.user,
+                          );
+
+                          model
+                              .addPostComment(comment, post.id)
+                              .then((isSuccessful) {
+                            if (isSuccessful) {
+                              _editingController.clear();
+                            }
+                          });
+                        }
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+        });
   }
 }
 
