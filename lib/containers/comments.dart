@@ -19,6 +19,14 @@ class Comments extends StatefulWidget {
 
 class _CommentsState extends State<Comments> {
   String commentText = '';
+
+  // @override
+  // void didUpdateWidget(Comments oldWidget) {
+  //   // oldWidget.comments.length != widget.comments.length;
+
+  //   super.didUpdateWidget(oldWidget);
+  // }
+
   @override
   Widget build(BuildContext context) {
     final keys = widget.post.comments.keys.toList();
@@ -35,12 +43,14 @@ class _CommentsState extends State<Comments> {
       body: StreamBuilder<dynamic>(
           stream: widget.model.listenForComments(widget.post.id),
           builder: (context, snapshot) {
-            if (!snapshot.hasData) return CircularProgressIndicator();
+            if (!snapshot.hasData) {
+              return Center(
+                child: Text("Loading Comments..."),
+              );
+            }
+
             final comment = Comment.fromJSON(snapshot.data.snapshot.value);
-
             widget.comments.add(comment);
-
-            return Container();
 
             return ListView.builder(
               padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
@@ -62,9 +72,6 @@ class _CommentsState extends State<Comments> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      StreamBuilder(
-                        builder: null,
-                      ),
                       Text(
                         '${comment.user.firstName} ${comment.user.lastName}',
                         style: TextStyle(
