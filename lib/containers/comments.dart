@@ -8,8 +8,11 @@ class Comments extends StatelessWidget {
   final HomeViewModel model;
   final Post post;
   final newComment = {'text': ''};
+  final List<Comment> comments;
 
-  Comments(this.model, Post post) : this.post = post {
+  Comments(this.model, Post post)
+      : this.post = post,
+        comments = List<Comment>() {
     model.listenForComments(post.id);
   }
 
@@ -26,57 +29,73 @@ class Comments extends StatelessWidget {
           },
         ),
       ),
-      body: ListView.builder(
-        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-        itemCount: post.comments.length,
-        itemBuilder: (BuildContext context, int index) {
-          final Comment comment = post.comments[keys[index]];
-          final fromUser = comment.user.id == model.authState.user.id;
+      body: StreamBuilder<dynamic>(
+          stream: model.listenForComments(post.id),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) return CircularProgressIndicator();
+            final comment = Comment.fromJSON(snapshot.data.snapshot.value);
 
-          return Container(
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            margin: EdgeInsets.only(bottom: 15),
-            decoration: BoxDecoration(
-              color:
-                  fromUser ? AppColors.primary.withAlpha(200) : AppColors.light,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  '${comment.user.firstName} ${comment.user.lastName}',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: fromUser ? Colors.white : AppColors.primary,
+            comments.add(comment);
+
+            return Container();
+
+            return ListView.builder(
+              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+              itemCount: post.comments.length,
+              itemBuilder: (BuildContext context, int index) {
+                final Comment comment = post.comments[keys[index]];
+                final fromUser = comment.user.id == model.authState.user.id;
+
+                return Container(
+                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  margin: EdgeInsets.only(bottom: 15),
+                  decoration: BoxDecoration(
+                    color: fromUser
+                        ? AppColors.primary.withAlpha(200)
+                        : AppColors.light,
+                    borderRadius: BorderRadius.circular(20),
                   ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  comment.text,
-                  style: TextStyle(
-                    color: fromUser ? Colors.white : AppColors.primary,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      StreamBuilder(
+                        builder: null,
+                      ),
+                      Text(
+                        '${comment.user.firstName} ${comment.user.lastName}',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: fromUser ? Colors.white : AppColors.primary,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        comment.text,
+                        style: TextStyle(
+                          color: fromUser ? Colors.white : AppColors.primary,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        getMonthDayFromInt(comment.date),
+                        textAlign: TextAlign.end,
+                        textWidthBasis: TextWidthBasis.longestLine,
+                        style: TextStyle(
+                          color: fromUser ? Colors.white70 : Colors.black54,
+                          fontSize:
+                              Theme.of(context).textTheme.caption.fontSize,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  getMonthDayFromInt(comment.date),
-                  textAlign: TextAlign.end,
-                  textWidthBasis: TextWidthBasis.longestLine,
-                  style: TextStyle(
-                    color: fromUser ? Colors.white70 : Colors.black54,
-                    fontSize: Theme.of(context).textTheme.caption.fontSize,
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-      ),
+                );
+              },
+            );
+          }),
       bottomSheet: Container(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Form(
