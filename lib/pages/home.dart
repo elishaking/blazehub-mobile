@@ -142,10 +142,13 @@ class _PostWidgetState extends State<PostWidget> {
                       width: 0.3,
                     ),
                   ),
-                  child: Image.memory(
-                    _postImage.contentAsBytes(),
-                    width: double.maxFinite,
-                    fit: BoxFit.cover,
+                  child: GestureDetector(
+                    onTap: () {},
+                    child: Image.memory(
+                      _postImage.contentAsBytes(),
+                      width: double.maxFinite,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
           Padding(
