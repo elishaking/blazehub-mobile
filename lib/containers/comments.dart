@@ -4,21 +4,24 @@ import 'package:blazehub/values/colors.dart';
 import 'package:blazehub/view_models/home.dart';
 import 'package:flutter/material.dart';
 
-class Comments extends StatelessWidget {
+class Comments extends StatefulWidget {
   final HomeViewModel model;
   final Post post;
-  final newComment = {'text': ''};
   final List<Comment> comments;
 
   Comments(this.model, Post post)
       : this.post = post,
-        comments = List<Comment>() {
-    model.listenForComments(post.id);
-  }
+        comments = List<Comment>();
 
   @override
+  _CommentsState createState() => _CommentsState();
+}
+
+class _CommentsState extends State<Comments> {
+  String commentText = '';
+  @override
   Widget build(BuildContext context) {
-    final keys = post.comments.keys.toList();
+    final keys = widget.post.comments.keys.toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -30,21 +33,22 @@ class Comments extends StatelessWidget {
         ),
       ),
       body: StreamBuilder<dynamic>(
-          stream: model.listenForComments(post.id),
+          stream: widget.model.listenForComments(widget.post.id),
           builder: (context, snapshot) {
             if (!snapshot.hasData) return CircularProgressIndicator();
             final comment = Comment.fromJSON(snapshot.data.snapshot.value);
 
-            comments.add(comment);
+            widget.comments.add(comment);
 
             return Container();
 
             return ListView.builder(
               padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-              itemCount: post.comments.length,
+              itemCount: widget.post.comments.length,
               itemBuilder: (BuildContext context, int index) {
-                final Comment comment = post.comments[keys[index]];
-                final fromUser = comment.user.id == model.authState.user.id;
+                final Comment comment = widget.post.comments[keys[index]];
+                final fromUser =
+                    comment.user.id == widget.model.authState.user.id;
 
                 return Container(
                   padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -101,7 +105,7 @@ class Comments extends StatelessWidget {
         child: Form(
           child: TextFormField(
             onChanged: (String text) {
-              newComment['text'] = text;
+              commentText = text;
             },
             decoration: InputDecoration(
               hintText: 'Write a comment',
@@ -114,14 +118,14 @@ class Comments extends StatelessWidget {
               suffixIcon: IconButton(
                 icon: Icon(Icons.send),
                 onPressed: () {
-                  if (newComment['text'].isNotEmpty) {
+                  if (commentText.isNotEmpty) {
                     final comment = Comment(
                       date: DateTime.now().millisecondsSinceEpoch,
-                      text: newComment['text'],
-                      user: model.authState.user,
+                      text: commentText,
+                      user: widget.model.authState.user,
                     );
 
-                    model.addPostComment(comment, post.id);
+                    widget.model.addPostComment(comment, widget.post.id);
                   }
                 },
               ),
