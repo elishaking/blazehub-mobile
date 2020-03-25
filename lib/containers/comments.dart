@@ -28,6 +28,7 @@ class Comments extends StatelessWidget {
               leading: IconButton(
                 icon: Icon(Icons.close),
                 onPressed: () {
+                  model.cancelCommentListener();
                   Navigator.of(context).pop();
                 },
               ),
