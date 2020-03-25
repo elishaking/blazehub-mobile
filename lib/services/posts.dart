@@ -44,6 +44,18 @@ class PostsService {
   Stream<Event> newCommentAdded(String postID) {
     return _dbRef.child('posts').child(postID).child('comments').onChildAdded;
   }
+
+  Future<String> getPostImage(String postID) async {
+    try {
+      final postImageSnapshot =
+          await _dbRef.child('post-images').child(postID).once();
+
+      return postImageSnapshot.value;
+    } catch (err) {
+      print(err);
+      return null;
+    }
+  }
 }
 
 final PostsService postsService = PostsService();
