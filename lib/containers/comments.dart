@@ -10,7 +10,7 @@ import 'package:blazehub/view_models/home.dart';
 class Comments extends StatelessWidget {
   final HomeViewModel model;
   final Post post;
-  final newComment = {'text': ''};
+  // final newComment = {'text': ''};
 
   Comments(this.model, Post post) : this.post = post {
     model.listenForComments(post.id);
@@ -93,37 +93,72 @@ class Comments extends StatelessWidget {
                     );
                   },
                 );
-              }),
+              },
+            ),
       bottomSheet: Container(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: Form(
-          child: TextFormField(
-            onChanged: (String text) {
-              newComment['text'] = text;
-            },
-            decoration: InputDecoration(
-              hintText: 'Write a comment',
-              filled: true,
-              fillColor: AppColors.light,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20),
-                borderSide: BorderSide.none,
-              ),
-              suffixIcon: IconButton(
-                icon: Icon(Icons.send),
-                onPressed: () {
-                  if (newComment['text'].isNotEmpty) {
-                    final comment = Comment(
-                      date: DateTime.now().millisecondsSinceEpoch,
-                      text: newComment['text'],
-                      user: model.authState.user,
-                    );
+        child: CommentForm(model, post),
+      ),
+    );
+  }
+}
 
-                    model.addPostComment(comment, post.id);
-                  }
-                },
-              ),
-            ),
+class CommentForm extends StatefulWidget {
+  const CommentForm(
+    this.model,
+    this.post, {
+    Key key,
+  }) : super(key: key);
+
+  final HomeViewModel model;
+  final Post post;
+
+  @override
+  _CommentFormState createState() => _CommentFormState();
+}
+
+class _CommentFormState extends State<CommentForm> {
+  String commentText = '';
+  final TextEditingController _textEditingController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      child: TextFormField(
+        controller: _textEditingController,
+        onChanged: (String text) {
+          commentText = text;
+        },
+        decoration: InputDecoration(
+          hintText: 'Write a comment',
+          filled: true,
+          fillColor: AppColors.light,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+            borderSide: BorderSide.none,
+          ),
+          suffixIcon: IconButton(
+            icon: Icon(Icons.send),
+            onPressed: () {
+              if (commentText.isNotEmpty) {
+                final comment = Comment(
+                  date: DateTime.now().millisecondsSinceEpoch,
+                  text: commentText,
+                  user: widget.model.authState.user,
+                );
+
+                widget.model.addPostComment(comment, widget.post.id).then(
+                  (isSuccessful) {
+                    if (isSuccessful) {
+                      // setState(() {
+                      //   commentText = '';
+                      // });
+                      _textEditingController.clear();
+                    }
+                  },
+                );
+              }
+            },
           ),
         ),
       ),
