@@ -1,3 +1,4 @@
+import 'package:blazehub/models/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
@@ -35,65 +36,8 @@ class Comments extends StatelessWidget {
           : StoreConnector<AppState, HomeViewModel>(
               converter: (Store<AppState> store) => HomeViewModel.create(store),
               builder: (context, model) {
-                final keys = post.comments.keys.toList();
-
-                return ListView.builder(
-                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-                  itemCount: model.postsState.posts[post.id].comments.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final Comment comment =
-                        model.postsState.posts[post.id].comments[keys[index]];
-                    final fromUser = comment.user.id == model.authState.user.id;
-
-                    return Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                      margin: EdgeInsets.only(bottom: 15),
-                      decoration: BoxDecoration(
-                        color: fromUser
-                            ? AppColors.primary.withAlpha(200)
-                            : AppColors.light,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            '${comment.user.firstName} ${comment.user.lastName}',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              color:
-                                  fromUser ? Colors.white : AppColors.primary,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            comment.text,
-                            style: TextStyle(
-                              color:
-                                  fromUser ? Colors.white : AppColors.primary,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            getMonthDayFromInt(comment.date),
-                            textAlign: TextAlign.end,
-                            textWidthBasis: TextWidthBasis.longestLine,
-                            style: TextStyle(
-                              color: fromUser ? Colors.white70 : Colors.black54,
-                              fontSize:
-                                  Theme.of(context).textTheme.caption.fontSize,
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                );
+                return CommentList(
+                    model.postsState.posts[post.id], model.authState.user);
               }),
       bottomSheet: Container(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -133,6 +77,69 @@ class Comments extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class CommentList extends StatelessWidget {
+  CommentList(this.post, this.user) : keys = post.comments.keys.toList();
+
+  final Post post;
+  final List keys;
+  final AuthUser user;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+      itemCount: post.comments.length,
+      itemBuilder: (BuildContext context, int index) {
+        final Comment comment = post.comments[keys[index]];
+        final fromUser = comment.user.id == user.id;
+
+        return Container(
+          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          margin: EdgeInsets.only(bottom: 15),
+          decoration: BoxDecoration(
+            color:
+                fromUser ? AppColors.primary.withAlpha(200) : AppColors.light,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                '${comment.user.firstName} ${comment.user.lastName}',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: fromUser ? Colors.white : AppColors.primary,
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                comment.text,
+                style: TextStyle(
+                  color: fromUser ? Colors.white : AppColors.primary,
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                getMonthDayFromInt(comment.date),
+                textAlign: TextAlign.end,
+                textWidthBasis: TextWidthBasis.longestLine,
+                style: TextStyle(
+                  color: fromUser ? Colors.white70 : Colors.black54,
+                  fontSize: Theme.of(context).textTheme.caption.fontSize,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
