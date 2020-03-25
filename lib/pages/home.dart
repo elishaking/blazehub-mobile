@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:blazehub/containers/comments.dart';
 import 'package:blazehub/models/posts.dart';
 import 'package:blazehub/utils/date.dart';
@@ -61,7 +63,7 @@ class Home extends StatelessWidget {
   }
 }
 
-class PostWidget extends StatelessWidget {
+class PostWidget extends StatefulWidget {
   const PostWidget(
     this.post,
     this.model, {
@@ -72,8 +74,28 @@ class PostWidget extends StatelessWidget {
   final HomeViewModel model;
 
   @override
+  _PostWidgetState createState() => _PostWidgetState();
+}
+
+class _PostWidgetState extends State<PostWidget> {
+  UriData _postImage;
+
+  @override
+  void initState() {
+    widget.model.getPostImage(widget.post.id).then((image) {
+      if (image != null) {
+        setState(() {
+          _postImage = Uri.parse(image).data;
+        });
+      }
+    });
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final postLiked = post.likes[model.authState.user.id] != null;
+    final postLiked = widget.post.likes[widget.model.authState.user.id] != null;
 
     return Container(
       margin: EdgeInsets.only(bottom: 15),
@@ -87,18 +109,18 @@ class PostWidget extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.person),
             title: Text(
-              '${post.user.firstName} ${post.user.lastName}',
+              '${widget.post.user.firstName} ${widget.post.user.lastName}',
               style: TextStyle(
                 color: AppColors.primary,
                 fontWeight: FontWeight.w600,
               ),
             ),
-            subtitle: Text(getMonthDayFromInt(post.date)),
+            subtitle: Text(getMonthDayFromInt(widget.post.date)),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
-              post.text,
+              widget.post.text,
             ),
           ),
           SizedBox(
@@ -111,6 +133,21 @@ class PostWidget extends StatelessWidget {
           // SizedBox(
           //   height: 20,
           // ),
+          _postImage == null
+              ? Container()
+              : Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: AppColors.light,
+                      width: 0.3,
+                    ),
+                  ),
+                  child: Image.memory(
+                    _postImage.contentAsBytes(),
+                    width: double.maxFinite,
+                    fit: BoxFit.cover,
+                  ),
+                ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Row(
@@ -122,19 +159,21 @@ class PostWidget extends StatelessWidget {
                     size: 20,
                   ),
                   onPressed: () {
-                    model.togglePostLike(
-                      post.id,
-                      model.authState.user.id,
+                    widget.model.togglePostLike(
+                      widget.post.id,
+                      widget.model.authState.user.id,
                       postLiked,
                     );
                   },
                 ),
-                Text(post.likes.length.toString()),
+                Text(widget.post.likes.length.toString()),
                 SizedBox(
                   width: 21,
                 ),
                 IconButton(
-                  color: post.comments[model.authState.user.firstName] == null
+                  color: widget.post.comments[
+                              widget.model.authState.user.firstName] ==
+                          null
                       ? Colors.grey
                       : AppColors.primary,
                   icon: Icon(
@@ -143,17 +182,20 @@ class PostWidget extends StatelessWidget {
                   ),
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                      builder: (BuildContext context) => Comments(model, post),
+                      builder: (BuildContext context) =>
+                          Comments(widget.model, widget.post),
                       fullscreenDialog: true,
                     ));
                   },
                 ),
-                Text(post.comments.length.toString()),
+                Text(widget.post.comments.length.toString()),
                 Flexible(
                   child: Container(),
                 ),
                 IconButton(
-                  color: post.isBookmarked ? AppColors.primary : Colors.grey,
+                  color: widget.post.isBookmarked
+                      ? AppColors.primary
+                      : Colors.grey,
                   icon: Icon(
                     Icons.bookmark,
                     size: 20,
