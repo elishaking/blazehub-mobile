@@ -38,3 +38,5 @@ lib/generated_plugin_registrant.dart
 
 # firebase
 google-services.json
+
+data/
