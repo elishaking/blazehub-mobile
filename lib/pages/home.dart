@@ -1,9 +1,9 @@
-import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:blazehub/containers/comments.dart';
 import 'package:blazehub/containers/image_view.dart';
 import 'package:blazehub/models/posts.dart';
+import 'package:blazehub/pages/profile.dart';
 import 'package:blazehub/utils/date.dart';
 import 'package:blazehub/values/colors.dart';
 import 'package:flutter/material.dart';
@@ -44,20 +44,24 @@ class Home extends StatelessWidget {
               ..._buildPosts(model),
             ],
           ),
-          bottomNavigationBar: BottomNavigationBar(
-            onTap: (index) {
-              // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => ));
-            },
-            items: [
-              BottomNavigationBarItem(
-                title: Text(tabTitles[0]),
-                icon: Icon(Icons.home),
-              ),
-              BottomNavigationBarItem(
-                title: Text(tabTitles[1]),
-                icon: Icon(Icons.person),
-              ),
-            ],
+          bottomNavigationBar: Hero(
+            tag: 'bottomNav',
+            child: BottomNavigationBar(
+              onTap: (index) {
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (BuildContext context) => Profile()));
+              },
+              items: [
+                BottomNavigationBarItem(
+                  title: Text(tabTitles[0]),
+                  icon: Icon(Icons.home),
+                ),
+                BottomNavigationBarItem(
+                  title: Text(tabTitles[1]),
+                  icon: Icon(Icons.person),
+                ),
+              ],
+            ),
           ),
         );
       },
