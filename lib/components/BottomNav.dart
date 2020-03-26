@@ -3,11 +3,14 @@ import 'package:blazehub/pages/profile.dart';
 import 'package:flutter/material.dart';
 
 class BottomNav extends StatelessWidget {
-  final tabTitles = ['Home', 'Profile'];
+  final int currentIndex;
+
+  const BottomNav(this.currentIndex);
 
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
+      currentIndex: currentIndex,
       onTap: (index) {
         Navigator.of(context)
             .pushReplacement(MaterialPageRoute(builder: (BuildContext context) {
@@ -19,11 +22,11 @@ class BottomNav extends StatelessWidget {
       },
       items: [
         BottomNavigationBarItem(
-          title: Text(tabTitles[0]),
+          title: Text('Home'),
           icon: Icon(Icons.home),
         ),
         BottomNavigationBarItem(
-          title: Text(tabTitles[1]),
+          title: Text('Profile'),
           icon: Icon(Icons.person),
         ),
       ],

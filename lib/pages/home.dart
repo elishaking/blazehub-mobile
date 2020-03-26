@@ -47,7 +47,7 @@ class Home extends StatelessWidget {
           ),
           bottomNavigationBar: Hero(
             tag: 'bottomNav',
-            child: BottomNav(),
+            child: BottomNav(0),
           ),
         );
       },

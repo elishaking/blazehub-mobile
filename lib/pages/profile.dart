@@ -11,7 +11,7 @@ class Profile extends StatelessWidget {
       ),
       bottomNavigationBar: Hero(
         tag: 'bottomNav',
-        child: BottomNav(),
+        child: BottomNav(1),
       ),
     );
   }
