@@ -23,6 +23,8 @@ class Home extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _post = _Post();
 
+  final tabTitles = ['Home', 'Profile'];
+
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, HomeViewModel>(
@@ -40,6 +42,21 @@ class Home extends StatelessWidget {
                 height: 20,
               ),
               ..._buildPosts(model),
+            ],
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+            onTap: (index) {
+              // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => ));
+            },
+            items: [
+              BottomNavigationBarItem(
+                title: Text(tabTitles[0]),
+                icon: Icon(Icons.home),
+              ),
+              BottomNavigationBarItem(
+                title: Text(tabTitles[1]),
+                icon: Icon(Icons.person),
+              ),
             ],
           ),
         );
@@ -122,9 +139,6 @@ class _PostWidgetState extends State<PostWidget> {
             height: 1,
             color: AppColors.light,
           ),
-          // SizedBox(
-          //   height: 20,
-          // ),
           _buildPostImage(),
           _buildPostActions(postLiked, context)
         ],
