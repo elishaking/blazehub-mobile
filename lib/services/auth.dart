@@ -4,7 +4,7 @@ import 'package:firebase_database/firebase_database.dart';
 
 class _AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final DatabaseReference _dbRef = FirebaseDatabase().reference();
+  final DatabaseReference _dbRef = FirebaseDatabase.instance.reference();
 
   Future<AuthUser> signupWithEmail(UserSignupData userData) async {
     try {

@@ -10,11 +10,17 @@ class Profile extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, ProfileViewModel>(
         converter: (store) => ProfileViewModel.create(store),
-        builder: (context, snapshot) {
+        builder: (context, model) {
+          final hasProfilePicture = model.profileState.profilePicture != null;
+
+          if (!hasProfilePicture) {
+            model.getProfilePicture(model.authState.user.id);
+          }
+
           return Scaffold(
             appBar: AppBar(
               leading: Icon(Icons.person),
-              title: Text('John Doe'),
+              title: Text(model.authState.user.firstName),
             ),
             body: ListView(
               padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
@@ -22,8 +28,10 @@ class Profile extends StatelessWidget {
                 Stack(
                   children: <Widget>[
                     Container(
-                        // child: Image.memory(bytes),
-                        )
+                      child: hasProfilePicture
+                          ? Image.memory(model.profileState.profilePicture)
+                          : Container(),
+                    )
                   ],
                 )
               ],

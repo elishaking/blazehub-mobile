@@ -2,7 +2,7 @@ import 'package:blazehub/models/posts.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class PostsService {
-  final _dbRef = FirebaseDatabase().reference();
+  final _dbRef = FirebaseDatabase.instance.reference();
 
   Stream<Event> newPostAdded() {
     return _dbRef.child('posts').onChildAdded;
