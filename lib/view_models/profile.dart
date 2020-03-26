@@ -16,5 +16,5 @@ class ProfileViewModel {
     );
   }
 
-  getCoverPhoto() {}
+  getCoverPhoto(String userID) {}
 }
