@@ -108,17 +108,7 @@ class _PostWidgetState extends State<PostWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          ListTile(
-            leading: Icon(Icons.person),
-            title: Text(
-              '${widget.post.user.firstName} ${widget.post.user.lastName}',
-              style: TextStyle(
-                color: AppColors.primary,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            subtitle: Text(getMonthDayFromInt(widget.post.date)),
-          ),
+          _buildPostHeader(),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
@@ -165,6 +155,20 @@ class _PostWidgetState extends State<PostWidget> {
           _buildPostActions(postLiked, context)
         ],
       ),
+    );
+  }
+
+  ListTile _buildPostHeader() {
+    return ListTile(
+      leading: Icon(Icons.person),
+      title: Text(
+        '${widget.post.user.firstName} ${widget.post.user.lastName}',
+        style: TextStyle(
+          color: AppColors.primary,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      subtitle: Text(getMonthDayFromInt(widget.post.date)),
     );
   }
 
