@@ -1,3 +1,4 @@
+import 'package:blazehub/values/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
@@ -35,45 +36,52 @@ class Profile extends StatelessWidget {
             body: ListView(
               padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
               children: <Widget>[
-                Stack(
-                  children: <Widget>[
-                    Container(
-                      child: Column(
+                hasProfilePicture && hasCoverPicture
+                    ? Stack(
                         children: <Widget>[
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: hasCoverPicture
-                                ? Image.memory(model.profileState.coverPicture)
-                                : Container(),
+                          Container(
+                            child: Column(
+                              children: <Widget>[
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.memory(
+                                      model.profileState.coverPicture),
+                                ),
+                                SizedBox(
+                                  height: deviceWidth / 4,
+                                )
+                              ],
+                            ),
                           ),
-                          SizedBox(
-                            height: deviceWidth / 4,
-                          )
-                        ],
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      left: deviceWidth / 5,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(1000),
-                        child: Container(
-                          width: deviceWidth / 2,
-                          height: deviceWidth / 2,
-                          padding: EdgeInsets.all(7),
-                          decoration: BoxDecoration(color: Colors.white),
-                          // alignment: Alignment.center,
-                          child: hasProfilePicture
-                              ? CircleAvatar(
+                          Positioned(
+                            bottom: 0,
+                            left: deviceWidth / 5,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(1000),
+                              child: Container(
+                                width: deviceWidth / 2,
+                                height: deviceWidth / 2,
+                                padding: EdgeInsets.all(7),
+                                decoration: BoxDecoration(color: Colors.white),
+                                // alignment: Alignment.center,
+                                child: CircleAvatar(
                                   backgroundImage: MemoryImage(
                                       model.profileState.profilePicture),
-                                )
-                              : Container(),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      )
+                    : Container(
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        alignment: Alignment.center,
+                        child: CircularProgressIndicator(
+                          backgroundColor: AppColors.light,
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(AppColors.primary),
                         ),
                       ),
-                    )
-                  ],
-                ),
                 SizedBox(
                   height: 10,
                 ),
