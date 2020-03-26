@@ -1,5 +1,6 @@
 import 'package:blazehub/actions/posts.dart';
 import 'package:blazehub/models/posts.dart';
+import 'package:blazehub/services/auth.dart';
 import 'package:blazehub/services/posts.dart';
 import 'package:redux/redux.dart';
 
@@ -105,5 +106,15 @@ class HomeViewModel {
 
   Future<String> getPostImage(String postID) async {
     return await postsService.getPostImage(postID);
+  }
+
+  Future<bool> getCoverPicture(String userID) async {
+    final smallProfilePicture =
+        await authService.getSmallProfilePicture(userID);
+
+    if (smallProfilePicture == null) return false;
+
+    // _store.dispatch(SetSmallProfilePicture(smallProfilePicture));
+    return true;
   }
 }
