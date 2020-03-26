@@ -125,35 +125,39 @@ class _PostWidgetState extends State<PostWidget> {
           // SizedBox(
           //   height: 20,
           // ),
-          _postImage == null
-              ? Container()
-              : Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: AppColors.light,
-                      width: 0.3,
-                    ),
-                  ),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            ImageView(_postImage, widget.post.id),
-                        fullscreenDialog: true,
-                      ));
-                    },
-                    child: Hero(
-                      tag: widget.post.id,
-                      child: Image.memory(
-                        _postImage,
-                        width: double.maxFinite,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                ),
+          _buildPostImage(),
           _buildPostActions(postLiked, context)
         ],
+      ),
+    );
+  }
+
+  Container _buildPostImage() {
+    if (_postImage == null) return Container();
+
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: AppColors.light,
+          width: 0.3,
+        ),
+      ),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (BuildContext context) =>
+                ImageView(_postImage, widget.post.id),
+            fullscreenDialog: true,
+          ));
+        },
+        child: Hero(
+          tag: widget.post.id,
+          child: Image.memory(
+            _postImage,
+            width: double.maxFinite,
+            fit: BoxFit.cover,
+          ),
+        ),
       ),
     );
   }
