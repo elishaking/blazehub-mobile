@@ -2,7 +2,7 @@ import 'package:blazehub/models/posts.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class PostsService {
-  final _dbRef = FirebaseDatabase().reference();
+  final _dbRef = FirebaseDatabase.instance.reference();
 
   Stream<Event> newPostAdded() {
     return _dbRef.child('posts').onChildAdded;
@@ -43,6 +43,18 @@ class PostsService {
 
   Stream<Event> newCommentAdded(String postID) {
     return _dbRef.child('posts').child(postID).child('comments').onChildAdded;
+  }
+
+  Future<String> getPostImage(String postID) async {
+    try {
+      final postImageSnapshot =
+          await _dbRef.child('post-images').child(postID).once();
+
+      return postImageSnapshot.value;
+    } catch (err) {
+      print(err);
+      return null;
+    }
   }
 }
 

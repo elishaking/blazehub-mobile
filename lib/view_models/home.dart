@@ -102,4 +102,8 @@ class HomeViewModel {
   Future<bool> addPostComment(Comment comment, String postID) async {
     return await postsService.addComment(comment, postID);
   }
+
+  Future<String> getPostImage(String postID) async {
+    return await postsService.getPostImage(postID);
+  }
 }
