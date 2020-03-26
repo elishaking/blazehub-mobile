@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:blazehub/containers/comments.dart';
 import 'package:blazehub/containers/image_view.dart';
@@ -79,14 +80,14 @@ class PostWidget extends StatefulWidget {
 }
 
 class _PostWidgetState extends State<PostWidget> {
-  UriData _postImage;
+  Uint8List _postImage;
 
   @override
   void initState() {
     widget.model.getPostImage(widget.post.id).then((image) {
       if (image != null) {
         setState(() {
-          _postImage = Uri.parse(image).data;
+          _postImage = Uri.parse(image).data.contentAsBytes();
         });
       }
     });
@@ -147,14 +148,17 @@ class _PostWidgetState extends State<PostWidget> {
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (BuildContext context) =>
-                            ImageView(_postImage),
+                            ImageView(_postImage, widget.post.id),
                         fullscreenDialog: true,
                       ));
                     },
-                    child: Image.memory(
-                      _postImage.contentAsBytes(),
-                      width: double.maxFinite,
-                      fit: BoxFit.cover,
+                    child: Hero(
+                      tag: widget.post.id,
+                      child: Image.memory(
+                        _postImage,
+                        width: double.maxFinite,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),
