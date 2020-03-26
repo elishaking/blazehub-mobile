@@ -21,6 +21,7 @@ class AppState {
           loading: false,
           user: UserData.user,
           errors: null,
+          smallProfilePicture: null,
         ),
         postsState = PostState(
           posts: Map<String, Post>(),

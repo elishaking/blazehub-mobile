@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/foundation.dart';
 
 class AuthUser {
@@ -91,12 +93,14 @@ class AuthState {
   final bool loading;
   final AuthUser user;
   final AuthErrors errors;
+  final Uint8List smallProfilePicture;
 
   AuthState({
     @required this.isAuthenticated,
     @required this.loading,
     @required this.user,
     @required this.errors,
+    @required this.smallProfilePicture,
   });
 
   AuthState copyWith({
@@ -110,6 +114,7 @@ class AuthState {
         loading: loading ?? this.loading,
         user: user ?? this.user,
         errors: errors ?? this.errors,
+        smallProfilePicture: smallProfilePicture ?? this.smallProfilePicture,
       );
 }
 
