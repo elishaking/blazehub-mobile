@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:blazehub/models/auth.dart';
 
 class GetErrors {
@@ -16,4 +18,10 @@ class SetCurrentUser {
   final AuthUser payload;
 
   SetCurrentUser(this.payload);
+}
+
+class SetSmallProfilePicture {
+  final Uint8List payload;
+
+  SetSmallProfilePicture(this.payload);
 }
