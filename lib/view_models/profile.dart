@@ -44,7 +44,7 @@ class ProfileViewModel {
 
     if (profileInfo == null) return false;
 
-    // _store.dispatch();
+    _store.dispatch(SetProfileInfo(profileInfo));
     return true;
   }
 }

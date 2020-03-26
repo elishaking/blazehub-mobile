@@ -15,12 +15,16 @@ class Profile extends StatelessWidget {
         builder: (context, model) {
           final hasProfilePicture = model.profileState.profilePicture != null;
           final hasCoverPicture = model.profileState.coverPicture != null;
+          final hasProfile = model.profileState.profileInfo != null;
 
           if (!hasProfilePicture) {
             model.getProfilePicture(model.authState.user.id);
           }
           if (!hasCoverPicture) {
             model.getCoverPicture(model.authState.user.id);
+          }
+          if (!hasProfile) {
+            model.getProfileInfo(model.authState.user.id);
           }
 
           return Scaffold(
@@ -38,8 +42,9 @@ class Profile extends StatelessWidget {
                         children: <Widget>[
                           ClipRRect(
                             borderRadius: BorderRadius.circular(10),
-                            child:
-                                Image.memory(model.profileState.coverPicture),
+                            child: hasCoverPicture
+                                ? Image.memory(model.profileState.coverPicture)
+                                : Container(),
                           ),
                           SizedBox(
                             height: deviceWidth / 4,
@@ -87,12 +92,19 @@ class Profile extends StatelessWidget {
                 SizedBox(
                   height: 10,
                 ),
-                ListTile(
-                  contentPadding: EdgeInsets.all(0),
-                  leading: Icon(Icons.book),
-                  title: Text(
-                      'Founder and TeamLead at SkyBlazar. Very excited about graphic design, AI and app development across several platforms'),
-                )
+                hasProfile
+                    ? Container(
+                        child: Column(
+                          children: <Widget>[
+                            ListTile(
+                              contentPadding: EdgeInsets.all(0),
+                              leading: Icon(Icons.book),
+                              title: Text(model.profileState.profileInfo.bio),
+                            ),
+                          ],
+                        ),
+                      )
+                    : Container(),
               ],
             ),
             bottomNavigationBar: Hero(
