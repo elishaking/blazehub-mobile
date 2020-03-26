@@ -38,14 +38,21 @@ class Home extends StatelessWidget {
           appBar: AppBar(
             centerTitle: true,
             leading: hasSmallProfilePicture
-                ? Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      // width: 20,
-                      // height: 20,
-                      child: CircleAvatar(
-                        backgroundImage:
-                            MemoryImage(model.authState.smallProfilePicture),
+                ? GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => Profile(),
+                      ));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        // width: 20,
+                        // height: 20,
+                        child: CircleAvatar(
+                          backgroundImage:
+                              MemoryImage(model.authState.smallProfilePicture),
+                        ),
                       ),
                     ),
                   )
@@ -305,7 +312,7 @@ class CreatePostForm extends StatelessWidget {
                   minLines: 4,
                   maxLines: 7,
                   decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.person),
+                    prefixIcon: Icon(Icons.subject),
                     hintText: "Share your thoughts",
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 10, vertical: 10),
