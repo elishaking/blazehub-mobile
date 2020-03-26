@@ -29,6 +29,17 @@ class Profile {
     );
   }
 
+  Map toJSON() {
+    return {
+      'name': name,
+      'username': username,
+      'website': website,
+      'birth': birth,
+      'bio': bio,
+      'location': location,
+    };
+  }
+
   Profile copyWith({
     String name,
     String username,

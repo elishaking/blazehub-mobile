@@ -56,6 +56,18 @@ class ProfileService {
       return null;
     }
   }
+
+  Future<bool> updateProfileInfo(String userID, Profile profileInfo) async {
+    try {
+      await _dbRef.child('profiles').child(userID).set(profileInfo.toJSON());
+
+      return true;
+    } catch (err) {
+      print(err);
+
+      return false;
+    }
+  }
 }
 
 final profileService = ProfileService();
