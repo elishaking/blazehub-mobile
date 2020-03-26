@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:blazehub/components/BottomNav.dart';
+import 'package:blazehub/components/SmallProfilePicture.dart';
 import 'package:blazehub/containers/comments.dart';
 import 'package:blazehub/containers/image_view.dart';
 import 'package:blazehub/models/posts.dart';
@@ -44,17 +45,8 @@ class Home extends StatelessWidget {
                         builder: (context) => Profile(),
                       ));
                     },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SizedBox(
-                        // width: 20,
-                        // height: 20,
-                        child: CircleAvatar(
-                          backgroundImage:
-                              MemoryImage(model.authState.smallProfilePicture),
-                        ),
-                      ),
-                    ),
+                    child: SmallProfilePicture(
+                        model.authState.smallProfilePicture),
                   )
                 : Icon(Icons.person),
             title: Text('BlazeHub'),

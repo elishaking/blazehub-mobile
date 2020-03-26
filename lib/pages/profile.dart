@@ -18,6 +18,8 @@ class Profile extends StatelessWidget {
           final hasProfilePicture = model.profileState.profilePicture != null;
           final hasCoverPicture = model.profileState.coverPicture != null;
           final hasProfile = model.profileState.profileInfo != null;
+          final hasSmallProfilePicture =
+              model.authState.smallProfilePicture != null;
 
           if (!hasProfilePicture) {
             model.getProfilePicture(model.authState.user.id);
