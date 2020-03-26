@@ -27,6 +27,7 @@ class EditProfile extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 TextFormField(
+                  initialValue: newProfile.name,
                   decoration: InputDecoration(
                     labelText: 'name',
                   ),
@@ -50,10 +51,11 @@ class EditProfile extends StatelessWidget {
                 //     if(text.isEmpty) return requiredFieldError('username');
                 //   },
                 // ),
-                SizedBox(
-                  height: 20,
-                ),
+                // SizedBox(
+                //   height: 20,
+                // ),
                 TextFormField(
+                  initialValue: newProfile.bio,
                   minLines: 3,
                   maxLines: 5,
                   decoration: InputDecoration(
@@ -70,6 +72,7 @@ class EditProfile extends StatelessWidget {
                   height: 20,
                 ),
                 TextFormField(
+                  initialValue: newProfile.location,
                   decoration: InputDecoration(
                     labelText: 'location',
                   ),
@@ -84,6 +87,7 @@ class EditProfile extends StatelessWidget {
                   height: 20,
                 ),
                 TextFormField(
+                  initialValue: newProfile.website,
                   decoration: InputDecoration(
                     labelText: 'website',
                   ),
@@ -98,6 +102,7 @@ class EditProfile extends StatelessWidget {
                   height: 20,
                 ),
                 TextFormField(
+                  initialValue: newProfile.birth,
                   decoration: InputDecoration(
                     labelText: 'birth date',
                   ),
@@ -111,19 +116,60 @@ class EditProfile extends StatelessWidget {
                 SizedBox(
                   height: 20,
                 ),
-                RaisedButton(
-                  onPressed: () {
-                    if (_formKey.currentState.validate()) {
-                      _formKey.currentState.save();
-                    }
-                  },
-                  child: Text('Save'),
-                )
+                SubmitForm(_formKey, model, newProfile)
               ],
             ),
           ),
         ),
       ),
     );
+  }
+}
+
+class SubmitForm extends StatefulWidget {
+  const SubmitForm(
+    GlobalKey<FormState> formKey,
+    this.model,
+    this.newProfile,
+  ) : _formKey = formKey;
+
+  final GlobalKey<FormState> _formKey;
+  final ProfileViewModel model;
+  final Profile newProfile;
+
+  @override
+  _SubmitFormState createState() => _SubmitFormState();
+}
+
+class _SubmitFormState extends State<SubmitForm> {
+  bool loading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return loading
+        ? CircularProgressIndicator()
+        : RaisedButton(
+            onPressed: () {
+              if (widget._formKey.currentState.validate()) {
+                widget._formKey.currentState.save();
+                setState(() {
+                  loading = true;
+                });
+                widget.model
+                    .updateProfileInfo(
+                  widget.model.authState.user.id,
+                  widget.newProfile,
+                )
+                    .then((isSuccessful) {
+                  setState(() {
+                    loading = false;
+                  });
+
+                  if (isSuccessful) Navigator.of(context).pop();
+                });
+              }
+            },
+            child: Text('Save'),
+          );
   }
 }
