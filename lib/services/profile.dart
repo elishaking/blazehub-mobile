@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:blazehub/models/profile.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class ProfileService {
@@ -34,6 +35,19 @@ class ProfileService {
       if (coverPictureSnapshot.value == null) return null;
 
       return Uri.parse(coverPictureSnapshot.value).data.contentAsBytes();
+    } catch (err) {
+      print(err);
+
+      return null;
+    }
+  }
+
+  Future<Profile> getProfileInfo(String userID) async {
+    try {
+      final profileInfoSnapshot =
+          await _dbRef.child('profile').child(userID).once();
+
+      if (profileInfoSnapshot.value == null) return null;
     } catch (err) {
       print(err);
 
