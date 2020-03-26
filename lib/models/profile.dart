@@ -1,12 +1,11 @@
 import 'dart:typed_data';
-import 'package:blazehub/pages/profile.dart';
 import 'package:flutter/foundation.dart';
 
 class Profile {
   String name;
   String username;
   String website;
-  int birth;
+  String birth;
   String bio;
   String location;
 

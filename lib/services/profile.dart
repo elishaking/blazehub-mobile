@@ -45,7 +45,7 @@ class ProfileService {
   Future<Profile> getProfileInfo(String userID) async {
     try {
       final profileInfoSnapshot =
-          await _dbRef.child('profile').child(userID).once();
+          await _dbRef.child('profiles').child(userID).once();
 
       if (profileInfoSnapshot.value == null) return null;
 
