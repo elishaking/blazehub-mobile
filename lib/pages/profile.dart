@@ -1,3 +1,4 @@
+import 'package:blazehub/containers/edit_profile.dart';
 import 'package:blazehub/values/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -153,7 +154,12 @@ class Profile extends StatelessWidget {
                               margin: EdgeInsets.symmetric(vertical: 10),
                             ),
                             RaisedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => EditProfile(),
+                                  fullscreenDialog: true,
+                                ));
+                              },
                               child: Text('Edit Profile'),
                             )
                           ],
