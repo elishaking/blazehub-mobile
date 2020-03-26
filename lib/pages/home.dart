@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:blazehub/containers/comments.dart';
+import 'package:blazehub/containers/image_view.dart';
 import 'package:blazehub/models/posts.dart';
 import 'package:blazehub/utils/date.dart';
 import 'package:blazehub/values/colors.dart';
@@ -143,7 +144,13 @@ class _PostWidgetState extends State<PostWidget> {
                     ),
                   ),
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            ImageView(_postImage),
+                        fullscreenDialog: true,
+                      ));
+                    },
                     child: Image.memory(
                       _postImage.contentAsBytes(),
                       width: double.maxFinite,
