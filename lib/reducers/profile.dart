@@ -13,6 +13,11 @@ ProfileState profileReducer(ProfileState state, action) {
         coverPicture: (action as SetCoverPicture).payload,
       );
 
+    case SetProfileInfo:
+      return state.copyWith(
+        profileInfo: (action as SetProfileInfo).payload,
+      );
+
     default:
       return state;
   }
