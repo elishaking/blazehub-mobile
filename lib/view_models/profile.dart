@@ -29,4 +29,13 @@ class ProfileViewModel {
     _store.dispatch(SetProfilePicture(profilePicture));
     return true;
   }
+
+  Future<bool> getCoverPicture(String userID) async {
+    final coverPicture = await profileService.getCoverPicture(userID);
+
+    if (coverPicture == null) return false;
+
+    _store.dispatch(SetCoverPicture(coverPicture));
+    return true;
+  }
 }
