@@ -108,7 +108,7 @@ class HomeViewModel {
     return await postsService.getPostImage(postID);
   }
 
-  Future<bool> getCoverPicture(String userID) async {
+  Future<bool> getSmallProfilePicture(String userID) async {
     final smallProfilePicture =
         await authService.getSmallProfilePicture(userID);
 
