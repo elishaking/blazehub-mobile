@@ -19,6 +19,17 @@ class Profile {
     @required this.location,
   });
 
+  factory Profile.fromJSON(Map json) {
+    return Profile(
+      name: json['name'],
+      username: json['username'],
+      website: json['website'],
+      birth: json['birth'],
+      bio: json['bio'],
+      location: json['location'],
+    );
+  }
+
   Profile copyWith({
     String name,
     String username,
