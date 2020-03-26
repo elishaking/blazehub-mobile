@@ -89,7 +89,9 @@ class Profile extends StatelessWidget {
                 Container(
                   alignment: Alignment.center,
                   child: Text(
-                    "${model.authState.user.firstName} ${model.authState.user.lastName}",
+                    hasProfile
+                        ? model.profileState.profileInfo.name
+                        : "${model.authState.user.firstName} ${model.authState.user.lastName}",
                     style: Theme.of(context).textTheme.display1.merge(
                           TextStyle(
                             color: Colors.black,
