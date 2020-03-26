@@ -14,9 +14,13 @@ class Profile extends StatelessWidget {
         converter: (store) => ProfileViewModel.create(store),
         builder: (context, model) {
           final hasProfilePicture = model.profileState.profilePicture != null;
+          final hasCoverPicture = model.profileState.coverPicture != null;
 
           if (!hasProfilePicture) {
             model.getProfilePicture(model.authState.user.id);
+          }
+          if (!hasCoverPicture) {
+            model.getCoverPicture(model.authState.user.id);
           }
 
           return Scaffold(
@@ -30,22 +34,37 @@ class Profile extends StatelessWidget {
                 Stack(
                   children: <Widget>[
                     Container(
-                        // child: Image.memory(bytes),
+                      child: Column(
+                        children: <Widget>[
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child:
+                                Image.memory(model.profileState.coverPicture),
+                          ),
+                          SizedBox(
+                            height: deviceWidth / 4,
+                          )
+                        ],
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      left: deviceWidth / 5,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(1000),
+                        child: Container(
+                          width: deviceWidth / 2,
+                          height: deviceWidth / 2,
+                          padding: EdgeInsets.all(7),
+                          decoration: BoxDecoration(color: Colors.white),
+                          // alignment: Alignment.center,
+                          child: hasProfilePicture
+                              ? CircleAvatar(
+                                  backgroundImage: MemoryImage(
+                                      model.profileState.profilePicture),
+                                )
+                              : Container(),
                         ),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(1000),
-                      child: Container(
-                        width: deviceWidth / 2,
-                        height: deviceWidth / 2,
-                        padding: EdgeInsets.all(7),
-                        decoration: BoxDecoration(color: Colors.black),
-                        // alignment: Alignment.center,
-                        child: hasProfilePicture
-                            ? CircleAvatar(
-                                backgroundImage: MemoryImage(
-                                    model.profileState.profilePicture),
-                              )
-                            : Container(),
                       ),
                     )
                   ],
