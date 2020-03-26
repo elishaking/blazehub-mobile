@@ -68,6 +68,30 @@ class Profile extends StatelessWidget {
                       ),
                     )
                   ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  child: Text(
+                    "${model.authState.user.firstName} ${model.authState.user.lastName}",
+                    style: Theme.of(context).textTheme.display1.merge(
+                          TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.all(0),
+                  leading: Icon(Icons.book),
+                  title: Text(
+                      'Founder and TeamLead at SkyBlazar. Very excited about graphic design, AI and app development across several platforms'),
                 )
               ],
             ),
