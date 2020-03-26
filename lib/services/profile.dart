@@ -7,18 +7,33 @@ class ProfileService {
 
   Future<Uint8List> getProfilePicture(String userID) async {
     try {
-      print(userID);
-      print('getting');
       final profilePictureSnapshot = await _dbRef
           .child('profile-photos')
           .child(userID)
           .child('avatar')
           .once();
-      print('setting');
 
       if (profilePictureSnapshot.value == null) return null;
 
       return Uri.parse(profilePictureSnapshot.value).data.contentAsBytes();
+    } catch (err) {
+      print(err);
+
+      return null;
+    }
+  }
+
+  Future<Uint8List> getCoverPicture(String userID) async {
+    try {
+      final coverPictureSnapshot = await _dbRef
+          .child('profile-photos')
+          .child(userID)
+          .child('coverPhoto')
+          .once();
+
+      if (coverPictureSnapshot.value == null) return null;
+
+      return Uri.parse(coverPictureSnapshot.value).data.contentAsBytes();
     } catch (err) {
       print(err);
 

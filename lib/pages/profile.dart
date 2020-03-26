@@ -29,6 +29,9 @@ class Profile extends StatelessWidget {
               children: <Widget>[
                 Stack(
                   children: <Widget>[
+                    Container(
+                        // child: Image.memory(bytes),
+                        ),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(1000),
                       child: Container(
