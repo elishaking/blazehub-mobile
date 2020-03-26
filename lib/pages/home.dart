@@ -162,63 +162,65 @@ class _PostWidgetState extends State<PostWidget> {
                     ),
                   ),
                 ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Row(
-              children: <Widget>[
-                IconButton(
-                  color: postLiked ? AppColors.primary : Colors.grey,
-                  icon: Icon(
-                    Icons.thumb_up,
-                    size: 20,
-                  ),
-                  onPressed: () {
-                    widget.model.togglePostLike(
-                      widget.post.id,
-                      widget.model.authState.user.id,
-                      postLiked,
-                    );
-                  },
-                ),
-                Text(widget.post.likes.length.toString()),
-                SizedBox(
-                  width: 21,
-                ),
-                IconButton(
-                  color: widget.post.comments[
-                              widget.model.authState.user.firstName] ==
-                          null
-                      ? Colors.grey
-                      : AppColors.primary,
-                  icon: Icon(
-                    Icons.mode_comment,
-                    size: 20,
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          Comments(widget.model, widget.post),
-                      fullscreenDialog: true,
-                    ));
-                  },
-                ),
-                Text(widget.post.comments.length.toString()),
-                Flexible(
-                  child: Container(),
-                ),
-                IconButton(
-                  color: widget.post.isBookmarked
-                      ? AppColors.primary
-                      : Colors.grey,
-                  icon: Icon(
-                    Icons.bookmark,
-                    size: 20,
-                  ),
-                  onPressed: () {},
-                ),
-              ],
+          _buildPostActions(postLiked, context)
+        ],
+      ),
+    );
+  }
+
+  Padding _buildPostActions(bool postLiked, BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Row(
+        children: <Widget>[
+          IconButton(
+            color: postLiked ? AppColors.primary : Colors.grey,
+            icon: Icon(
+              Icons.thumb_up,
+              size: 20,
             ),
-          )
+            onPressed: () {
+              widget.model.togglePostLike(
+                widget.post.id,
+                widget.model.authState.user.id,
+                postLiked,
+              );
+            },
+          ),
+          Text(widget.post.likes.length.toString()),
+          SizedBox(
+            width: 21,
+          ),
+          IconButton(
+            color:
+                widget.post.comments[widget.model.authState.user.firstName] ==
+                        null
+                    ? Colors.grey
+                    : AppColors.primary,
+            icon: Icon(
+              Icons.mode_comment,
+              size: 20,
+            ),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (BuildContext context) =>
+                    Comments(widget.model, widget.post),
+                fullscreenDialog: true,
+              ));
+            },
+          ),
+          Text(widget.post.comments.length.toString()),
+          Flexible(
+            child: Container(),
+          ),
+          IconButton(
+            color: widget.post.isBookmarked ? AppColors.primary : Colors.grey,
+            icon: Icon(
+              Icons.bookmark,
+              size: 20,
+            ),
+            onPressed: () {},
+          ),
         ],
       ),
     );
