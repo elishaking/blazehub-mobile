@@ -108,6 +108,7 @@ class AuthState {
     bool loading,
     AuthUser user,
     AuthErrors errors,
+    Uint8List smallProfilePicture,
   }) =>
       AuthState(
         isAuthenticated: isAuthenticated ?? this.isAuthenticated,
