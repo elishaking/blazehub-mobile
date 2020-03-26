@@ -8,6 +8,8 @@ import 'package:blazehub/view_models/profile.dart';
 class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final deviceWidth = MediaQuery.of(context).size.width;
+
     return StoreConnector<AppState, ProfileViewModel>(
         converter: (store) => ProfileViewModel.create(store),
         builder: (context, model) {
@@ -27,10 +29,21 @@ class Profile extends StatelessWidget {
               children: <Widget>[
                 Stack(
                   children: <Widget>[
-                    Container(
-                      child: hasProfilePicture
-                          ? Image.memory(model.profileState.profilePicture)
-                          : Container(),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(1000),
+                      child: Container(
+                        width: deviceWidth / 2,
+                        height: deviceWidth / 2,
+                        padding: EdgeInsets.all(7),
+                        decoration: BoxDecoration(color: Colors.black),
+                        // alignment: Alignment.center,
+                        child: hasProfilePicture
+                            ? CircleAvatar(
+                                backgroundImage: MemoryImage(
+                                    model.profileState.profilePicture),
+                              )
+                            : Container(),
+                      ),
                     )
                   ],
                 )
