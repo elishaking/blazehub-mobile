@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:blazehub/components/BottomNav.dart';
 import 'package:blazehub/containers/comments.dart';
 import 'package:blazehub/containers/image_view.dart';
 import 'package:blazehub/models/posts.dart';
@@ -46,22 +47,7 @@ class Home extends StatelessWidget {
           ),
           bottomNavigationBar: Hero(
             tag: 'bottomNav',
-            child: BottomNavigationBar(
-              onTap: (index) {
-                Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: (BuildContext context) => Profile()));
-              },
-              items: [
-                BottomNavigationBarItem(
-                  title: Text(tabTitles[0]),
-                  icon: Icon(Icons.home),
-                ),
-                BottomNavigationBarItem(
-                  title: Text(tabTitles[1]),
-                  icon: Icon(Icons.person),
-                ),
-              ],
-            ),
+            child: BottomNav(),
           ),
         );
       },
