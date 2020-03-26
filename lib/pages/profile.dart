@@ -156,7 +156,7 @@ class Profile extends StatelessWidget {
                             RaisedButton(
                               onPressed: () {
                                 Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => EditProfile(),
+                                  builder: (context) => EditProfile(model),
                                   fullscreenDialog: true,
                                 ));
                               },

@@ -1,6 +1,17 @@
+import 'package:blazehub/models/profile.dart';
+import 'package:blazehub/utils/errors.dart';
+import 'package:blazehub/view_models/profile.dart';
 import 'package:flutter/material.dart';
 
 class EditProfile extends StatelessWidget {
+  final ProfileViewModel model;
+  final Profile newProfile;
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  EditProfile(this.model)
+      : newProfile = model.profileState.profileInfo.copyWith();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,23 +23,33 @@ class EditProfile extends StatelessWidget {
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
           child: Form(
+            key: _formKey,
             child: Column(
               children: <Widget>[
                 TextFormField(
                   decoration: InputDecoration(
                     labelText: 'name',
                   ),
-                  onChanged: (text) {},
+                  onSaved: (text) {
+                    newProfile.name = text;
+                  },
+                  validator: (text) {
+                    if (text.isEmpty) return requiredFieldError('name');
+                  },
                 ),
                 SizedBox(
                   height: 20,
                 ),
-                TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'username',
-                  ),
-                  onChanged: (text) {},
-                ),
+                // TODO: add username validation
+                // TextFormField(
+                //   decoration: InputDecoration(
+                //     labelText: 'username',
+                //   ),
+                //   onSaved: (text) {},
+                //   validator: (text){
+                //     if(text.isEmpty) return requiredFieldError('username');
+                //   },
+                // ),
                 SizedBox(
                   height: 20,
                 ),
@@ -38,7 +59,12 @@ class EditProfile extends StatelessWidget {
                   decoration: InputDecoration(
                     labelText: 'bio',
                   ),
-                  onChanged: (text) {},
+                  onSaved: (text) {
+                    newProfile.bio = text;
+                  },
+                  // validator: (text){
+                  //   if(text.isEmpty) return requiredFieldError('bio');
+                  // },
                 ),
                 SizedBox(
                   height: 20,
@@ -47,7 +73,12 @@ class EditProfile extends StatelessWidget {
                   decoration: InputDecoration(
                     labelText: 'location',
                   ),
-                  onChanged: (text) {},
+                  onSaved: (text) {
+                    newProfile.location = text;
+                  },
+                  // validator: (text){
+                  //   if(text.isEmpty) return requiredFieldError('location');
+                  // },
                 ),
                 SizedBox(
                   height: 20,
@@ -56,7 +87,12 @@ class EditProfile extends StatelessWidget {
                   decoration: InputDecoration(
                     labelText: 'website',
                   ),
-                  onChanged: (text) {},
+                  onSaved: (text) {
+                    newProfile.website = text;
+                  },
+                  // validator: (text){
+                  //   if(text.isEmpty) return requiredFieldError('name');
+                  // },
                 ),
                 SizedBox(
                   height: 20,
@@ -65,13 +101,22 @@ class EditProfile extends StatelessWidget {
                   decoration: InputDecoration(
                     labelText: 'birth date',
                   ),
-                  onChanged: (text) {},
+                  onSaved: (text) {
+                    newProfile.birth = text;
+                  },
+                  // validator: (text){
+                  //   if(text.isEmpty) return requiredFieldError('name');
+                  // },
                 ),
                 SizedBox(
                   height: 20,
                 ),
                 RaisedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    if (_formKey.currentState.validate()) {
+                      _formKey.currentState.save();
+                    }
+                  },
                   child: Text('Save'),
                 )
               ],
