@@ -1,3 +1,6 @@
+import 'dart:typed_data';
+
+import 'package:blazehub/services/profile.dart';
 import 'package:redux/redux.dart';
 
 import 'package:blazehub/models/app.dart';
@@ -16,5 +19,7 @@ class ProfileViewModel {
     );
   }
 
-  getCoverPhoto(String userID) {}
+  Future<Uint8List> getCoverPhoto(String userID) async {
+    return await profileService.getProfilePicture(userID);
+  }
 }

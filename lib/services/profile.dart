@@ -23,3 +23,5 @@ class ProfileService {
     }
   }
 }
+
+final profileService = ProfileService();
