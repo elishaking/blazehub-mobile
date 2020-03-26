@@ -102,6 +102,12 @@ class Profile extends StatelessWidget {
                 ),
                 hasProfile
                     ? Container(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: AppColors.light),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
                         child: Column(
                           children: <Widget>[
                             ListTile(
@@ -109,6 +115,47 @@ class Profile extends StatelessWidget {
                               leading: Icon(Icons.book),
                               title: Text(model.profileState.profileInfo.bio),
                             ),
+                            Container(
+                              height: 1,
+                              color: AppColors.light,
+                              margin: EdgeInsets.only(top: 10),
+                            ),
+                            ListTile(
+                              contentPadding: EdgeInsets.all(0),
+                              leading: Icon(Icons.location_city),
+                              title:
+                                  Text(model.profileState.profileInfo.location),
+                            ),
+                            Container(
+                              height: 1,
+                              color: AppColors.light,
+                              margin: EdgeInsets.only(top: 10),
+                            ),
+                            ListTile(
+                              contentPadding: EdgeInsets.all(0),
+                              leading: Icon(Icons.web),
+                              title:
+                                  Text(model.profileState.profileInfo.website),
+                            ),
+                            Container(
+                              height: 1,
+                              color: AppColors.light,
+                              margin: EdgeInsets.only(top: 10),
+                            ),
+                            ListTile(
+                              contentPadding: EdgeInsets.all(0),
+                              leading: Icon(Icons.date_range),
+                              title: Text(model.profileState.profileInfo.birth),
+                            ),
+                            Container(
+                              height: 1,
+                              color: AppColors.light,
+                              margin: EdgeInsets.symmetric(vertical: 10),
+                            ),
+                            RaisedButton(
+                              onPressed: () {},
+                              child: Text('Edit Profile'),
+                            )
                           ],
                         ),
                       )
