@@ -48,6 +48,8 @@ class ProfileService {
           await _dbRef.child('profile').child(userID).once();
 
       if (profileInfoSnapshot.value == null) return null;
+
+      return Profile.fromJSON(profileInfoSnapshot.value);
     } catch (err) {
       print(err);
 

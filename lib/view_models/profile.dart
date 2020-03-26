@@ -38,4 +38,13 @@ class ProfileViewModel {
     _store.dispatch(SetCoverPicture(coverPicture));
     return true;
   }
+
+  Future<bool> getProfileInfo(String userID) async {
+    final profileInfo = await profileService.getProfileInfo(userID);
+
+    if (profileInfo == null) return false;
+
+    // _store.dispatch();
+    return true;
+  }
 }
