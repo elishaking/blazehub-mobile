@@ -1,3 +1,4 @@
+import 'package:blazehub/components/SmallProfilePicture.dart';
 import 'package:blazehub/containers/edit_profile.dart';
 import 'package:blazehub/values/colors.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,9 @@ class Profile extends StatelessWidget {
 
           return Scaffold(
             appBar: AppBar(
-              leading: Icon(Icons.person),
+              leading: hasSmallProfilePicture
+                  ? SmallProfilePicture(model.authState.smallProfilePicture)
+                  : Icon(Icons.person),
               title: Text(model.authState.user.firstName),
             ),
             body: ListView(
