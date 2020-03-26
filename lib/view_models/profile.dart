@@ -47,4 +47,14 @@ class ProfileViewModel {
     _store.dispatch(SetProfileInfo(profileInfo));
     return true;
   }
+
+  Future<bool> updateProfileInfo(String userID, Profile profileInfo) async {
+    final isSuccessful =
+        await profileService.updateProfileInfo(userID, profileInfo);
+
+    if (!isSuccessful) return false;
+
+    _store.dispatch(SetProfileInfo(profileInfo));
+    return true;
+  }
 }
