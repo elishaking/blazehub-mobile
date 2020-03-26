@@ -1,3 +1,4 @@
+import 'package:blazehub/actions/auth.dart';
 import 'package:blazehub/actions/posts.dart';
 import 'package:blazehub/models/posts.dart';
 import 'package:blazehub/services/auth.dart';
@@ -114,7 +115,7 @@ class HomeViewModel {
 
     if (smallProfilePicture == null) return false;
 
-    // _store.dispatch(SetSmallProfilePicture(smallProfilePicture));
+    _store.dispatch(SetSmallProfilePicture(smallProfilePicture));
     return true;
   }
 }

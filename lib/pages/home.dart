@@ -31,8 +31,25 @@ class Home extends StatelessWidget {
     return StoreConnector<AppState, HomeViewModel>(
       converter: (Store<AppState> store) => HomeViewModel.create(store),
       builder: (BuildContext context, HomeViewModel model) {
+        final hasSmallProfilePicture =
+            model.authState.smallProfilePicture != null;
+
         return Scaffold(
           appBar: AppBar(
+            centerTitle: true,
+            leading: hasSmallProfilePicture
+                ? Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      // width: 20,
+                      // height: 20,
+                      child: CircleAvatar(
+                        backgroundImage:
+                            MemoryImage(model.authState.smallProfilePicture),
+                      ),
+                    ),
+                  )
+                : Icon(Icons.person),
             title: Text('BlazeHub'),
           ),
           body: ListView(
