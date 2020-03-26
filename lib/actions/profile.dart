@@ -6,8 +6,8 @@ class SetProfilePicture {
   SetProfilePicture(this.payload);
 }
 
-class SetCoverPhoto {
+class SetCoverPicture {
   final Uint8List payload;
 
-  SetCoverPhoto(this.payload);
+  SetCoverPicture(this.payload);
 }
