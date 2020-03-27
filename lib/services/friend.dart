@@ -12,8 +12,15 @@ class FriendService {
 
       if (friendsSnapshot.value == null) return null;
 
-      return friendsSnapshot.value.map(
-          (friendKey, friend) => MapEntry(friendKey, Friend.fromJSON(friend)));
+      final Map<String, Friend> friends = Map();
+
+      friendsSnapshot.value.forEach(
+        (friendKey, friend) => {
+          friends.putIfAbsent(friendKey, () => Friend.fromJSON(friend)),
+        },
+      );
+
+      return friends;
     } catch (err) {
       print(err);
 

@@ -16,6 +16,8 @@ class FriendState {
   FriendState({@required this.friends});
 
   FriendState copyWith({Map<String, Friend> friends}) {
+    if (this.friends == null) this.friends = Map();
+
     final newFriends = this.friends.map(
           (friendKey, post) => MapEntry(friendKey, post),
         );
