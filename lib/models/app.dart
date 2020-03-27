@@ -1,5 +1,6 @@
 import 'package:blazehub/data/user.dart';
 import 'package:blazehub/models/auth.dart';
+import 'package:blazehub/models/friend.dart';
 import 'package:blazehub/models/posts.dart';
 import 'package:blazehub/models/profile.dart';
 import 'package:flutter/foundation.dart';
@@ -8,11 +9,13 @@ class AppState {
   final AuthState authState;
   final PostState postsState;
   final ProfileState profileState;
+  final FriendState friendState;
 
   AppState({
     @required this.authState,
     @required this.postsState,
     @required this.profileState,
+    @required this.friendState,
   });
 
   AppState.initialState()
@@ -30,5 +33,8 @@ class AppState {
           profilePicture: null,
           coverPicture: null,
           profileInfo: null,
+        ),
+        friendState = FriendState(
+          friends: null,
         );
 }

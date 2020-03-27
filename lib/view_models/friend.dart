@@ -3,7 +3,6 @@ import 'package:blazehub/services/friend.dart';
 import 'package:redux/redux.dart';
 
 import 'package:blazehub/models/app.dart';
-import 'package:blazehub/models/friend.dart';
 
 class FriendViewModel {
   final Store<AppState> _store;

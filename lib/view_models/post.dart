@@ -4,6 +4,7 @@ import 'package:blazehub/actions/posts.dart';
 import 'package:blazehub/models/auth.dart';
 import 'package:blazehub/models/posts.dart';
 import 'package:blazehub/services/posts.dart';
+import 'package:blazehub/view_models/friend.dart';
 import 'package:redux/redux.dart';
 
 import 'package:blazehub/models/app.dart';
@@ -15,13 +16,13 @@ var postListener;
 bool listeningForComments = false;
 var commentListener;
 
-class PostViewModel {
+class PostViewModel extends FriendViewModel {
   final Store<AppState> _store;
   final AuthState authState;
 
   Stream postCommentsStream;
 
-  PostViewModel(this._store, this.authState);
+  PostViewModel(this._store, this.authState) : super(_store);
 
   void listenForNewPosts() {
     // TODO: dispose this stream
