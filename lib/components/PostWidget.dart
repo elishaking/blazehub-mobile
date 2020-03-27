@@ -25,13 +25,24 @@ class PostWidget extends StatefulWidget {
 
 class _PostWidgetState extends State<PostWidget> {
   Uint8List _postImage;
+  Uint8List _postUserImage;
 
   @override
   void initState() {
     widget.model.getPostImage(widget.post.id).then((image) {
+      // TODO: reduce number of calls by adding this to redux - saves data
       if (image != null) {
         setState(() {
           _postImage = Uri.parse(image).data.contentAsBytes();
+        });
+      }
+    });
+
+    widget.model.getPostUserImage(widget.post.user.id).then((image) {
+      // TODO: reduce number of calls by adding this to redux - saves data
+      if (image != null) {
+        setState(() {
+          _postUserImage = image;
         });
       }
     });
@@ -105,7 +116,11 @@ class _PostWidgetState extends State<PostWidget> {
 
   ListTile _buildPostHeader() {
     return ListTile(
-      leading: Icon(Icons.person),
+      leading: _postUserImage == null
+          ? Icon(Icons.person)
+          : CircleAvatar(
+              backgroundImage: MemoryImage(_postUserImage),
+            ),
       title: Text(
         '${widget.post.user.firstName} ${widget.post.user.lastName}',
         style: TextStyle(
