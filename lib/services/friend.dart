@@ -21,3 +21,5 @@ class FriendService {
     }
   }
 }
+
+final friendService = FriendService();
