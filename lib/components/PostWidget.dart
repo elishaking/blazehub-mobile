@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:blazehub/view_models/post.dart';
 import 'package:flutter/material.dart';
 
 import 'package:blazehub/containers/comments.dart';
@@ -7,7 +8,6 @@ import 'package:blazehub/containers/image_view.dart';
 import 'package:blazehub/models/posts.dart';
 import 'package:blazehub/utils/date.dart';
 import 'package:blazehub/values/colors.dart';
-import 'package:blazehub/view_models/home.dart';
 
 class PostWidget extends StatefulWidget {
   const PostWidget(
@@ -17,7 +17,7 @@ class PostWidget extends StatefulWidget {
   }) : super(key: key);
 
   final Post post;
-  final HomeViewModel model;
+  final PostViewModel model;
 
   @override
   _PostWidgetState createState() => _PostWidgetState();

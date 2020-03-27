@@ -175,7 +175,12 @@ class Profile extends StatelessWidget {
                         ),
                       )
                     : Container(),
-                // ..._buildPosts(model),
+
+                SizedBox(
+                  height: 30,
+                ),
+                // Text("Posts")
+                ..._buildPosts(model),
               ],
             ),
             bottomNavigationBar: Hero(
@@ -186,18 +191,18 @@ class Profile extends StatelessWidget {
         });
   }
 
-  // List<PostWidget> _buildPosts(ProfileViewModel model) {
-  //   final posts = model.postsState.posts;
+  List<PostWidget> _buildPosts(ProfileViewModel model) {
+    final posts = model.postsState.posts;
 
-  //   if (posts == null) return [];
+    if (posts == null) return [];
 
-  //   final List<PostWidget> postsWidget = [];
+    final List<PostWidget> postsWidget = [];
 
-  //   posts.forEach((postKey, post) {
-  //     postsWidget.add(
-  //       PostWidget(post, model),
-  //     );
-  //   });
-  //   return postsWidget;
-  // }
+    posts.forEach((postKey, post) {
+      postsWidget.add(
+        PostWidget(post, model),
+      );
+    });
+    return postsWidget;
+  }
 }

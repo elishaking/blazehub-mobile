@@ -27,7 +27,7 @@ class HomeViewModel extends PostViewModel {
 
   HomeViewModel(Store<AppState> store, {this.authState, this.postsState})
       : _store = store,
-        super(store);
+        super(store, authState);
 
   factory HomeViewModel.create(Store<AppState> store) {
     return HomeViewModel(

@@ -1,4 +1,5 @@
 import 'package:blazehub/actions/posts.dart';
+import 'package:blazehub/models/auth.dart';
 import 'package:blazehub/models/posts.dart';
 import 'package:blazehub/services/posts.dart';
 import 'package:redux/redux.dart';
@@ -14,10 +15,11 @@ var commentListener;
 
 class PostViewModel {
   final Store<AppState> _store;
+  final AuthState authState;
 
   Stream postCommentsStream;
 
-  PostViewModel(this._store);
+  PostViewModel(this._store, this.authState);
 
   void listenForNewPosts() {
     // TODO: dispose this stream
