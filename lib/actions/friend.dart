@@ -1,5 +1,5 @@
 class SetFriends {
-  final Map<String, dynamic> payload;
+  final Map payload;
 
   SetFriends(this.payload);
 }

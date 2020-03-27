@@ -22,6 +22,7 @@ class Profile extends StatelessWidget {
           final hasProfile = model.profileState.profileInfo != null;
           final hasSmallProfilePicture =
               model.authState.smallProfilePicture != null;
+          final hasFriends = model.friendState.friends != null;
 
           if (!hasProfilePicture) {
             model.getProfilePicture(model.authState.user.id);
@@ -31,6 +32,9 @@ class Profile extends StatelessWidget {
           }
           if (!hasProfile) {
             model.getProfileInfo(model.authState.user.id);
+          }
+          if (!hasFriends) {
+            model.getFriends(model.authState.user.id);
           }
 
           return Scaffold(
@@ -179,6 +183,18 @@ class Profile extends StatelessWidget {
                 SizedBox(
                   height: 30,
                 ),
+                hasFriends
+                    ? Container(
+                        child: Column(
+                          children: <Widget>[
+                            ..._buildFriends(model),
+                            SizedBox(
+                              height: 30,
+                            ),
+                          ],
+                        ),
+                      )
+                    : Container(),
                 // Text("Posts")
                 ..._buildPosts(model),
               ],
@@ -204,5 +220,23 @@ class Profile extends StatelessWidget {
       );
     });
     return postsWidget;
+  }
+
+  List<ListTile> _buildFriends(ProfileViewModel model) {
+    final friends = model.friendState.friends;
+
+    if (friends == null) return [];
+
+    final List<ListTile> friendsWidget = [];
+
+    friends.forEach((friendKey, friend) {
+      friendsWidget.add(
+        ListTile(
+          leading: Icon(Icons.person),
+          title: Text(model.friendState.friends[friendKey].name),
+        ),
+      );
+    });
+    return friendsWidget;
   }
 }
