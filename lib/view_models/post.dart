@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:blazehub/actions/posts.dart';
 import 'package:blazehub/models/auth.dart';
 import 'package:blazehub/models/posts.dart';
@@ -93,5 +95,9 @@ class PostViewModel {
 
   Future<String> getPostImage(String postID) async {
     return await postsService.getPostImage(postID);
+  }
+
+  Future<Uint8List> getPostUserImage(String postUserID) {
+    return postsService.getPostUserImage(postUserID);
   }
 }

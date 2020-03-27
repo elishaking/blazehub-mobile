@@ -55,6 +55,7 @@ class PostsService {
       return postImageSnapshot.value;
     } catch (err) {
       print(err);
+
       return null;
     }
   }
