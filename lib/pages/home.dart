@@ -35,6 +35,9 @@ class Home extends StatelessWidget {
         final hasSmallProfilePicture =
             model.authState.smallProfilePicture != null;
 
+        if (!hasSmallProfilePicture)
+          model.getSmallProfilePicture(model.authState.user.id);
+
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,

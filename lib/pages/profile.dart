@@ -37,6 +37,7 @@ class Profile extends StatelessWidget {
               leading: hasSmallProfilePicture
                   ? SmallProfilePicture(model.authState.smallProfilePicture)
                   : Icon(Icons.person),
+              centerTitle: true,
               title: Text(model.authState.user.firstName),
             ),
             body: ListView(
