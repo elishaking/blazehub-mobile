@@ -183,18 +183,7 @@ class Profile extends StatelessWidget {
                 SizedBox(
                   height: 30,
                 ),
-                hasFriends
-                    ? Container(
-                        child: Column(
-                          children: <Widget>[
-                            ..._buildFriends(model),
-                            SizedBox(
-                              height: 30,
-                            ),
-                          ],
-                        ),
-                      )
-                    : Container(),
+                _buildFriends(model, hasFriends),
                 // Text("Posts")
                 ..._buildPosts(model),
               ],
@@ -222,21 +211,52 @@ class Profile extends StatelessWidget {
     return postsWidget;
   }
 
-  List<ListTile> _buildFriends(ProfileViewModel model) {
-    final friends = model.friendState.friends;
+  Container _buildFriends(ProfileViewModel model, bool hasFriends) {
+    // final friends = model.friendState.friends;
 
-    if (friends == null) return [];
+    // if (friends == null) return [];
 
-    final List<ListTile> friendsWidget = [];
+    // final List<ListTile> friendsWidget = [];
 
-    friends.forEach((friendKey, friend) {
-      friendsWidget.add(
-        ListTile(
-          leading: Icon(Icons.person),
-          title: Text(model.friendState.friends[friendKey].name),
-        ),
-      );
-    });
-    return friendsWidget;
+    // friends.forEach((friendKey, friend) {
+    //   friendsWidget.add(
+    //     ListTile(
+    //       leading: Icon(Icons.person),
+    //       title: Text(model.friendState.friends[friendKey].name),
+    //     ),
+    //   );
+    // });
+    // return friendsWidget;
+
+    if (!hasFriends) return Container();
+
+    final friendKeys = model.friendState.friends.keys.toList();
+
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      margin: EdgeInsets.only(bottom: 20),
+      decoration: BoxDecoration(
+        border: Border.all(color: AppColors.light),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: ListView.separated(
+        shrinkWrap: true,
+        primary: false,
+        separatorBuilder: (context, index) {
+          return Divider(
+            color: AppColors.light,
+          );
+        },
+        itemCount: model.friendState.friends.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            leading: Icon(Icons.person),
+            title: Text(
+              model.friendState.friends[friendKeys[index]].name,
+            ),
+          );
+        },
+      ),
+    );
   }
 }
