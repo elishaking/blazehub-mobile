@@ -1,4 +1,5 @@
 import 'package:blazehub/actions/profile.dart';
+import 'package:blazehub/models/posts.dart';
 import 'package:blazehub/models/profile.dart';
 import 'package:blazehub/services/profile.dart';
 import 'package:redux/redux.dart';
@@ -9,15 +10,22 @@ import 'package:blazehub/models/auth.dart';
 class ProfileViewModel {
   final AuthState authState;
   final ProfileState profileState;
+  final PostState postsState;
   final Store<AppState> _store;
 
-  ProfileViewModel(store, {this.authState, this.profileState}) : _store = store;
+  ProfileViewModel(
+    store, {
+    this.authState,
+    this.profileState,
+    this.postsState,
+  }) : _store = store;
 
   factory ProfileViewModel.create(Store<AppState> store) {
     return ProfileViewModel(
       store,
       authState: store.state.authState,
       profileState: store.state.profileState,
+      postsState: store.state.postsState,
     );
   }
 

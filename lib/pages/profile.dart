@@ -1,3 +1,4 @@
+import 'package:blazehub/components/PostWidget.dart';
 import 'package:blazehub/components/SmallProfilePicture.dart';
 import 'package:blazehub/containers/edit_profile.dart';
 import 'package:blazehub/values/colors.dart';
@@ -174,6 +175,7 @@ class Profile extends StatelessWidget {
                         ),
                       )
                     : Container(),
+                // ..._buildPosts(model),
               ],
             ),
             bottomNavigationBar: Hero(
@@ -183,4 +185,19 @@ class Profile extends StatelessWidget {
           );
         });
   }
+
+  // List<PostWidget> _buildPosts(ProfileViewModel model) {
+  //   final posts = model.postsState.posts;
+
+  //   if (posts == null) return [];
+
+  //   final List<PostWidget> postsWidget = [];
+
+  //   posts.forEach((postKey, post) {
+  //     postsWidget.add(
+  //       PostWidget(post, model),
+  //     );
+  //   });
+  //   return postsWidget;
+  // }
 }
