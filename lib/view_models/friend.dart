@@ -24,4 +24,21 @@ class FriendViewModel {
   Future<Map<String, AuthUser>> findUsersWithName(String nameQuery) {
     return friendService.findUsersWithName(nameQuery);
   }
+
+  Future<bool> addFriend(
+    String userID,
+    String friendUserID,
+    FriendData friendData,
+  ) async {
+    final isSuccessful =
+        await friendService.addFriend(userID, friendUserID, friendData);
+
+    if (!isSuccessful) return false;
+
+    final newFriend = {
+      friendUserID: Friend(name: friendData.name),
+    };
+    _store.dispatch(SetFriends(newFriend));
+    return true;
+  }
 }
