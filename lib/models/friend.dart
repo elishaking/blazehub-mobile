@@ -2,11 +2,25 @@ import 'package:flutter/foundation.dart';
 
 class Friend {
   final String name;
+  final String username;
 
-  Friend({@required this.name});
+  Friend({
+    @required this.name,
+    @required this.username,
+  });
 
   factory Friend.fromJSON(Map json) {
-    return Friend(name: json['name']);
+    return Friend(
+      name: json['name'],
+      username: json['username'],
+    );
+  }
+
+  Map toJSON() {
+    return {
+      'name': name,
+      'username': username,
+    };
   }
 }
 
@@ -28,19 +42,19 @@ class FriendState {
   }
 }
 
-class FriendData {
-  final String name;
-  final String username;
+// class FriendData {
+//   final String name;
+//   final String username;
 
-  FriendData({
-    @required this.name,
-    @required this.username,
-  });
+//   FriendData({
+//     @required this.name,
+//     @required this.username,
+//   });
 
-  Map toJSON() {
-    return {
-      'name': name,
-      'username': username,
-    };
-  }
-}
+//   Map toJSON() {
+//     return {
+//       'name': name,
+//       'username': username,
+//     };
+//   }
+// }

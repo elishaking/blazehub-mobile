@@ -28,15 +28,18 @@ class FriendViewModel {
   Future<bool> addFriend(
     String userID,
     String friendUserID,
-    FriendData friendData,
+    Friend friend,
   ) async {
     final isSuccessful =
-        await friendService.addFriend(userID, friendUserID, friendData);
+        await friendService.addFriend(userID, friendUserID, friend);
 
     if (!isSuccessful) return false;
 
     final newFriend = {
-      friendUserID: Friend(name: friendData.name),
+      friendUserID: Friend(
+        name: friend.name,
+        username: friend.username,
+      ),
     };
     _store.dispatch(SetFriends(newFriend));
     return true;

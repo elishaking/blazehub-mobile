@@ -55,14 +55,14 @@ class FriendService {
   Future<bool> addFriend(
     String userID,
     String friendUserID,
-    FriendData friendData,
+    Friend friend,
   ) async {
     try {
       _dbRef
           .child('friends')
           .child(userID)
           .child(friendUserID)
-          .set(friendData.toJSON());
+          .set(friend.toJSON());
 
       return true;
     } catch (err) {
