@@ -2,6 +2,7 @@ import 'package:blazehub/components/FriendWidget.dart';
 import 'package:blazehub/components/PostWidget.dart';
 import 'package:blazehub/components/SmallProfilePicture.dart';
 import 'package:blazehub/containers/edit_profile.dart';
+import 'package:blazehub/pages/add_friend.dart';
 import 'package:blazehub/values/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -274,9 +275,9 @@ class Profile extends StatelessWidget {
           ),
           RaisedButton(
             onPressed: () {
-              // Navigator.of(context).push(MaterialPageRoute(
-              //   builder: (context) => AddFriends(model),
-              // ));
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => AddFriend(),
+              ));
             },
             child: Row(
               mainAxisSize: MainAxisSize.min,
