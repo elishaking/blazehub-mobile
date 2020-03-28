@@ -37,7 +37,7 @@ class _AddFriendState extends State<AddFriend> {
                 filled: true,
                 fillColor: AppColors.light,
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(100),
+                  borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide(
                     width: 0,
                     style: BorderStyle.none,
@@ -62,8 +62,14 @@ class _AddFriendState extends State<AddFriend> {
               shrinkWrap: true,
               primary: false,
               itemBuilder: (context, index) {
+                final user = users[userKeys[index]];
+
                 return ListTile(
-                  title: Text(users[userKeys[index]].firstName),
+                  title: Text('${user.firstName} ${user.lastName}'),
+                  trailing: OutlineButton(
+                    onPressed: () {},
+                    child: Text('Add'),
+                  ),
                 );
               },
               separatorBuilder: (context, index) {
