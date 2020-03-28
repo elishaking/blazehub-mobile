@@ -1,3 +1,4 @@
+import 'package:blazehub/components/FriendWidget.dart';
 import 'package:blazehub/components/PostWidget.dart';
 import 'package:blazehub/components/SmallProfilePicture.dart';
 import 'package:blazehub/containers/edit_profile.dart';
@@ -221,23 +222,10 @@ class Profile extends StatelessWidget {
   }
 
   Container _buildFriends(
-      BuildContext context, ProfileViewModel model, bool hasFriends) {
-    // final friends = model.friendState.friends;
-
-    // if (friends == null) return [];
-
-    // final List<ListTile> friendsWidget = [];
-
-    // friends.forEach((friendKey, friend) {
-    //   friendsWidget.add(
-    //     ListTile(
-    //       leading: Icon(Icons.person),
-    //       title: Text(model.friendState.friends[friendKey].name),
-    //     ),
-    //   );
-    // });
-    // return friendsWidget;
-
+    BuildContext context,
+    ProfileViewModel model,
+    bool hasFriends,
+  ) {
     if (!hasFriends) return Container();
 
     final friendKeys = model.friendState.friends.keys.toList();
@@ -276,13 +264,7 @@ class Profile extends StatelessWidget {
             },
             itemCount: model.friendState.friends.length,
             itemBuilder: (context, index) {
-              return ListTile(
-                onTap: () {},
-                leading: Icon(Icons.person),
-                title: Text(
-                  model.friendState.friends[friendKeys[index]].name,
-                ),
-              );
+              return FriendWidget(model, friendKeys[index]);
             },
           ),
           Container(
