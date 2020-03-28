@@ -38,8 +38,6 @@ class FriendService {
           .endAt(nameQuery + "\uf8ff")
           .once();
 
-      if (usersSnapshot.value == null) return null;
-
       final Map<String, AuthUser> users = Map();
 
       usersSnapshot.value.forEach((userKey, user) {
@@ -50,7 +48,7 @@ class FriendService {
     } catch (err) {
       print(err);
 
-      return null;
+      return Map();
     }
   }
 }
