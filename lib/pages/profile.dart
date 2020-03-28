@@ -239,23 +239,28 @@ class Profile extends StatelessWidget {
         border: Border.all(color: AppColors.light),
         borderRadius: BorderRadius.circular(10),
       ),
-      child: ListView.separated(
-        shrinkWrap: true,
-        primary: false,
-        separatorBuilder: (context, index) {
-          return Divider(
-            color: AppColors.light,
-          );
-        },
-        itemCount: model.friendState.friends.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            leading: Icon(Icons.person),
-            title: Text(
-              model.friendState.friends[friendKeys[index]].name,
-            ),
-          );
-        },
+      child: Column(
+        children: <Widget>[
+          ListView.separated(
+            shrinkWrap: true,
+            primary: false,
+            separatorBuilder: (context, index) {
+              return Divider(
+                color: AppColors.light,
+              );
+            },
+            itemCount: model.friendState.friends.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                onTap: () {},
+                leading: Icon(Icons.person),
+                title: Text(
+                  model.friendState.friends[friendKeys[index]].name,
+                ),
+              );
+            },
+          ),
+        ],
       ),
     );
   }
