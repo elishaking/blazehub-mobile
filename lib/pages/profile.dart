@@ -173,7 +173,16 @@ class Profile extends StatelessWidget {
                                   fullscreenDialog: true,
                                 ));
                               },
-                              child: Text('Edit Profile'),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Icon(Icons.edit),
+                                  SizedBox(
+                                    width: 16,
+                                  ),
+                                  Text('Edit Profile'),
+                                ],
+                              ),
                             )
                           ],
                         ),
@@ -275,6 +284,28 @@ class Profile extends StatelessWidget {
                 ),
               );
             },
+          ),
+          Container(
+            height: 1,
+            color: AppColors.light,
+            margin: EdgeInsets.only(bottom: 10),
+          ),
+          RaisedButton(
+            onPressed: () {
+              // Navigator.of(context).push(MaterialPageRoute(
+              //   builder: (context) => AddFriends(model),
+              // ));
+            },
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Icon(Icons.person_add),
+                SizedBox(
+                  width: 16,
+                ),
+                Text('Add Friend'),
+              ],
+            ),
           ),
         ],
       ),

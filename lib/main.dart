@@ -32,6 +32,7 @@ class MyApp extends StatelessWidget {
           ),
           buttonTheme: ButtonThemeData(
             buttonColor: Color(0xff7c62a9),
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
