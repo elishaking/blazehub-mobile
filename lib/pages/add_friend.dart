@@ -1,3 +1,4 @@
+import 'package:blazehub/components/BorderContainer.dart';
 import 'package:blazehub/models/auth.dart';
 import 'package:blazehub/values/colors.dart';
 import 'package:blazehub/view_models/friend.dart';
@@ -53,18 +54,23 @@ class _AddFriendState extends State<AddFriend> {
               },
             ),
           ),
-          ListView.separated(
-            shrinkWrap: true,
-            primary: false,
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(users[userKeys[index]].firstName),
-              );
-            },
-            separatorBuilder: (context, index) {
-              return Divider();
-            },
-            itemCount: users.length,
+          SizedBox(
+            height: 20,
+          ),
+          BorderContainer(
+            child: ListView.separated(
+              shrinkWrap: true,
+              primary: false,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(users[userKeys[index]].firstName),
+                );
+              },
+              separatorBuilder: (context, index) {
+                return Divider();
+              },
+              itemCount: users.length,
+            ),
           )
         ],
       ),
