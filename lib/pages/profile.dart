@@ -183,7 +183,7 @@ class Profile extends StatelessWidget {
                 SizedBox(
                   height: 30,
                 ),
-                _buildFriends(model, hasFriends),
+                _buildFriends(context, model, hasFriends),
                 // Text("Posts")
                 ..._buildPosts(model),
               ],
@@ -211,7 +211,8 @@ class Profile extends StatelessWidget {
     return postsWidget;
   }
 
-  Container _buildFriends(ProfileViewModel model, bool hasFriends) {
+  Container _buildFriends(
+      BuildContext context, ProfileViewModel model, bool hasFriends) {
     // final friends = model.friendState.friends;
 
     // if (friends == null) return [];
@@ -241,6 +242,21 @@ class Profile extends StatelessWidget {
       ),
       child: Column(
         children: <Widget>[
+          ListTile(
+            leading: Icon(
+              Icons.people,
+              color: Colors.black,
+            ),
+            title: Text(
+              "Friends",
+              style: Theme.of(context).textTheme.title,
+            ),
+          ),
+          Container(
+            height: 1,
+            color: AppColors.light,
+            margin: EdgeInsets.only(bottom: 10),
+          ),
           ListView.separated(
             shrinkWrap: true,
             primary: false,
