@@ -1,4 +1,5 @@
 import 'package:blazehub/actions/friend.dart';
+import 'package:blazehub/models/auth.dart';
 import 'package:blazehub/models/friend.dart';
 import 'package:blazehub/services/friend.dart';
 import 'package:redux/redux.dart';
@@ -18,5 +19,9 @@ class FriendViewModel {
 
     _store.dispatch(SetFriends(friends));
     return true;
+  }
+
+  Future<Map<String, AuthUser>> findUsersWithName(String nameQuery) async {
+    return friendService.findUsersWithName(nameQuery);
   }
 }

@@ -29,14 +29,24 @@ class FriendService {
     }
   }
 
-  Future<AuthUser> findUsersWithName(String nameQuery) async {
+  Future<Map<String, AuthUser>> findUsersWithName(String nameQuery) async {
     try {
-      final users = _dbRef
+      final usersSnapshot = await _dbRef
           .child('users')
           .orderByChild('firstName')
           .startAt(nameQuery)
+          .endAt(nameQuery + "\uf8ff")
           .once();
-      print(users);
+
+      if (usersSnapshot.value == null) return null;
+
+      final Map<String, AuthUser> users = Map();
+
+      usersSnapshot.value.forEach((userKey, user) {
+        users.putIfAbsent(userKey, () => AuthUser.fromJSON(user));
+      });
+
+      return users;
     } catch (err) {
       print(err);
 
