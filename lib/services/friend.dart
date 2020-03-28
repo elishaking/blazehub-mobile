@@ -51,6 +51,26 @@ class FriendService {
       return Map();
     }
   }
+
+  Future<bool> addFriend(
+    String userID,
+    String friendUserID,
+    FriendData friendData,
+  ) async {
+    try {
+      _dbRef
+          .child('friends')
+          .child(userID)
+          .child(friendUserID)
+          .set(friendData.toJSON());
+
+      return true;
+    } catch (err) {
+      print(err);
+
+      return false;
+    }
+  }
 }
 
 final friendService = FriendService();

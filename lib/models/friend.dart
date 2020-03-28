@@ -27,3 +27,20 @@ class FriendState {
     return FriendState(friends: newFriends);
   }
 }
+
+class FriendData {
+  final String name;
+  final String username;
+
+  FriendData({
+    @required this.name,
+    @required this.username,
+  });
+
+  Map toJSON() {
+    return {
+      'name': name,
+      'username': username,
+    };
+  }
+}
