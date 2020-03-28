@@ -9,8 +9,11 @@ import 'package:blazehub/models/app.dart';
 class FriendViewModel {
   final Store<AppState> _store;
   final FriendState friendState;
+  final AuthState authState;
 
-  FriendViewModel(this._store) : friendState = _store.state.friendState;
+  FriendViewModel(this._store)
+      : friendState = _store.state.friendState,
+        authState = _store.state.authState;
 
   Future<bool> getFriends(String userID) async {
     final friends = await friendService.getFriends(userID);
