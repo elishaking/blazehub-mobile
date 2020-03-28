@@ -1,7 +1,12 @@
 import 'package:blazehub/values/colors.dart';
+import 'package:blazehub/view_models/friend.dart';
 import 'package:flutter/material.dart';
 
 class AddFriend extends StatefulWidget {
+  final FriendViewModel model;
+
+  const AddFriend(this.model);
+
   @override
   _AddFriendState createState() => _AddFriendState();
 }

@@ -1,3 +1,4 @@
+import 'package:blazehub/models/auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 import 'package:blazehub/models/friend.dart';
@@ -21,6 +22,21 @@ class FriendService {
       );
 
       return friends;
+    } catch (err) {
+      print(err);
+
+      return null;
+    }
+  }
+
+  Future<AuthUser> findUsersWithName(String nameQuery) async {
+    try {
+      final users = _dbRef
+          .child('users')
+          .orderByChild('firstName')
+          .startAt(nameQuery)
+          .once();
+      print(users);
     } catch (err) {
       print(err);
 

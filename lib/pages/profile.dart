@@ -276,7 +276,7 @@ class Profile extends StatelessWidget {
           RaisedButton(
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => AddFriend(),
+                builder: (context) => AddFriend(model),
               ));
             },
             child: Row(
