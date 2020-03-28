@@ -1,6 +1,7 @@
 import 'package:blazehub/components/FriendWidget.dart';
 import 'package:blazehub/components/PostWidget.dart';
 import 'package:blazehub/components/SmallProfilePicture.dart';
+import 'package:blazehub/components/Spinner.dart';
 import 'package:blazehub/containers/edit_profile.dart';
 import 'package:blazehub/pages/add_friend.dart';
 import 'package:blazehub/values/colors.dart';
@@ -90,11 +91,7 @@ class Profile extends StatelessWidget {
                     : Container(
                         padding: EdgeInsets.symmetric(vertical: 10),
                         alignment: Alignment.center,
-                        child: CircularProgressIndicator(
-                          backgroundColor: AppColors.light,
-                          valueColor:
-                              AlwaysStoppedAnimation<Color>(AppColors.primary),
-                        ),
+                        child: Spinner(),
                       ),
                 SizedBox(
                   height: 10,

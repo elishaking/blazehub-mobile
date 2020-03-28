@@ -1,4 +1,5 @@
 import 'package:blazehub/components/BorderContainer.dart';
+import 'package:blazehub/components/Spinner.dart';
 import 'package:blazehub/models/auth.dart';
 import 'package:blazehub/models/friend.dart';
 import 'package:blazehub/values/colors.dart';
@@ -104,7 +105,7 @@ class _AddFriendWidgetState extends State<AddFriendWidget> {
   @override
   Widget build(BuildContext context) {
     return loading
-        ? CircularProgressIndicator()
+        ? Spinner()
         : isAdded
             ? OutlineButton(
                 child: Text('Add'),
