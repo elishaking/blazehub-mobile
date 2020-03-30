@@ -5,9 +5,23 @@ class Menu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Center(
-        child: Text("Menu"),
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text('Menu'),
+      ),
+      body: ListView(
+        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+        children: <Widget>[
+          ListTile(
+            leading: Icon(Icons.person_add),
+            title: Text("Add Friend"),
+            onTap: () {
+              // Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
+              // AddFriend(model)));
+            },
+          ),
+          Divider()
+        ],
       ),
       bottomNavigationBar: Hero(
         tag: 'bottomNav',
