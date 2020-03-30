@@ -48,7 +48,9 @@ class _AddFriendState extends State<AddFriend> {
               ),
               onChanged: (text) {
                 print(text);
-                widget.model.findUsersWithName(text).then((users) {
+                widget.model
+                    .findUsersWithName(text, widget.model.authState.user.id)
+                    .then((users) {
                   setState(() {
                     this.users = users;
                   });

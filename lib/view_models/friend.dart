@@ -24,8 +24,9 @@ class FriendViewModel {
     return true;
   }
 
-  Future<Map<String, AuthUser>> findUsersWithName(String nameQuery) {
-    return friendService.findUsersWithName(nameQuery);
+  Future<Map<String, AuthUser>> findUsersWithName(
+      String nameQuery, String userID) {
+    return friendService.findUsersWithName(nameQuery, userID);
   }
 
   Future<bool> addFriend(
