@@ -59,28 +59,37 @@ class _AddFriendState extends State<AddFriend> {
           SizedBox(
             height: 20,
           ),
-          BorderContainer(
-            child: ListView.separated(
-              shrinkWrap: true,
-              primary: false,
-              itemBuilder: (context, index) {
-                final user = users[userKeys[index]];
-
-                return ListTile(
-                  title: Text('${user.firstName} ${user.lastName}'),
-                  trailing: AddFriendWidget(
-                    widget.model,
-                    userKeys[index],
-                    user,
+          this.users.length == 0
+              ? Container(
+                  height: MediaQuery.of(context).size.height / 2,
+                  alignment: Alignment.center,
+                  child: Text(
+                    "Search for friends",
+                    style: TextStyle(color: Colors.grey),
                   ),
-                );
-              },
-              separatorBuilder: (context, index) {
-                return Divider();
-              },
-              itemCount: users.length,
-            ),
-          )
+                )
+              : BorderContainer(
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    primary: false,
+                    itemBuilder: (context, index) {
+                      final user = users[userKeys[index]];
+
+                      return ListTile(
+                        title: Text('${user.firstName} ${user.lastName}'),
+                        trailing: AddFriendWidget(
+                          widget.model,
+                          userKeys[index],
+                          user,
+                        ),
+                      );
+                    },
+                    separatorBuilder: (context, index) {
+                      return Divider();
+                    },
+                    itemCount: users.length,
+                  ),
+                )
         ],
       ),
     );
