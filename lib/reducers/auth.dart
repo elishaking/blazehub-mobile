@@ -18,6 +18,11 @@ AuthState authReducer(AuthState authState, action) {
         errors: (action as GetErrors).payload,
       );
 
+    case SetSmallProfilePicture:
+      return authState.copyWith(
+        smallProfilePicture: (action as SetSmallProfilePicture).payload,
+      );
+
     default:
       return authState;
   }

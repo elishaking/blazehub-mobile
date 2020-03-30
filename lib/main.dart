@@ -1,6 +1,7 @@
 import 'package:blazehub/models/app.dart';
 import 'package:blazehub/pages/home.dart';
 import 'package:blazehub/reducers/root.dart';
+import 'package:blazehub/values/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
@@ -32,10 +33,14 @@ class MyApp extends StatelessWidget {
           ),
           buttonTheme: ButtonThemeData(
             buttonColor: Color(0xff7c62a9),
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
             textTheme: ButtonTextTheme.primary,
+            colorScheme: Theme.of(context).colorScheme.copyWith(
+                  primary: AppColors.primary,
+                ),
           ),
         ),
         home: Home(),

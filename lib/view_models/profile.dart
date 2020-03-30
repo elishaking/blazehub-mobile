@@ -1,23 +1,33 @@
 import 'package:blazehub/actions/profile.dart';
+import 'package:blazehub/models/posts.dart';
 import 'package:blazehub/models/profile.dart';
 import 'package:blazehub/services/profile.dart';
+import 'package:blazehub/view_models/post.dart';
 import 'package:redux/redux.dart';
 
 import 'package:blazehub/models/app.dart';
 import 'package:blazehub/models/auth.dart';
 
-class ProfileViewModel {
+class ProfileViewModel extends PostViewModel {
   final AuthState authState;
   final ProfileState profileState;
+  final PostState postsState;
   final Store<AppState> _store;
 
-  ProfileViewModel(store, {this.authState, this.profileState}) : _store = store;
+  ProfileViewModel(
+    store, {
+    this.authState,
+    this.profileState,
+    this.postsState,
+  })  : _store = store,
+        super(store, authState);
 
   factory ProfileViewModel.create(Store<AppState> store) {
     return ProfileViewModel(
       store,
       authState: store.state.authState,
       profileState: store.state.profileState,
+      postsState: store.state.postsState,
     );
   }
 

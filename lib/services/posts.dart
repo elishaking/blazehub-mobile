@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:blazehub/models/posts.dart';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -53,6 +55,25 @@ class PostsService {
       return postImageSnapshot.value;
     } catch (err) {
       print(err);
+
+      return null;
+    }
+  }
+
+  Future<Uint8List> getPostUserImage(String postUserID) async {
+    try {
+      final postUserImageSnapshot = await _dbRef
+          .child('profile-photos')
+          .child(postUserID)
+          .child('avatar-small')
+          .once();
+
+      if (postUserImageSnapshot.value == null) return null;
+
+      return Uri.parse(postUserImageSnapshot.value).data.contentAsBytes();
+    } catch (err) {
+      print(err);
+
       return null;
     }
   }

@@ -1,4 +1,9 @@
+import 'package:blazehub/components/FriendWidget.dart';
+import 'package:blazehub/components/PostWidget.dart';
+import 'package:blazehub/components/SmallProfilePicture.dart';
+import 'package:blazehub/components/Spinner.dart';
 import 'package:blazehub/containers/edit_profile.dart';
+import 'package:blazehub/pages/add_friend.dart';
 import 'package:blazehub/values/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -18,6 +23,9 @@ class Profile extends StatelessWidget {
           final hasProfilePicture = model.profileState.profilePicture != null;
           final hasCoverPicture = model.profileState.coverPicture != null;
           final hasProfile = model.profileState.profileInfo != null;
+          final hasSmallProfilePicture =
+              model.authState.smallProfilePicture != null;
+          final hasFriends = model.friendState.friends != null;
 
           if (!hasProfilePicture) {
             model.getProfilePicture(model.authState.user.id);
@@ -28,10 +36,16 @@ class Profile extends StatelessWidget {
           if (!hasProfile) {
             model.getProfileInfo(model.authState.user.id);
           }
+          if (!hasFriends) {
+            model.getFriends(model.authState.user.id);
+          }
 
           return Scaffold(
             appBar: AppBar(
-              leading: Icon(Icons.person),
+              leading: hasSmallProfilePicture
+                  ? SmallProfilePicture(model.authState.smallProfilePicture)
+                  : Icon(Icons.person),
+              centerTitle: true,
               title: Text(model.authState.user.firstName),
             ),
             body: ListView(
@@ -77,11 +91,7 @@ class Profile extends StatelessWidget {
                     : Container(
                         padding: EdgeInsets.symmetric(vertical: 10),
                         alignment: Alignment.center,
-                        child: CircularProgressIndicator(
-                          backgroundColor: AppColors.light,
-                          valueColor:
-                              AlwaysStoppedAnimation<Color>(AppColors.primary),
-                        ),
+                        child: Spinner(),
                       ),
                 SizedBox(
                   height: 10,
@@ -162,12 +172,28 @@ class Profile extends StatelessWidget {
                                   fullscreenDialog: true,
                                 ));
                               },
-                              child: Text('Edit Profile'),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Icon(Icons.edit),
+                                  SizedBox(
+                                    width: 16,
+                                  ),
+                                  Text('Edit Profile'),
+                                ],
+                              ),
                             )
                           ],
                         ),
                       )
                     : Container(),
+
+                SizedBox(
+                  height: 30,
+                ),
+                _buildFriends(context, model, hasFriends),
+                // Text("Posts")
+                ..._buildPosts(model),
               ],
             ),
             bottomNavigationBar: Hero(
@@ -176,5 +202,93 @@ class Profile extends StatelessWidget {
             ),
           );
         });
+  }
+
+  List<PostWidget> _buildPosts(ProfileViewModel model) {
+    final posts = model.postsState.posts;
+
+    if (posts == null) return [];
+
+    final List<PostWidget> postsWidget = [];
+
+    posts.forEach((postKey, post) {
+      postsWidget.add(
+        PostWidget(post, model),
+      );
+    });
+    return postsWidget;
+  }
+
+  Container _buildFriends(
+    BuildContext context,
+    ProfileViewModel model,
+    bool hasFriends,
+  ) {
+    if (!hasFriends) return Container();
+
+    final friendKeys = model.friendState.friends.keys.toList();
+
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      margin: EdgeInsets.only(bottom: 20),
+      decoration: BoxDecoration(
+        border: Border.all(color: AppColors.light),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        children: <Widget>[
+          ListTile(
+            leading: Icon(
+              Icons.people,
+              color: Colors.black,
+            ),
+            title: Text(
+              "Friends",
+              style: Theme.of(context).textTheme.title,
+            ),
+          ),
+          Container(
+            height: 1,
+            color: AppColors.light,
+            margin: EdgeInsets.only(bottom: 10),
+          ),
+          ListView.separated(
+            shrinkWrap: true,
+            primary: false,
+            separatorBuilder: (context, index) {
+              return Divider(
+                color: AppColors.light,
+              );
+            },
+            itemCount: model.friendState.friends.length,
+            itemBuilder: (context, index) {
+              return FriendWidget(model, friendKeys[index]);
+            },
+          ),
+          Container(
+            height: 1,
+            color: AppColors.light,
+            margin: EdgeInsets.only(bottom: 10),
+          ),
+          RaisedButton(
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => AddFriend(model),
+              ));
+            },
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Icon(Icons.person_add),
+                SizedBox(
+                  width: 16,
+                ),
+                Text('Add Friend'),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

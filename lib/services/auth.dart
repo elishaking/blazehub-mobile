@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:blazehub/models/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -84,6 +86,24 @@ class _AuthService {
 
       return AuthUser.fromJSON(userData);
     });
+  }
+
+  Future<Uint8List> getSmallProfilePicture(userID) async {
+    try {
+      final smallProfilePictureSnapshot = await _dbRef
+          .child('profile-photos')
+          .child(userID)
+          .child('avatar-small')
+          .once();
+
+      if (smallProfilePictureSnapshot.value == null) return null;
+
+      return Uri.parse(smallProfilePictureSnapshot.value).data.contentAsBytes();
+    } catch (err) {
+      print(err);
+
+      return null;
+    }
   }
 
   String _getUserKey(String email) =>
