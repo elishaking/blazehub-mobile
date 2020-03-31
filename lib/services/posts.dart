@@ -18,6 +18,18 @@ class PostsService {
     }
   }
 
+  Future<bool> uploadPostImage(String imageDataURL, String postID) async {
+    try {
+      await _dbRef.child('post-images').child(postID).push().set(imageDataURL);
+
+      return true;
+    } catch (err) {
+      print(err);
+
+      return false;
+    }
+  }
+
   Stream<Event> newPostAdded() {
     return _dbRef.child('posts').onChildAdded;
   }
