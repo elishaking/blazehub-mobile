@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -217,6 +218,8 @@ class _CreatePostFormState extends State<CreatePostForm> {
                                       quality: 50,
                                     ).then((result) {
                                       // Uri.dataFromBytes(result).data.contentAsString();
+                                      final postImageDataURL =
+                                          Base64Encoder().convert(result);
                                     });
                                   }
 
