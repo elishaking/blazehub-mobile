@@ -161,7 +161,27 @@ class _CreatePostFormState extends State<CreatePostForm> {
                 SizedBox(
                   height: 10,
                 ),
-                _postImage == null ? Container() : Image.file(_postImage),
+                _postImage == null
+                    ? Container()
+                    : Stack(
+                        children: <Widget>[
+                          Image.file(_postImage),
+                          Positioned(
+                            top: 10,
+                            right: 10,
+                            child: FloatingActionButton(
+                              mini: true,
+                              backgroundColor: Colors.black45,
+                              child: Icon(Icons.close),
+                              onPressed: () {
+                                setState(() {
+                                  _postImage = null;
+                                });
+                              },
+                            ),
+                          )
+                        ],
+                      ),
                 SizedBox(
                   height: 10,
                 ),
