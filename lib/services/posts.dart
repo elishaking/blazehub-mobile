@@ -19,7 +19,7 @@ class PostsService {
   }
 
   Stream<Event> newPostAdded() {
-    return _dbRef.child('posts').onChildAdded;
+    return _dbRef.child('posts').orderByChild('date').onChildAdded;
   }
 
   Future<bool> toggleLike(String postID, String userID, bool liked) async {

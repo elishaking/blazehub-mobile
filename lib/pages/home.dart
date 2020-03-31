@@ -2,6 +2,7 @@ import 'package:blazehub/components/BottomNav.dart';
 import 'package:blazehub/components/PostWidget.dart';
 import 'package:blazehub/components/SmallProfilePicture.dart';
 import 'package:blazehub/components/Spinner.dart';
+import 'package:blazehub/models/posts.dart';
 import 'package:blazehub/pages/profile.dart';
 import 'package:blazehub/values/colors.dart';
 import 'package:flutter/material.dart';
@@ -53,7 +54,7 @@ class Home extends StatelessWidget {
           body: ListView(
             padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
             children: <Widget>[
-              CreatePostForm(formKey: _formKey, post: _post),
+              CreatePostForm(model),
               SizedBox(
                 height: 20,
               ),
@@ -88,22 +89,18 @@ class Home extends StatelessWidget {
 }
 
 class CreatePostForm extends StatefulWidget {
-  const CreatePostForm({
-    Key key,
-    @required GlobalKey<FormState> formKey,
-    @required _Post post,
-  })  : _formKey = formKey,
-        _post = post,
-        super(key: key);
+  final HomeViewModel model;
 
-  final GlobalKey<FormState> _formKey;
-  final _Post _post;
+  const CreatePostForm(this.model);
 
   @override
   _CreatePostFormState createState() => _CreatePostFormState();
 }
 
 class _CreatePostFormState extends State<CreatePostForm> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _postTextController = TextEditingController();
+  String _postText;
   bool _loading = false;
 
   @override
@@ -136,12 +133,13 @@ class _CreatePostFormState extends State<CreatePostForm> {
             ),
           ),
           Form(
-            key: widget._formKey,
+            key: _formKey,
             child: Column(
               children: <Widget>[
                 TextFormField(
                   minLines: 4,
                   maxLines: 7,
+                  controller: _postTextController,
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.subject),
                     hintText: "Share your thoughts",
@@ -150,7 +148,7 @@ class _CreatePostFormState extends State<CreatePostForm> {
                     border: InputBorder.none,
                   ),
                   onSaved: (String text) {
-                    widget._post.text = text;
+                    _postText = text;
                   },
                 ),
                 Padding(
@@ -161,10 +159,28 @@ class _CreatePostFormState extends State<CreatePostForm> {
                           ? Spinner()
                           : RaisedButton(
                               onPressed: () {
-                                if (widget._formKey.currentState.validate()) {
-                                  widget._formKey.currentState.save();
+                                if (_formKey.currentState.validate()) {
+                                  _formKey.currentState.save();
                                   setState(() {
                                     _loading = true;
+                                  });
+
+                                  final post = Post(
+                                    id: null,
+                                    text: _postText,
+                                    date: 1000000000000000 -
+                                        DateTime.now().millisecondsSinceEpoch,
+                                    imageUrl: false,
+                                    isBookmarked: false,
+                                    user: widget.model.authState.user,
+                                  );
+                                  widget.model
+                                      .createPost(post)
+                                      .then((isSuccessful) {
+                                    setState(() {
+                                      _postTextController.clear();
+                                      _loading = false;
+                                    });
                                   });
                                 }
                               },
