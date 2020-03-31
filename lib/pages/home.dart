@@ -1,8 +1,10 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:redux/redux.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 
 import 'package:blazehub/components/BottomNav.dart';
 import 'package:blazehub/components/PostWidget.dart';
@@ -208,6 +210,15 @@ class _CreatePostFormState extends State<CreatePostForm> {
                                   setState(() {
                                     _loading = true;
                                   });
+
+                                  if (_postImage != null) {
+                                    FlutterImageCompress.compressWithFile(
+                                      _postImage.path,
+                                      quality: 50,
+                                    ).then((result) {
+                                      // Uri.dataFromBytes(result).data.contentAsString();
+                                    });
+                                  }
 
                                   final post = Post(
                                     id: null,
