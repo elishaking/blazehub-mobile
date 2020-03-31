@@ -85,7 +85,31 @@ class Profile extends StatelessWidget {
                                 ),
                               ),
                             ),
-                          )
+                          ),
+                          Positioned(
+                            top: 10,
+                            right: 10,
+                            child: FloatingActionButton(
+                              onPressed: () {
+                                // TODO: edit cover photo
+                              },
+                              mini: true,
+                              child: Icon(Icons.edit),
+                              backgroundColor: Colors.black45,
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            left: deviceWidth / 2,
+                            child: FloatingActionButton(
+                              onPressed: () {
+                                // TODO: edit profile photo
+                              },
+                              mini: true,
+                              child: Icon(Icons.edit),
+                              backgroundColor: Colors.black54,
+                            ),
+                          ),
                         ],
                       )
                     : Container(
