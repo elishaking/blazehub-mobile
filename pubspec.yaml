@@ -34,6 +34,8 @@ dependencies:
 
   flutter_redux:
 
+  image_picker:
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -1,3 +1,9 @@
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:redux/redux.dart';
+
 import 'package:blazehub/components/BottomNav.dart';
 import 'package:blazehub/components/PostWidget.dart';
 import 'package:blazehub/components/SmallProfilePicture.dart';
@@ -5,9 +11,6 @@ import 'package:blazehub/components/Spinner.dart';
 import 'package:blazehub/models/posts.dart';
 import 'package:blazehub/pages/profile.dart';
 import 'package:blazehub/values/colors.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux/redux.dart';
 
 import 'package:blazehub/models/app.dart';
 import 'package:blazehub/view_models/home.dart';
@@ -101,6 +104,7 @@ class _CreatePostFormState extends State<CreatePostForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _postTextController = TextEditingController();
   String _postText;
+  File _postImage;
   bool _loading = false;
 
   @override
@@ -147,14 +151,34 @@ class _CreatePostFormState extends State<CreatePostForm> {
                         EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                     border: InputBorder.none,
                   ),
+                  validator: (text) {
+                    if (text.isEmpty) return '';
+                  },
                   onSaved: (String text) {
                     _postText = text;
                   },
                 ),
+                SizedBox(
+                  height: 10,
+                ),
+                _postImage == null ? Container() : Image.file(_postImage),
+                SizedBox(
+                  height: 10,
+                ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: ButtonBar(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: Row(
                     children: <Widget>[
+                      IconButton(
+                        icon: Icon(Icons.image),
+                        onPressed: () {
+                          _openImagePicker(context);
+                        },
+                      ),
+                      Expanded(
+                        child: Container(),
+                      ),
                       _loading
                           ? Spinner()
                           : RaisedButton(
@@ -194,6 +218,53 @@ class _CreatePostFormState extends State<CreatePostForm> {
           )
         ],
       ),
+    );
+  }
+
+  void _getImage(BuildContext context, ImageSource source) {
+    ImagePicker.pickImage(source: source, maxWidth: 400).then((File image) {
+      setState(() {
+        _postImage = image;
+      });
+
+      Navigator.pop(context);
+    });
+  }
+
+  void _openImagePicker(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: 230,
+          padding: EdgeInsets.symmetric(vertical: 10),
+          child: Column(
+            children: <Widget>[
+              Text('Add Image'),
+              SizedBox(
+                height: 10,
+              ),
+              ListTile(
+                leading: Icon(Icons.camera),
+                title: Text('Use Camera'),
+                onTap: () {
+                  _getImage(context, ImageSource.camera);
+                },
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              ListTile(
+                leading: Icon(Icons.picture_in_picture),
+                title: Text('Select from Gallery'),
+                onTap: () {
+                  _getImage(context, ImageSource.gallery);
+                },
+              )
+            ],
+          ),
+        );
+      },
     );
   }
 }
