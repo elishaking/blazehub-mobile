@@ -21,9 +21,9 @@ class PostsService {
     }
   }
 
-  Future<String> uploadPostImage(String imageDataURL, String postID) async {
+  Future<String> uploadPostImage(String imageDataURL) async {
     try {
-      final imageRef = _dbRef.child('post-images').child(postID).push();
+      final imageRef = _dbRef.child('post-images').push();
       await imageRef.set(imageDataURL);
 
       return imageRef.key;

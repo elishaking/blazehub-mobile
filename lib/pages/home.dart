@@ -205,35 +205,43 @@ class _CreatePostFormState extends State<CreatePostForm> {
                       _loading
                           ? Spinner()
                           : RaisedButton(
-                              onPressed: () {
+                              onPressed: () async {
                                 if (_formKey.currentState.validate()) {
                                   _formKey.currentState.save();
                                   setState(() {
                                     _loading = true;
                                   });
 
-                                  if (_postImage != null) {
-                                    FlutterImageCompress.compressWithFile(
-                                      _postImage.path,
-                                      quality: 50,
-                                    ).then((result) {
-                                      // Uri.dataFromBytes(result).data.contentAsString();
-                                      final postImageDataURL =
-                                          Base64Encoder().convert(result);
-                                    });
-                                  }
+                                  final hasImage = _postImage != null;
 
                                   final post = Post(
                                     id: null,
                                     text: _postText,
                                     date: 1000000000000000 -
                                         DateTime.now().millisecondsSinceEpoch,
-                                    imageUrl: false,
+                                    imageUrl: hasImage,
                                     isBookmarked: false,
                                     user: widget.model.authState.user,
                                   );
+
+                                  String postImageID;
+
+                                  if (hasImage) {
+                                    final result = await FlutterImageCompress
+                                        .compressWithFile(
+                                      _postImage.path,
+                                      quality: 50,
+                                    );
+
+                                    final postImageDataURL =
+                                        Base64Encoder().convert(result);
+
+                                    postImageID = await widget.model
+                                        .uploadPostImage(postImageDataURL);
+                                  }
+
                                   widget.model
-                                      .createPost(post)
+                                      .createPost(post, postID: postImageID)
                                       .then((isSuccessful) {
                                     setState(() {
                                       _postTextController.clear();
