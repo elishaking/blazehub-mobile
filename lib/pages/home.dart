@@ -234,7 +234,8 @@ class _CreatePostFormState extends State<CreatePostForm> {
                                     );
 
                                     final postImageDataURL =
-                                        Base64Encoder().convert(result);
+                                        'data:image/png;base64,' +
+                                            Base64Encoder().convert(result);
 
                                     postImageID = await widget.model
                                         .uploadPostImage(postImageDataURL);
@@ -245,6 +246,7 @@ class _CreatePostFormState extends State<CreatePostForm> {
                                       .then((isSuccessful) {
                                     setState(() {
                                       _postTextController.clear();
+                                      _postImage = null;
                                       _loading = false;
                                     });
                                   });
@@ -267,6 +269,7 @@ class _CreatePostFormState extends State<CreatePostForm> {
     ImagePicker.pickImage(source: source, maxWidth: 400).then((File image) {
       setState(() {
         _postImage = image;
+        // print(_postImage.path);
       });
 
       Navigator.pop(context);
