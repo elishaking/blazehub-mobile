@@ -52,42 +52,7 @@ class Profile extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
               children: <Widget>[
                 hasProfilePicture && hasCoverPicture
-                    ? Stack(
-                        children: <Widget>[
-                          Container(
-                            child: Column(
-                              children: <Widget>[
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: Image.memory(
-                                      model.profileState.coverPicture),
-                                ),
-                                SizedBox(
-                                  height: deviceWidth / 4,
-                                )
-                              ],
-                            ),
-                          ),
-                          Positioned(
-                            bottom: 0,
-                            left: deviceWidth / 5,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(1000),
-                              child: Container(
-                                width: deviceWidth / 2,
-                                height: deviceWidth / 2,
-                                padding: EdgeInsets.all(7),
-                                decoration: BoxDecoration(color: Colors.white),
-                                // alignment: Alignment.center,
-                                child: CircleAvatar(
-                                  backgroundImage: MemoryImage(
-                                      model.profileState.profilePicture),
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
-                      )
+                    ? ProfilePictures(model, deviceWidth)
                     : Container(
                         padding: EdgeInsets.symmetric(vertical: 10),
                         alignment: Alignment.center,
@@ -289,6 +254,81 @@ class Profile extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class ProfilePictures extends StatefulWidget {
+  final ProfileViewModel model;
+  final double deviceWidth;
+
+  const ProfilePictures(this.model, this.deviceWidth);
+
+  @override
+  _ProfilePicturesState createState() => _ProfilePicturesState();
+}
+
+class _ProfilePicturesState extends State<ProfilePictures> {
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        Container(
+          child: Column(
+            children: <Widget>[
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.memory(widget.model.profileState.coverPicture),
+              ),
+              SizedBox(
+                height: widget.deviceWidth / 4,
+              )
+            ],
+          ),
+        ),
+        Positioned(
+          bottom: 0,
+          left: widget.deviceWidth / 5,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(1000),
+            child: Container(
+              width: widget.deviceWidth / 2,
+              height: widget.deviceWidth / 2,
+              padding: EdgeInsets.all(7),
+              decoration: BoxDecoration(color: Colors.white),
+              // alignment: Alignment.center,
+              child: CircleAvatar(
+                backgroundImage:
+                    MemoryImage(widget.model.profileState.profilePicture),
+              ),
+            ),
+          ),
+        ),
+        Positioned(
+          top: 10,
+          right: 10,
+          child: FloatingActionButton(
+            onPressed: () {
+              // TODO: edit cover photo
+            },
+            mini: true,
+            child: Icon(Icons.edit),
+            backgroundColor: Colors.black45,
+          ),
+        ),
+        Positioned(
+          bottom: 0,
+          left: widget.deviceWidth / 2,
+          child: FloatingActionButton(
+            onPressed: () {
+              // TODO: edit profile photo
+            },
+            mini: true,
+            child: Icon(Icons.edit),
+            backgroundColor: Colors.black54,
+          ),
+        ),
+      ],
     );
   }
 }

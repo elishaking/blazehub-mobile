@@ -6,15 +6,31 @@ import 'package:firebase_database/firebase_database.dart';
 class PostsService {
   final _dbRef = FirebaseDatabase.instance.reference();
 
-  Future<bool> createPost(Post post) async {
+  Future<bool> createPost(Post post, {String postID}) async {
     try {
-      await _dbRef.child('posts').push().set(post.toJSON());
+      final postRef = postID == null
+          ? _dbRef.child('posts').push()
+          : _dbRef.child('posts').child(postID);
+      await postRef.set(post.toJSON());
 
       return true;
     } catch (err) {
       print(err);
 
       return false;
+    }
+  }
+
+  Future<String> uploadPostImage(String imageDataURL) async {
+    try {
+      final imageRef = _dbRef.child('post-images').push();
+      await imageRef.set(imageDataURL);
+
+      return imageRef.key;
+    } catch (err) {
+      print(err);
+
+      return null;
     }
   }
 

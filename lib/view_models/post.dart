@@ -24,6 +24,14 @@ class PostViewModel extends FriendViewModel {
 
   PostViewModel(this._store, this.authState) : super(_store);
 
+  Future<bool> createPost(Post post, {String postID}) {
+    return postsService.createPost(post, postID: postID);
+  }
+
+  Future<String> uploadPostImage(String imageDataURL) {
+    return postsService.uploadPostImage(imageDataURL);
+  }
+
   void listenForNewPosts() {
     // TODO: dispose this stream
     if (listeningForNewPosts) return;
