@@ -1,6 +1,7 @@
 import 'package:blazehub/components/BottomNav.dart';
 import 'package:blazehub/components/PostWidget.dart';
 import 'package:blazehub/components/SmallProfilePicture.dart';
+import 'package:blazehub/components/Spinner.dart';
 import 'package:blazehub/pages/profile.dart';
 import 'package:blazehub/values/colors.dart';
 import 'package:flutter/material.dart';
@@ -86,7 +87,7 @@ class Home extends StatelessWidget {
   }
 }
 
-class CreatePostForm extends StatelessWidget {
+class CreatePostForm extends StatefulWidget {
   const CreatePostForm({
     Key key,
     @required GlobalKey<FormState> formKey,
@@ -97,6 +98,13 @@ class CreatePostForm extends StatelessWidget {
 
   final GlobalKey<FormState> _formKey;
   final _Post _post;
+
+  @override
+  _CreatePostFormState createState() => _CreatePostFormState();
+}
+
+class _CreatePostFormState extends State<CreatePostForm> {
+  bool _loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -128,7 +136,7 @@ class CreatePostForm extends StatelessWidget {
             ),
           ),
           Form(
-            key: _formKey,
+            key: widget._formKey,
             child: Column(
               children: <Widget>[
                 TextFormField(
@@ -142,21 +150,26 @@ class CreatePostForm extends StatelessWidget {
                     border: InputBorder.none,
                   ),
                   onSaved: (String text) {
-                    _post.text = text;
+                    widget._post.text = text;
                   },
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: ButtonBar(
                     children: <Widget>[
-                      RaisedButton(
-                        onPressed: () {
-                          if (_formKey.currentState.validate()) {
-                            _formKey.currentState.save();
-                          }
-                        },
-                        child: Text('Post'),
-                      )
+                      _loading
+                          ? Spinner()
+                          : RaisedButton(
+                              onPressed: () {
+                                if (widget._formKey.currentState.validate()) {
+                                  widget._formKey.currentState.save();
+                                  setState(() {
+                                    _loading = true;
+                                  });
+                                }
+                              },
+                              child: Text('Post'),
+                            )
                     ],
                   ),
                 ),
