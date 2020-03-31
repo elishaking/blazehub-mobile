@@ -57,11 +57,14 @@ class PostState {
   PostState({@required this.posts});
 
   PostState copyWith({Map<String, Post> posts}) {
-    final newPosts = this.posts.map(
-          (postKey, post) => MapEntry(postKey, post),
-        );
+    final newPosts = Map<String, Post>();
 
     if (posts != null) newPosts.addEntries(posts.entries);
+
+    // this.posts.map(
+    //       (postKey, post) => MapEntry(postKey, post),
+    //     );
+    newPosts.addEntries(this.posts.entries);
 
     return PostState(posts: newPosts);
   }
