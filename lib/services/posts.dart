@@ -6,6 +6,18 @@ import 'package:firebase_database/firebase_database.dart';
 class PostsService {
   final _dbRef = FirebaseDatabase.instance.reference();
 
+  Future<bool> createPost(Post post) async {
+    try {
+      await _dbRef.child('posts').push().set(post.toJSON());
+
+      return true;
+    } catch (err) {
+      print(err);
+
+      return false;
+    }
+  }
+
   Stream<Event> newPostAdded() {
     return _dbRef.child('posts').onChildAdded;
   }

@@ -37,6 +37,18 @@ class Post {
           : Comment.fromMap(json['comments']),
     );
   }
+
+  Map toJSON() {
+    return {
+      'text': text,
+      'date': date,
+      'imageUrl': imageUrl,
+      'isBookmarked': isBookmarked,
+      'user': user.toJSON(),
+      'likes': likes,
+      'comments': comments,
+    };
+  }
 }
 
 class PostState {
