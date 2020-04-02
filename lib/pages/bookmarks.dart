@@ -12,7 +12,13 @@ class Bookmarks extends StatelessWidget {
       converter: (Store<AppState> store) => PostViewModel(store),
       builder: (context, model) {
         return Scaffold(
-          appBar: AppBar(),
+          appBar: AppBar(
+            title: Text('Bookmarks'),
+            centerTitle: true,
+          ),
+          body: Center(
+            child: Text('Bookmarks'),
+          ),
         );
       },
     );
