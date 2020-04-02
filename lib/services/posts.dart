@@ -110,8 +110,12 @@ class PostsService {
 
       final bookmarks = Map<String, Post>();
       bookmarkedPostSnapshots.forEach((bookmarkedPostSnapshot) {
-        bookmarks.putIfAbsent(
-            bookmarkedPostSnapshot.key, () => bookmarkedPostSnapshot.value);
+        bookmarks.putIfAbsent(bookmarkedPostSnapshot.key, () {
+          final newBookmarkedPost = Post.fromJSON(bookmarkedPostSnapshot.value);
+          newBookmarkedPost.id = bookmarkedPostSnapshot.key;
+
+          return newBookmarkedPost;
+        });
       });
 
       return bookmarks;

@@ -41,6 +41,7 @@ class Menu extends StatelessWidget {
                   leading: Icon(Icons.bookmark),
                   title: Text("Bookmarks"),
                   onTap: () {
+                    model.resetPosts();
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (context) => Bookmarks()));
                   },

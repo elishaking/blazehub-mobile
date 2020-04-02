@@ -144,4 +144,8 @@ class PostViewModel extends FriendViewModel {
   Future<Uint8List> getPostUserImage(String postUserID) {
     return postsService.getPostUserImage(postUserID);
   }
+
+  void resetPosts() {
+    _store.dispatch(SetPosts(null));
+  }
 }

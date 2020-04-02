@@ -7,18 +7,17 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:blazehub/models/app.dart';
 import 'package:blazehub/view_models/post.dart';
 
-bool retrievedBookmarks = false;
-
 class Bookmarks extends StatelessWidget {
+  // static bool retrievedBookmarks = false;
+
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, PostViewModel>(
       converter: (Store<AppState> store) => PostViewModel(store),
       builder: (context, model) {
-        if (!retrievedBookmarks) {
-          model.getBookmarks(model.authState.user.id);
-          retrievedBookmarks = true;
-        }
+        final retrievedBookmarks = model.postsState.posts != null;
+        print(retrievedBookmarks);
+        if (!retrievedBookmarks) model.getBookmarks(model.authState.user.id);
 
         return Scaffold(
           appBar: AppBar(
@@ -27,20 +26,21 @@ class Bookmarks extends StatelessWidget {
           ),
           body: Container(
             padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-            child: _buildBookmarks(model),
+            child: _buildBookmarks(model, retrievedBookmarks),
           ),
         );
       },
     );
   }
 
-  Widget _buildBookmarks(PostViewModel model) {
+  Widget _buildBookmarks(
+      final PostViewModel model, final bool retrievedBookmarks) {
     if (!retrievedBookmarks)
       return Center(
         child: Spinner(),
       );
 
-    if (model.postsState == null)
+    if (model.postsState.posts == null)
       return Center(
         child: Text("No Bookmarked Posts"),
       );
