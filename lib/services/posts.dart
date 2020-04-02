@@ -94,6 +94,34 @@ class PostsService {
     return _dbRef.child('posts').child(postID).child('comments').onChildAdded;
   }
 
+  Future<Map<String, Post>> getBookmarks(String userID) async {
+    try {
+      final bookmarksSnapshot =
+          await _dbRef.child('bookmarks').child(userID).once();
+
+      if (bookmarksSnapshot.value == null) return null;
+
+      final bookmarksPostRef = List<Future<DataSnapshot>>();
+      bookmarksSnapshot.value.forEach((postKey, post) {
+        bookmarksPostRef.add(_dbRef.child('posts').child(postKey).once());
+      });
+
+      final bookmarkedPostSnapshots = await Future.wait(bookmarksPostRef);
+
+      final bookmarks = Map<String, Post>();
+      bookmarkedPostSnapshots.forEach((bookmarkedPostSnapshot) {
+        bookmarks.putIfAbsent(
+            bookmarkedPostSnapshot.key, () => bookmarkedPostSnapshot.value);
+      });
+
+      return bookmarks;
+    } catch (err) {
+      print(err);
+
+      return null;
+    }
+  }
+
   Future<String> getPostImage(String postID) async {
     try {
       final postImageSnapshot =
