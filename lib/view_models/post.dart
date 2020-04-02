@@ -19,11 +19,13 @@ var commentListener;
 class PostViewModel extends FriendViewModel {
   final Store<AppState> _store;
   final AuthState authState;
+  final PostState postsState;
 
   Stream postCommentsStream;
 
   PostViewModel(this._store)
       : this.authState = _store.state.authState,
+        this.postsState = _store.state.postsState,
         super(_store);
 
   Future<bool> createPost(Post post, {String postID}) {
@@ -45,7 +47,7 @@ class PostViewModel extends FriendViewModel {
 
       final newPost = Post.fromJSON(newPostData);
 
-      _store.dispatch(SetPosts({newPost.id: newPost}));
+      _store.dispatch(UpdatePosts({newPost.id: newPost}));
       print(_store.state.postsState.posts.keys.length);
     });
 
@@ -126,8 +128,13 @@ class PostViewModel extends FriendViewModel {
     return await postsService.addComment(comment, postID);
   }
 
-  Future<Map<String, Post>> getBookmarks(String userID) {
-    return postsService.getBookmarks(userID);
+  Future<bool> getBookmarks(String userID) async {
+    final bookmarks = await postsService.getBookmarks(userID);
+    if (bookmarks == null) return false;
+
+    _store.dispatch(SetPosts(bookmarks));
+
+    return true;
   }
 
   Future<String> getPostImage(String postID) async {

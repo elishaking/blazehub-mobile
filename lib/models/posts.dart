@@ -68,6 +68,10 @@ class PostState {
 
     return PostState(posts: newPosts);
   }
+
+  PostState replaceWith({Map<String, Post> posts}) {
+    return PostState(posts: posts);
+  }
 }
 
 class Comment {

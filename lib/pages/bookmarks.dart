@@ -6,10 +6,8 @@ import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:blazehub/models/app.dart';
 import 'package:blazehub/view_models/post.dart';
-import 'package:blazehub/models/posts.dart';
 
 bool retrievedBookmarks = false;
-Map<String, Post> bookmarkedPosts = Map();
 
 class Bookmarks extends StatelessWidget {
   @override
@@ -18,9 +16,7 @@ class Bookmarks extends StatelessWidget {
       converter: (Store<AppState> store) => PostViewModel(store),
       builder: (context, model) {
         if (!retrievedBookmarks) {
-          model.getBookmarks(model.authState.user.id).then((posts) {
-            bookmarkedPosts = posts;
-          });
+          model.getBookmarks(model.authState.user.id);
           retrievedBookmarks = true;
         }
 
@@ -29,7 +25,10 @@ class Bookmarks extends StatelessWidget {
             title: Text('Bookmarks'),
             centerTitle: true,
           ),
-          body: _buildBookmarks(model),
+          body: Container(
+            padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+            child: _buildBookmarks(model),
+          ),
         );
       },
     );
@@ -41,11 +40,12 @@ class Bookmarks extends StatelessWidget {
         child: Spinner(),
       );
 
-    if (bookmarkedPosts == null)
+    if (model.postsState == null)
       return Center(
         child: Text("No Bookmarked Posts"),
       );
 
+    final bookmarkedPosts = model.postsState.posts;
     final postKeys = bookmarkedPosts.keys.toList();
     return ListView.builder(
       itemCount: bookmarkedPosts.length,
