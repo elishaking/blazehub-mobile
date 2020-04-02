@@ -3,6 +3,7 @@ import 'package:blazehub/components/SmallProfilePicture.dart';
 import 'package:blazehub/models/app.dart';
 import 'package:blazehub/pages/add_friend.dart';
 import 'package:blazehub/pages/bookmarks.dart';
+import 'package:blazehub/pages/profile.dart';
 // import 'package:blazehub/view_models/menu.dart';
 import 'package:blazehub/view_models/profile.dart';
 import 'package:flutter/material.dart';
@@ -19,15 +20,25 @@ class Menu extends StatelessWidget {
 
           return Scaffold(
             appBar: AppBar(
-              leading: hasSmallProfilePicture
-                  ? SmallProfilePicture(model.authState.smallProfilePicture)
-                  : Icon(Icons.person),
               centerTitle: true,
               title: Text('Menu'),
             ),
             body: ListView(
               padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
               children: <Widget>[
+                ListTile(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                  leading: hasSmallProfilePicture
+                      ? SmallProfilePicture(model.authState.smallProfilePicture)
+                      : Icon(Icons.person),
+                  title: Text(
+                      '${model.authState.user.firstName} ${model.authState.user.lastName}'),
+                  subtitle: Text('View Profile'),
+                  onTap: () {
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) => Profile()));
+                  },
+                ),
                 ListTile(
                   leading: Icon(Icons.person_add),
                   title: Text("Add Friend"),
@@ -48,10 +59,6 @@ class Menu extends StatelessWidget {
                 ),
                 Divider(),
               ],
-            ),
-            bottomNavigationBar: Hero(
-              tag: 'bottomNav',
-              child: BottomNav(3),
             ),
           );
         });

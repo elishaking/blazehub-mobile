@@ -4,6 +4,7 @@ import 'package:blazehub/components/SmallProfilePicture.dart';
 import 'package:blazehub/components/Spinner.dart';
 import 'package:blazehub/containers/edit_profile.dart';
 import 'package:blazehub/pages/add_friend.dart';
+import 'package:blazehub/pages/menu.dart';
 import 'package:blazehub/values/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -47,6 +48,15 @@ class Profile extends StatelessWidget {
                   : Icon(Icons.person),
               centerTitle: true,
               title: Text(model.authState.user.firstName),
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.menu),
+                  onPressed: () {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) => Menu()));
+                  },
+                )
+              ],
             ),
             body: ListView(
               padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),

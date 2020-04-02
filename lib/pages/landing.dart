@@ -1,4 +1,5 @@
 import 'package:blazehub/models/auth.dart';
+import 'package:blazehub/pages/menu.dart';
 import 'package:blazehub/pages/signin.dart';
 import 'package:blazehub/utils/errors.dart';
 import 'package:blazehub/view_models/landing.dart';
@@ -17,6 +18,15 @@ class Landing extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("BlazeHub"),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => Menu()));
+            },
+          )
+        ],
       ),
       body: StoreConnector<AppState, LandingViewModel>(
         converter: (Store<AppState> store) => LandingViewModel.create(store),

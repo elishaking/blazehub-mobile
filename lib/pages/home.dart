@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:convert';
 
+import 'package:blazehub/pages/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
@@ -56,6 +57,15 @@ class Home extends StatelessWidget {
                   )
                 : Icon(Icons.person),
             title: Text('BlazeHub'),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.menu),
+                onPressed: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) => Menu()));
+                },
+              )
+            ],
           ),
           body: ListView(
             padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
