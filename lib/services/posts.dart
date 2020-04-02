@@ -55,6 +55,25 @@ class PostsService {
     }
   }
 
+  Future<bool> toggleBookmark(
+      String postID, String userID, bool isBookmarked) async {
+    try {
+      final toggleBookmarkRef =
+          _dbRef.child('bookmarks').child(userID).child(postID);
+
+      if (isBookmarked)
+        await toggleBookmarkRef.remove();
+      else
+        await toggleBookmarkRef.set(true);
+
+      return true;
+    } catch (err) {
+      print(err);
+
+      return false;
+    }
+  }
+
   Future<bool> addComment(Comment comment, String postID) async {
     try {
       await _dbRef
