@@ -61,10 +61,16 @@ class PostsService {
       final toggleBookmarkRef =
           _dbRef.child('bookmarks').child(userID).child(postID);
 
-      if (isBookmarked)
+      final isBookmarkedRef =
+          _dbRef.child('posts').child(postID).child('isBookmarked');
+
+      if (isBookmarked) {
         await toggleBookmarkRef.remove();
-      else
+        await isBookmarkedRef.set(false);
+      } else {
         await toggleBookmarkRef.set(true);
+        await isBookmarkedRef.set(true);
+      }
 
       return true;
     } catch (err) {
