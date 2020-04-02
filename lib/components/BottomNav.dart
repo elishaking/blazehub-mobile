@@ -23,7 +23,7 @@ class BottomNav extends StatelessWidget {
             return Menu();
         }));
       },
-      items: [
+      items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           title: Text('Home'),
           icon: Icon(Icons.home),

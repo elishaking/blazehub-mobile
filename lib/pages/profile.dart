@@ -308,6 +308,7 @@ class _ProfilePicturesState extends State<ProfilePictures> {
           top: 10,
           right: 10,
           child: FloatingActionButton(
+            heroTag: null,
             onPressed: () {
               // TODO: edit cover photo
             },
@@ -320,6 +321,7 @@ class _ProfilePicturesState extends State<ProfilePictures> {
           bottom: 0,
           left: widget.deviceWidth / 2,
           child: FloatingActionButton(
+            heroTag: null,
             onPressed: () {
               // TODO: edit profile photo
             },
