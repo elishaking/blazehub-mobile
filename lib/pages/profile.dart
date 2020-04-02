@@ -170,6 +170,8 @@ class Profile extends StatelessWidget {
   }
 
   List<PostWidget> _buildPosts(ProfileViewModel model) {
+    // TODO: Optimization: create a service method to fetch only the posts created
+    // by logged in user
     final posts = model.postsState.posts;
 
     if (posts == null) return [];
@@ -177,9 +179,10 @@ class Profile extends StatelessWidget {
     final List<PostWidget> postsWidget = [];
 
     posts.forEach((postKey, post) {
-      postsWidget.add(
-        PostWidget(post, model),
-      );
+      if (post.user.id == model.authState.user.id)
+        postsWidget.add(
+          PostWidget(post, model),
+        );
     });
     return postsWidget;
   }
