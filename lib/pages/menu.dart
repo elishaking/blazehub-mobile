@@ -51,7 +51,7 @@ class Menu extends StatelessWidget {
             ),
             bottomNavigationBar: Hero(
               tag: 'bottomNav',
-              child: BottomNav(2),
+              child: BottomNav(3),
             ),
           );
         });
