@@ -121,6 +121,10 @@ class PostViewModel extends FriendViewModel {
     return await postsService.addComment(comment, postID);
   }
 
+  Future<Map<String, Post>> getBookmarks(String userID) {
+    return postsService.getBookmarks(userID);
+  }
+
   Future<String> getPostImage(String postID) async {
     return await postsService.getPostImage(postID);
   }
