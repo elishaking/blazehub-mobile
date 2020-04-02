@@ -2,6 +2,7 @@ import 'package:blazehub/components/BottomNav.dart';
 import 'package:blazehub/components/SmallProfilePicture.dart';
 import 'package:blazehub/models/app.dart';
 import 'package:blazehub/pages/add_friend.dart';
+import 'package:blazehub/pages/bookmarks.dart';
 // import 'package:blazehub/view_models/menu.dart';
 import 'package:blazehub/view_models/profile.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +36,16 @@ class Menu extends StatelessWidget {
                         builder: (context) => AddFriend(model)));
                   },
                 ),
-                Divider()
+                Divider(),
+                ListTile(
+                  leading: Icon(Icons.bookmark),
+                  title: Text("Bookmarks"),
+                  onTap: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => Bookmarks()));
+                  },
+                ),
+                Divider(),
               ],
             ),
             bottomNavigationBar: Hero(
