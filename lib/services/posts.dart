@@ -129,6 +129,7 @@ class PostsService {
         bookmarks.putIfAbsent(bookmarkedPostSnapshot.key, () {
           final newBookmarkedPost = Post.fromJSON(bookmarkedPostSnapshot.value);
           newBookmarkedPost.id = bookmarkedPostSnapshot.key;
+          newBookmarkedPost.isBookmarked = true;
 
           return newBookmarkedPost;
         });
