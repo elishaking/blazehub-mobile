@@ -7,14 +7,23 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:blazehub/models/app.dart';
 import 'package:blazehub/view_models/post.dart';
 
-class Bookmarks extends StatelessWidget {
+class Bookmarks extends StatefulWidget {
   // static bool retrievedBookmarks = false;
+
+  @override
+  _BookmarksState createState() => _BookmarksState();
+}
+
+class _BookmarksState extends State<Bookmarks> {
+  PostViewModel mModel;
 
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, PostViewModel>(
       converter: (Store<AppState> store) => PostViewModel(store),
       builder: (context, model) {
+        mModel = model;
+
         final retrievedBookmarks = model.postsState.posts != null;
         print(retrievedBookmarks);
         if (!retrievedBookmarks) model.getBookmarks(model.authState.user.id);
@@ -53,5 +62,12 @@ class Bookmarks extends StatelessWidget {
         return PostWidget(bookmarkedPosts[postKeys[index]], model);
       },
     );
+  }
+
+  @override
+  void dispose() {
+    if (mModel != null) mModel.resetPosts();
+
+    super.dispose();
   }
 }

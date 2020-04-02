@@ -64,7 +64,7 @@ class PostState {
     // this.posts.map(
     //       (postKey, post) => MapEntry(postKey, post),
     //     );
-    newPosts.addEntries(this.posts.entries);
+    if (this.posts != null) newPosts.addEntries(this.posts.entries);
 
     return PostState(posts: newPosts);
   }
