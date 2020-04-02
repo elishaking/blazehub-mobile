@@ -98,6 +98,23 @@ class PostViewModel extends FriendViewModel {
     return false;
   }
 
+  Future<bool> togglePostBookmark(
+      String postID, String userID, bool isBookmarked) async {
+    final isSuccessful =
+        await postsService.toggleBookmark(postID, userID, isBookmarked);
+
+    if (isSuccessful) {
+      final newPost = _store.state.postsState.posts[postID];
+      newPost.isBookmarked = !isBookmarked;
+
+      _store.dispatch(UpdatePost(newPost));
+
+      return true;
+    }
+
+    return false;
+  }
+
   Future<bool> addPostComment(Comment comment, String postID) async {
     return await postsService.addComment(comment, postID);
   }

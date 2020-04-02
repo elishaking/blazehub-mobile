@@ -183,7 +183,15 @@ class _PostWidgetState extends State<PostWidget> {
               Icons.bookmark,
               size: 20,
             ),
-            onPressed: () {},
+            onPressed: () {
+              widget.model
+                  .togglePostBookmark(
+                    widget.post.id,
+                    widget.model.authState.user.id,
+                    widget.post.isBookmarked,
+                  )
+                  .then((isSuccessful) => setState(() {}));
+            },
           ),
         ],
       ),
