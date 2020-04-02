@@ -25,7 +25,6 @@ class _BookmarksState extends State<Bookmarks> {
         mModel = model;
 
         final retrievedBookmarks = model.postsState.posts != null;
-        print(retrievedBookmarks);
         if (!retrievedBookmarks) model.getBookmarks(model.authState.user.id);
 
         return Scaffold(
@@ -54,12 +53,24 @@ class _BookmarksState extends State<Bookmarks> {
         child: Text("No Bookmarked Posts"),
       );
 
-    final bookmarkedPosts = model.postsState.posts;
+    final bookmarkedPosts = model.postsState.posts
+      ..removeWhere((_, post) => post.isBookmarked == false);
     final postKeys = bookmarkedPosts.keys.toList();
     return ListView.builder(
       itemCount: bookmarkedPosts.length,
       itemBuilder: (context, index) {
-        return PostWidget(bookmarkedPosts[postKeys[index]], model);
+        return Dismissible(
+          key: UniqueKey(),
+          onDismissed: (dir) {
+            model.togglePostBookmark(
+                postKeys[index], model.authState.user.id, true);
+          },
+          child: PostWidget(
+            bookmarkedPosts[postKeys[index]],
+            model,
+            shouldDisplayBookmarkButton: false,
+          ),
+        );
       },
     );
   }

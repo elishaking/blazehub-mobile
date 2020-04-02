@@ -40,10 +40,14 @@ class PostViewModel extends FriendViewModel {
     // TODO: dispose this stream
     if (listeningForNewPosts) return;
 
-    postListener = postStream.listen((onData) {
+    postListener = postStream.listen((onData) async {
       // print(onData.snapshot.value);
       final newPostData = onData.snapshot.value;
       newPostData['id'] = onData.snapshot.key;
+
+      final postBookmarked = await postsService.isPostBookmarked(
+          onData.snapshot.key, authState.user.id);
+      newPostData['isBookmarked'] = postBookmarked;
 
       final newPost = Post.fromJSON(newPostData);
 
@@ -66,7 +70,7 @@ class PostViewModel extends FriendViewModel {
     if (listeningForNewComments) return postCommentsStream;
 
     postCommentsStream = postsService.newCommentAdded(postID);
-    final c = postCommentsStream.listen((onData) {
+    commentListener = postCommentsStream.listen((onData) {
       final newComment = Comment.fromJSON(onData.snapshot.value);
 
       final newPost = _store.state.postsState.posts[postID];

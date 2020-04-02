@@ -13,11 +13,13 @@ class PostWidget extends StatefulWidget {
   const PostWidget(
     this.post,
     this.model, {
+    this.shouldDisplayBookmarkButton = true,
     Key key,
   }) : super(key: key);
 
   final Post post;
   final PostViewModel model;
+  final bool shouldDisplayBookmarkButton;
 
   @override
   _PostWidgetState createState() => _PostWidgetState();
@@ -177,22 +179,26 @@ class _PostWidgetState extends State<PostWidget> {
           Flexible(
             child: Container(),
           ),
-          IconButton(
-            color: widget.post.isBookmarked ? AppColors.primary : Colors.grey,
-            icon: Icon(
-              Icons.bookmark,
-              size: 20,
-            ),
-            onPressed: () {
-              widget.model
-                  .togglePostBookmark(
-                    widget.post.id,
-                    widget.model.authState.user.id,
-                    widget.post.isBookmarked,
-                  )
-                  .then((isSuccessful) => setState(() {}));
-            },
-          ),
+          widget.shouldDisplayBookmarkButton
+              ? IconButton(
+                  color: widget.post.isBookmarked
+                      ? AppColors.primary
+                      : Colors.grey,
+                  icon: Icon(
+                    Icons.bookmark,
+                    size: 20,
+                  ),
+                  onPressed: () {
+                    widget.model
+                        .togglePostBookmark(
+                          widget.post.id,
+                          widget.model.authState.user.id,
+                          widget.post.isBookmarked,
+                        )
+                        .then((isSuccessful) => setState(() {}));
+                  },
+                )
+              : Container(),
         ],
       ),
     );
