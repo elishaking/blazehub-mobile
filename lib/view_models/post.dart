@@ -22,7 +22,9 @@ class PostViewModel extends FriendViewModel {
 
   Stream postCommentsStream;
 
-  PostViewModel(this._store, this.authState) : super(_store);
+  PostViewModel(this._store)
+      : this.authState = _store.state.authState,
+        super(_store);
 
   Future<bool> createPost(Post post, {String postID}) {
     return postsService.createPost(post, postID: postID);

@@ -20,7 +20,7 @@ class ProfileViewModel extends PostViewModel {
     this.profileState,
     this.postsState,
   })  : _store = store,
-        super(store, authState);
+        super(store);
 
   factory ProfileViewModel.create(Store<AppState> store) {
     return ProfileViewModel(
