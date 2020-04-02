@@ -312,4 +312,12 @@ class _CreatePostFormState extends State<CreatePostForm> {
       },
     );
   }
+
+  @override
+  void dispose() {
+    widget.model.cancelPostListener();
+    widget.model.cancelCommentListener();
+
+    super.dispose();
+  }
 }

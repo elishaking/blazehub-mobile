@@ -13,7 +13,7 @@ final postStream = postsService.newPostAdded();
 bool listeningForNewPosts = false;
 var postListener;
 
-bool listeningForComments = false;
+bool listeningForNewComments = false;
 var commentListener;
 
 class PostViewModel extends FriendViewModel {
@@ -53,15 +53,18 @@ class PostViewModel extends FriendViewModel {
   }
 
   void cancelPostListener() {
-    postListener.cancel();
-    listeningForNewPosts = false;
+    if (listeningForNewPosts) {
+      postListener.cancel();
+
+      listeningForNewPosts = false;
+    }
   }
 
   Stream listenForComments(String postID) {
-    if (listeningForComments) return postCommentsStream;
+    if (listeningForNewComments) return postCommentsStream;
 
     postCommentsStream = postsService.newCommentAdded(postID);
-    commentListener = postCommentsStream.listen((onData) {
+    final c = postCommentsStream.listen((onData) {
       final newComment = Comment.fromJSON(onData.snapshot.value);
 
       final newPost = _store.state.postsState.posts[postID];
@@ -71,15 +74,17 @@ class PostViewModel extends FriendViewModel {
       print(_store.state.postsState.posts[postID].comments.keys.length);
     });
 
-    listeningForComments = true;
+    listeningForNewComments = true;
 
     return postCommentsStream;
   }
 
   void cancelCommentListener() {
-    commentListener.cancel();
+    if (listeningForNewComments) {
+      commentListener.cancel();
 
-    listeningForComments = false;
+      listeningForNewComments = false;
+    }
   }
 
   Future<bool> togglePostLike(String postID, String userID, bool liked) async {
