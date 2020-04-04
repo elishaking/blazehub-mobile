@@ -25,3 +25,7 @@ class ChatState {
     return ChatState(chats: newChats);
   }
 }
+
+ChatState replaceWith({Map<String, Chat> chats}) {
+  return ChatState(chats: chats);
+}
