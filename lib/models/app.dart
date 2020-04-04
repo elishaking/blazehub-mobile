@@ -1,5 +1,6 @@
 import 'package:blazehub/data/user.dart';
 import 'package:blazehub/models/auth.dart';
+import 'package:blazehub/models/chat.dart';
 import 'package:blazehub/models/friend.dart';
 import 'package:blazehub/models/posts.dart';
 import 'package:blazehub/models/profile.dart';
@@ -10,12 +11,14 @@ class AppState {
   final PostState postsState;
   final ProfileState profileState;
   final FriendState friendState;
+  final ChatState chatState;
 
   AppState({
     @required this.authState,
     @required this.postsState,
     @required this.profileState,
     @required this.friendState,
+    @required this.chatState,
   });
 
   AppState.initialState()
@@ -36,5 +39,8 @@ class AppState {
         ),
         friendState = FriendState(
           friends: null,
+        ),
+        chatState = ChatState(
+          chats: null,
         );
 }
