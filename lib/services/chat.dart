@@ -14,3 +14,5 @@ class ChatService {
         .onChildAdded;
   }
 }
+
+final chatService = ChatService();

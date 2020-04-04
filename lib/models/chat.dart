@@ -11,6 +11,22 @@ class Message {
     @required this.date,
     @required this.userID,
   });
+
+  factory Message.fromJSON(json) {
+    return Message(
+      text: json['text'],
+      date: json['date'],
+      userID: json['userID'],
+    );
+  }
+
+  Map toJSON() {
+    return {
+      'text': text,
+      'date': date,
+      'userID': userID,
+    };
+  }
 }
 
 class Chat {
