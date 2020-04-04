@@ -37,5 +37,6 @@ class ChatViewModel extends FriendViewModel {
     });
 
     listeningForNewMessages = true;
+    print(_store.state.chatState.chats.keys.length);
   }
 }

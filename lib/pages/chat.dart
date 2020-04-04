@@ -1,5 +1,7 @@
 import 'package:blazehub/components/BottomNav.dart';
+import 'package:blazehub/components/FriendWidget.dart';
 import 'package:blazehub/models/app.dart';
+import 'package:blazehub/pages/chat_message.dart';
 import 'package:blazehub/pages/menu.dart';
 import 'package:blazehub/view_models/chat.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +13,14 @@ class Chat extends StatelessWidget {
     return StoreConnector<AppState, ChatViewModel>(
       converter: (store) => ChatViewModel.create(store),
       builder: (context, model) {
+        final hasFriends = model.friendState.friends != null;
+
+        if (!hasFriends) {
+          model.getFriends(model.authState.user.id);
+        }
+
+        final friendKeys = model.friendState.friends.keys.toList();
+
         return Scaffold(
           appBar: AppBar(
             title: Text('Chat'),
@@ -27,9 +37,17 @@ class Chat extends StatelessWidget {
           ),
           body: ListView.separated(
             separatorBuilder: (context, index) => Divider(),
-            itemCount: 0,
+            itemCount: model.friendState.friends.length,
             itemBuilder: (context, index) {
-              return Container();
+              return FriendWidget(
+                model,
+                friendKeys[index],
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => ChatMessage(),
+                  ));
+                },
+              );
             },
           ),
           bottomNavigationBar: Hero(
