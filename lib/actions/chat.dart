@@ -1,7 +1,10 @@
+import 'package:flutter/foundation.dart';
+
 import 'package:blazehub/models/chat.dart';
 
 class AddMessage {
-  final Message payload;
+  final Map<String, Message> payload;
+  final String chatID;
 
-  AddMessage(this.payload);
+  AddMessage(this.payload, {@required this.chatID});
 }
