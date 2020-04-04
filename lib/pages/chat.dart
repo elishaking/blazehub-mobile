@@ -25,7 +25,13 @@ class Chat extends StatelessWidget {
               )
             ],
           ),
-          body: Container(),
+          body: ListView.separated(
+            separatorBuilder: (context, index) => Divider(),
+            itemCount: 0,
+            itemBuilder: (context, index) {
+              return Container();
+            },
+          ),
           bottomNavigationBar: Hero(
             tag: 'bottomNav',
             child: BottomNav(2),
