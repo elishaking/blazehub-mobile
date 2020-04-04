@@ -1,3 +1,5 @@
+import 'package:blazehub/actions/chat.dart';
+import 'package:blazehub/models/chat.dart';
 import 'package:blazehub/services/chat.dart';
 import 'package:redux/redux.dart';
 
@@ -15,5 +17,25 @@ class ChatViewModel extends FriendViewModel {
 
   factory ChatViewModel.create(Store<AppState> store) {
     return ChatViewModel(store);
+  }
+
+  void listenForMessages(String chatID) {
+    // TODO: dispose this stream
+    if (listeningForNewMessages) return;
+    messageListener =
+        chatService.newMessageAdded(chatID).listen((onData) async {
+      // print(onData.snapshot.value);
+      final newMessageData = onData.snapshot.value;
+      // newMessageData['id'] = onData.snapshot.key;
+
+      final newMessage = Message.fromJSON(newMessageData);
+
+      _store.dispatch(AddMessage(
+        {onData.snapshot.key: newMessage},
+        chatID: chatID,
+      ));
+    });
+
+    listeningForNewMessages = true;
   }
 }
