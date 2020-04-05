@@ -1,7 +1,7 @@
 import 'package:blazehub/components/BottomNav.dart';
 import 'package:blazehub/components/FriendWidget.dart';
+import 'package:blazehub/containers/chat_message.dart';
 import 'package:blazehub/models/app.dart';
-import 'package:blazehub/pages/chat_message.dart';
 import 'package:blazehub/pages/menu.dart';
 import 'package:blazehub/view_models/chat.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +36,7 @@ class Chat extends StatelessWidget {
             ],
           ),
           body: ListView.separated(
+            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
             separatorBuilder: (context, index) => Divider(),
             itemCount: model.friendState.friends.length,
             itemBuilder: (context, index) {
@@ -43,8 +44,14 @@ class Chat extends StatelessWidget {
                 model,
                 friendKeys[index],
                 onTap: () {
+                  final chatID = generateChatID(
+                    model.authState.user.id,
+                    friendKeys[index],
+                  );
+
                   Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => ChatMessage(),
+                    builder: (context) => ChatMessage(chatID),
+                    fullscreenDialog: true,
                   ));
                 },
               );
@@ -57,5 +64,11 @@ class Chat extends StatelessWidget {
         );
       },
     );
+  }
+
+  generateChatID(String userID, String friendID) {
+    final order = [userID, friendID]..sort();
+
+    return order.join('_');
   }
 }

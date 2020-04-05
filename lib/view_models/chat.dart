@@ -12,11 +12,15 @@ var messageListener;
 
 class ChatViewModel extends FriendViewModel {
   final Store<AppState> _store;
+  final ChatState chatState;
 
-  ChatViewModel(this._store) : super(_store);
+  ChatViewModel(this._store, {this.chatState}) : super(_store);
 
   factory ChatViewModel.create(Store<AppState> store) {
-    return ChatViewModel(store);
+    return ChatViewModel(
+      store,
+      chatState: store.state.chatState,
+    );
   }
 
   void listenForMessages(String chatID) {
