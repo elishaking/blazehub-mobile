@@ -50,7 +50,10 @@ class Chat extends StatelessWidget {
                   );
 
                   Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => ChatMessage(chatID),
+                    builder: (context) => ChatMessage(
+                      chatID,
+                      friendKeys[index],
+                    ),
                     fullscreenDialog: true,
                   ));
                 },
