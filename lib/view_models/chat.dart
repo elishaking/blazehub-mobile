@@ -28,7 +28,6 @@ class ChatViewModel extends FriendViewModel {
     if (listeningForNewMessages) return;
     messageListener =
         chatService.newMessageAdded(chatID).listen((onData) async {
-      // print(onData.snapshot.value);
       final newMessageData = onData.snapshot.value;
       // newMessageData['id'] = onData.snapshot.key;
 
@@ -39,9 +38,17 @@ class ChatViewModel extends FriendViewModel {
         chatID: chatID,
       ));
 
-      print(_store.state.chatState.chats.keys.length);
+      print(_store.state.chatState.chats[chatID].messages.keys.length);
     });
 
     listeningForNewMessages = true;
+  }
+
+  void cancelMessageListener() {
+    if (listeningForNewMessages) {
+      messageListener.cancel();
+
+      listeningForNewMessages = false;
+    }
   }
 }

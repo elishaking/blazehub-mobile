@@ -33,6 +33,13 @@ class ChatMessage extends StatelessWidget {
           appBar: AppBar(
             title: Text(model.friendState.friends[friendID].name),
             centerTitle: true,
+            leading: IconButton(
+              icon: Icon(Icons.close),
+              onPressed: () {
+                model.cancelMessageListener();
+                Navigator.of(context).pop();
+              },
+            ),
           ),
           body: hasMessages
               ? MessageList(

@@ -9,8 +9,8 @@ class ChatService {
     return _dbRef
         .child('chats')
         .child(chatID)
-        .orderByChild('date')
-        .startAt(now)
+        // .orderByChild('date')
+        // .startAt(now)
         .onChildAdded;
   }
 }
