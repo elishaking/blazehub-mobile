@@ -19,8 +19,6 @@ class Chat extends StatelessWidget {
           model.getFriends(model.authState.user.id);
         }
 
-        final friendKeys = model.friendState.friends.keys.toList();
-
         return Scaffold(
           appBar: AppBar(
             title: Text('Chat'),
@@ -35,31 +33,35 @@ class Chat extends StatelessWidget {
               )
             ],
           ),
-          body: ListView.separated(
-            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-            separatorBuilder: (context, index) => Divider(),
-            itemCount: model.friendState.friends.length,
-            itemBuilder: (context, index) {
-              return FriendWidget(
-                model,
-                friendKeys[index],
-                onTap: () {
-                  final chatID = generateChatID(
-                    model.authState.user.id,
-                    friendKeys[index],
-                  );
+          body: hasFriends
+              ? ListView.separated(
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                  separatorBuilder: (context, index) => Divider(),
+                  itemCount: model.friendState.friends.length,
+                  itemBuilder: (context, index) {
+                    final friendKeys = model.friendState.friends.keys.toList();
 
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => ChatMessage(
-                      chatID,
+                    return FriendWidget(
+                      model,
                       friendKeys[index],
-                    ),
-                    fullscreenDialog: true,
-                  ));
-                },
-              );
-            },
-          ),
+                      onTap: () {
+                        final chatID = generateChatID(
+                          model.authState.user.id,
+                          friendKeys[index],
+                        );
+
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ChatMessage(
+                            chatID,
+                            friendKeys[index],
+                          ),
+                          fullscreenDialog: true,
+                        ));
+                      },
+                    );
+                  },
+                )
+              : CircularProgressIndicator(),
           bottomNavigationBar: Hero(
             tag: 'bottomNav',
             child: BottomNav(2),

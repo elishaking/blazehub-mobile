@@ -38,9 +38,10 @@ class ChatViewModel extends FriendViewModel {
         {onData.snapshot.key: newMessage},
         chatID: chatID,
       ));
+
+      print(_store.state.chatState.chats.keys.length);
     });
 
     listeningForNewMessages = true;
-    print(_store.state.chatState.chats.keys.length);
   }
 }
