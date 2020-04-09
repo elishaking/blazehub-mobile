@@ -41,14 +41,17 @@ class ChatMessage extends StatelessWidget {
               },
             ),
           ),
-          body: hasMessages
-              ? MessageList(
-                  model.chatState.chats[chatID].messages,
-                  model.authState.user.id,
-                )
-              : Center(
-                  child: Text('Start Chatting...'),
-                ),
+          body: Container(
+            margin: EdgeInsets.only(bottom: 60),
+            child: hasMessages
+                ? MessageList(
+                    model.chatState.chats[chatID].messages,
+                    model.authState.user.id,
+                  )
+                : Center(
+                    child: Text('Start Chatting...'),
+                  ),
+          ),
           bottomSheet: Container(
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Form(
