@@ -78,13 +78,13 @@ class ChatMessage extends StatelessWidget {
                           userID: model.authState.user.id,
                         );
 
-                        // model
-                        //     .addMessage(message, chatID)
-                        //     .then((isSuccessful) {
-                        //   if (isSuccessful) {
-                        //     _editingController.clear();
-                        //   }
-                        // });
+                        model.addMessage(message, chatID).then((isSuccessful) {
+                          print(isSuccessful);
+
+                          if (isSuccessful) {
+                            _editingController.clear();
+                          }
+                        });
                       }
                     },
                   ),
