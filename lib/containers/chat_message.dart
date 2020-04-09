@@ -79,8 +79,6 @@ class ChatMessage extends StatelessWidget {
                         );
 
                         model.addMessage(message, chatID).then((isSuccessful) {
-                          print(isSuccessful);
-
                           if (isSuccessful) {
                             _editingController.clear();
                           }
@@ -119,67 +117,71 @@ class MessageList extends StatelessWidget {
           mainAxisAlignment:
               fromUser ? MainAxisAlignment.end : MainAxisAlignment.start,
           children: <Widget>[
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              margin: EdgeInsets.only(bottom: 15),
-              decoration: BoxDecoration(
-                color: fromUser
-                    ? AppColors.primary.withAlpha(-100)
-                    : AppColors.light,
-                borderRadius: BorderRadius.only(
-                  topLeft: fromUser ? Radius.circular(40) : Radius.zero,
-                  topRight: fromUser ? Radius.zero : Radius.circular(40),
-                  bottomLeft: Radius.circular(40),
-                  bottomRight: Radius.circular(40),
+            Flexible(
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                margin: EdgeInsets.only(bottom: 15),
+                decoration: BoxDecoration(
+                  color: fromUser
+                      ? AppColors.primary.withAlpha(-100)
+                      : AppColors.light,
+                  borderRadius: BorderRadius.only(
+                    topLeft: fromUser ? Radius.circular(40) : Radius.zero,
+                    topRight: fromUser ? Radius.zero : Radius.circular(40),
+                    bottomLeft: Radius.circular(40),
+                    bottomRight: Radius.circular(40),
+                  ),
                 ),
-              ),
-              child: Row(
-                // mainAxisSize: MainAxisSize.min,
-                // direction: Axis.horizontal,
-                textDirection: fromUser ? TextDirection.ltr : TextDirection.rtl,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  CircleAvatar(
-                    backgroundColor: AppColors.primary,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      // Text(
-                      //   '${message.user.firstName} ${message.user.lastName}',
-                      //   style: TextStyle(
-                      //     fontWeight: FontWeight.w600,
-                      //     color: fromUser ? Colors.white : AppColors.primary,
-                      //   ),
-                      // ),
-                      SizedBox(
-                        height: 10,
+                child: Row(
+                  textDirection:
+                      fromUser ? TextDirection.ltr : TextDirection.rtl,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    CircleAvatar(
+                      backgroundColor: AppColors.primary,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Flexible(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          // Text(
+                          //   '${message.user.firstName} ${message.user.lastName}',
+                          //   style: TextStyle(
+                          //     fontWeight: FontWeight.w600,
+                          //     color: fromUser ? Colors.white : AppColors.primary,
+                          //   ),
+                          // ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            message.text,
+                            style: TextStyle(
+                              color:
+                                  fromUser ? Colors.white : AppColors.primary,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            getMonthDayFromInt(message.date),
+                            // textAlign: TextAlign.end,
+                            textWidthBasis: TextWidthBasis.longestLine,
+                            style: TextStyle(
+                              color: fromUser ? Colors.white70 : Colors.black54,
+                              fontSize:
+                                  Theme.of(context).textTheme.caption.fontSize,
+                            ),
+                          ),
+                        ],
                       ),
-                      Text(
-                        message.text,
-                        style: TextStyle(
-                          color: fromUser ? Colors.white : AppColors.primary,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        getMonthDayFromInt(message.date),
-                        textAlign: TextAlign.end,
-                        textWidthBasis: TextWidthBasis.longestLine,
-                        style: TextStyle(
-                          color: fromUser ? Colors.white70 : Colors.black54,
-                          fontSize:
-                              Theme.of(context).textTheme.caption.fontSize,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
