@@ -44,6 +44,10 @@ class ChatViewModel extends FriendViewModel {
     listeningForNewMessages = true;
   }
 
+  Future<bool> addMessage(Message message, String chatID) async {
+    return chatService.addMessage(message, chatID);
+  }
+
   void cancelMessageListener() {
     if (listeningForNewMessages) {
       messageListener.cancel();
