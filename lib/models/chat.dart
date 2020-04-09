@@ -16,7 +16,7 @@ class Message {
     return Message(
       text: json['text'],
       date: json['date'],
-      userID: json['userID'],
+      userID: json['userID'] ?? json['user']['key'],
     );
   }
 

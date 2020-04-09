@@ -111,8 +111,6 @@ class MessageList extends StatelessWidget {
       itemBuilder: (BuildContext context, int index) {
         final Message message = messages[keys[index]];
         final fromUser = message.userID == userID;
-        print(message.userID);
-        print(userID);
 
         return Row(
           mainAxisAlignment:
@@ -123,9 +121,14 @@ class MessageList extends StatelessWidget {
               margin: EdgeInsets.only(bottom: 15),
               decoration: BoxDecoration(
                 color: fromUser
-                    ? AppColors.primary.withAlpha(200)
+                    ? AppColors.primary.withAlpha(-100)
                     : AppColors.light,
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.only(
+                  topLeft: fromUser ? Radius.circular(40) : Radius.zero,
+                  topRight: fromUser ? Radius.zero : Radius.circular(40),
+                  bottomLeft: Radius.circular(40),
+                  bottomRight: Radius.circular(40),
+                ),
               ),
               child: Row(
                 // mainAxisSize: MainAxisSize.min,
