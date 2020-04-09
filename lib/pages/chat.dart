@@ -1,5 +1,6 @@
 import 'package:blazehub/components/BottomNav.dart';
 import 'package:blazehub/components/FriendWidget.dart';
+import 'package:blazehub/components/Spinner.dart';
 import 'package:blazehub/containers/chat_message.dart';
 import 'package:blazehub/models/app.dart';
 import 'package:blazehub/pages/menu.dart';
@@ -61,7 +62,9 @@ class Chat extends StatelessWidget {
                     );
                   },
                 )
-              : CircularProgressIndicator(),
+              : Center(
+                  child: Spinner(),
+                ),
           bottomNavigationBar: Hero(
             tag: 'bottomNav',
             child: BottomNav(2),
