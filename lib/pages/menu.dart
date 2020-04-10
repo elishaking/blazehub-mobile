@@ -31,6 +31,7 @@ class Menu extends StatelessWidget {
                   leading: SmallProfilePicture(
                     model.authState.smallProfilePicture,
                     SmallProfilePicture.AUTH_USER,
+                    model.authState.user.id,
                   ),
                   title: Text(
                       '${model.authState.user.firstName} ${model.authState.user.lastName}'),

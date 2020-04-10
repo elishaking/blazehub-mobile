@@ -10,8 +10,10 @@ import 'package:flutter_redux/flutter_redux.dart';
 class SmallProfilePictureView extends StatefulWidget {
   final Uint8List smallProfilePicture;
   final String heroTag;
+  final String pictureID;
 
-  SmallProfilePictureView(this.smallProfilePicture, this.heroTag);
+  SmallProfilePictureView(
+      this.smallProfilePicture, this.heroTag, this.pictureID);
 
   @override
   _SmallProfilePictureViewState createState() =>
@@ -31,7 +33,15 @@ class _SmallProfilePictureViewState extends State<SmallProfilePictureView> {
             model.getProfilePicture(model.authState.user.id);
           else
             fullImage = model.profileState.profilePicture;
-        } else {}
+        } else {
+          if (fullImage == null)
+            model.getFriendProfilePicture(widget.pictureID).then((picture) {
+              if (picture != null)
+                setState(() {
+                  fullImage = picture;
+                });
+            });
+        }
 
         return Scaffold(
           appBar: AppBar(),

@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:blazehub/actions/profile.dart';
 import 'package:blazehub/models/posts.dart';
 import 'package:blazehub/models/profile.dart';
@@ -47,6 +49,10 @@ class ProfileViewModel extends PostViewModel {
 
     _store.dispatch(SetCoverPicture(coverPicture));
     return true;
+  }
+
+  Future<Uint8List> getFriendProfilePicture(String friendID) async {
+    return profileService.getProfilePicture(friendID);
   }
 
   Future<bool> getProfileInfo(String userID) async {

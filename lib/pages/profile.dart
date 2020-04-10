@@ -49,6 +49,7 @@ class Profile extends StatelessWidget {
                   ? SmallProfilePicture(
                       model.authState.smallProfilePicture,
                       SmallProfilePicture.AUTH_USER,
+                      model.authState.user.id,
                     )
                   : Icon(Icons.person),
               centerTitle: true,

@@ -20,6 +20,7 @@ class FriendWidget extends StatelessWidget {
       leading: SmallProfilePicture(
         friend.profilePicture,
         friendKey,
+        friendKey,
         padding: 0,
       ),
       title: Text(

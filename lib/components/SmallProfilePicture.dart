@@ -10,8 +10,10 @@ class SmallProfilePicture extends StatelessWidget {
   final Uint8List smallProfilePicture;
   final double padding;
   final String uniqueID;
+  final String pictureID;
 
-  const SmallProfilePicture(this.smallProfilePicture, this.uniqueID,
+  const SmallProfilePicture(
+      this.smallProfilePicture, this.uniqueID, this.pictureID,
       {this.padding = 10});
 
   @override
@@ -37,8 +39,11 @@ class SmallProfilePicture extends StatelessWidget {
             : GestureDetector(
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) =>
-                        SmallProfilePictureView(smallProfilePicture, uniqueID),
+                    builder: (context) => SmallProfilePictureView(
+                      smallProfilePicture,
+                      uniqueID,
+                      pictureID,
+                    ),
                     fullscreenDialog: true,
                   ));
                 },
