@@ -38,7 +38,9 @@ class Profile extends StatelessWidget {
             model.getProfileInfo(model.authState.user.id);
           }
           if (!hasFriends) {
-            model.getFriends(model.authState.user.id);
+            model.getFriends(model.authState.user.id).then((isSuccessful) {
+              if (isSuccessful) model.getFriendsWithPictures();
+            });
           }
 
           return Scaffold(

@@ -44,11 +44,30 @@ class FriendService {
 
       final friendPictureSnapshots = await Future.wait(friendPictureRefs);
 
-      friendPictureSnapshots.forEach((friendPictureSnapshot) {
-        friends.update(
-          friendPictureSnapshot.key,
-          (friend) => friend..profilePicture = friendPictureSnapshot.value,
-        );
+      // friendPictureSnapshots.forEach((friendPictureSnapshot) {
+      // friends.update(
+      //   friendPictureSnapshot.value,
+      //   (friend) => friend
+      //     ..profilePicture =
+      //         Uri.parse(friendPictureSnapshot.value).data.contentAsBytes(),
+      // );
+
+      //   print(friends[friendPictureSnapshot.key].profilePicture);
+      // });
+
+      int i = 0;
+      friends.forEach((friendKey, friend) {
+        final friendPictureSnapshot = friendPictureSnapshots[i];
+
+        if (friendPictureSnapshot.value != null)
+          friends.update(
+            friendKey,
+            (friend) => friend
+              ..profilePicture =
+                  Uri.parse(friendPictureSnapshot.value).data.contentAsBytes(),
+          );
+
+        i++;
       });
 
       return friends;

@@ -1,9 +1,11 @@
+import 'dart:typed_data';
+
 import 'package:flutter/foundation.dart';
 
 class Friend {
   final String name;
   final String username;
-  String profilePicture;
+  Uint8List profilePicture;
 
   Friend({
     @required this.name,

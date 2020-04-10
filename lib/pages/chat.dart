@@ -17,7 +17,9 @@ class Chat extends StatelessWidget {
         final hasFriends = model.friendState.friends != null;
 
         if (!hasFriends) {
-          model.getFriends(model.authState.user.id);
+          model.getFriends(model.authState.user.id).then((isSuccessful) {
+            if (isSuccessful) model.getFriendsWithPictures();
+          });
         }
 
         return Scaffold(
@@ -41,6 +43,8 @@ class Chat extends StatelessWidget {
                   itemCount: model.friendState.friends.length,
                   itemBuilder: (context, index) {
                     final friendKeys = model.friendState.friends.keys.toList();
+                    // print(model
+                    //     .friendState.friends[friendKeys[index]].profilePicture);
 
                     return FriendWidget(
                       model,

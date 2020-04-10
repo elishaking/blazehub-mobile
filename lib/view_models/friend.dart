@@ -25,8 +25,8 @@ class FriendViewModel {
   }
 
   Future<bool> getFriendsWithPictures() async {
-    final friends =
-        await friendService.getFriendsWithPictures(friendState.friends);
+    final friends = await friendService
+        .getFriendsWithPictures(_store.state.friendState.friends);
 
     if (friends == null) return false;
 
