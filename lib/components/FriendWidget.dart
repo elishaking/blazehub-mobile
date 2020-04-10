@@ -17,13 +17,11 @@ class FriendWidget extends StatelessWidget {
     // print(friend.profilePicture);
     return ListTile(
       onTap: onTap,
-      leading: friend.profilePicture == null
-          ? Icon(Icons.person)
-          : SmallProfilePicture(
-              friend.profilePicture,
-              friendKey,
-              padding: 0,
-            ),
+      leading: SmallProfilePicture(
+        friend.profilePicture,
+        friendKey,
+        padding: 0,
+      ),
       title: Text(
         friend.name,
       ),
