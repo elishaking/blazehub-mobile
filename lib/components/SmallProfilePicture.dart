@@ -5,6 +5,8 @@ import 'package:blazehub/values/colors.dart';
 import 'package:flutter/material.dart';
 
 class SmallProfilePicture extends StatelessWidget {
+  static const String AUTH_USER = 'auth-user';
+
   final Uint8List smallProfilePicture;
   final double padding;
   final String uniqueID;

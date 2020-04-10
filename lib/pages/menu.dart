@@ -30,7 +30,7 @@ class Menu extends StatelessWidget {
                   contentPadding: EdgeInsets.symmetric(horizontal: 0),
                   leading: SmallProfilePicture(
                     model.authState.smallProfilePicture,
-                    'user-head',
+                    SmallProfilePicture.AUTH_USER,
                   ),
                   title: Text(
                       '${model.authState.user.firstName} ${model.authState.user.lastName}'),
