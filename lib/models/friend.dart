@@ -3,10 +3,12 @@ import 'package:flutter/foundation.dart';
 class Friend {
   final String name;
   final String username;
+  String profilePicture;
 
   Friend({
     @required this.name,
     @required this.username,
+    this.profilePicture,
   });
 
   factory Friend.fromJSON(Map json) {

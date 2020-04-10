@@ -29,6 +29,36 @@ class FriendService {
     }
   }
 
+  Future<Map<String, Friend>> getFriendsWithPictures(
+      Map<String, Friend> friends) async {
+    try {
+      final friendPictureRefs = List<Future<DataSnapshot>>();
+
+      friends.forEach((friendKey, friend) {
+        friendPictureRefs.add(_dbRef
+            .child('profile-photos')
+            .child(friendKey)
+            .child('avatar-small')
+            .once());
+      });
+
+      final friendPictureSnapshots = await Future.wait(friendPictureRefs);
+
+      friendPictureSnapshots.forEach((friendPictureSnapshot) {
+        friends.update(
+          friendPictureSnapshot.key,
+          (friend) => friend..profilePicture = friendPictureSnapshot.value,
+        );
+      });
+
+      return friends;
+    } catch (err) {
+      print(err);
+
+      return friends;
+    }
+  }
+
   Future<Map<String, AuthUser>> findUsersWithName(
       String nameQuery, String userID) async {
     final nameQueryWords = nameQuery.split(" ");
