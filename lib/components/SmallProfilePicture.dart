@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 
 class SmallProfilePicture extends StatelessWidget {
   final Uint8List smallProfilePicture;
-  const SmallProfilePicture(this.smallProfilePicture);
+  final double padding;
+  const SmallProfilePicture(this.smallProfilePicture, {this.padding = 10});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(10),
+      padding: EdgeInsets.all(padding),
       child: SizedBox(
         // width: 20,
         // height: 20,

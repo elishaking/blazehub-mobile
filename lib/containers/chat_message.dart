@@ -1,3 +1,4 @@
+import 'package:blazehub/components/SmallProfilePicture.dart';
 import 'package:blazehub/models/chat.dart';
 import 'package:blazehub/utils/date.dart';
 import 'package:blazehub/values/colors.dart';
@@ -47,8 +48,8 @@ class ChatMessage extends StatelessWidget {
             margin: EdgeInsets.only(bottom: 60),
             child: hasMessages
                 ? MessageList(
+                    model,
                     model.chatState.chats[chatID].messages,
-                    model.authState.user.id,
                     _messageListScrollController,
                   )
                 : Center(
@@ -106,11 +107,14 @@ class ChatMessage extends StatelessWidget {
 }
 
 class MessageList extends StatelessWidget {
+  final ChatViewModel model;
   final Map<String, Message> messages;
-  final String userID;
   final ScrollController scrollController;
 
-  MessageList(this.messages, this.userID, this.scrollController);
+  final String userID;
+
+  MessageList(this.model, this.messages, this.scrollController)
+      : userID = model.authState.user.id;
 
   @override
   Widget build(BuildContext context) {
@@ -148,9 +152,12 @@ class MessageList extends StatelessWidget {
                       fromUser ? TextDirection.ltr : TextDirection.rtl,
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    CircleAvatar(
-                      backgroundColor: AppColors.primary,
-                    ),
+                    fromUser
+                        ? SmallProfilePicture(
+                            model.authState.smallProfilePicture,
+                            padding: 0,
+                          )
+                        : CircleAvatar(),
                     SizedBox(
                       width: 10,
                     ),
