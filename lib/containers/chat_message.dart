@@ -50,6 +50,7 @@ class ChatMessage extends StatelessWidget {
                 ? MessageList(
                     model,
                     model.chatState.chats[chatID].messages,
+                    friendID,
                     _messageListScrollController,
                   )
                 : Center(
@@ -109,11 +110,12 @@ class ChatMessage extends StatelessWidget {
 class MessageList extends StatelessWidget {
   final ChatViewModel model;
   final Map<String, Message> messages;
+  final String friendID;
   final ScrollController scrollController;
 
   final String userID;
 
-  MessageList(this.model, this.messages, this.scrollController)
+  MessageList(this.model, this.messages, this.friendID, this.scrollController)
       : userID = model.authState.user.id;
 
   @override
@@ -152,12 +154,12 @@ class MessageList extends StatelessWidget {
                       fromUser ? TextDirection.ltr : TextDirection.rtl,
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    fromUser
-                        ? SmallProfilePicture(
-                            model.authState.smallProfilePicture,
-                            padding: 0,
-                          )
-                        : CircleAvatar(),
+                    SmallProfilePicture(
+                      fromUser
+                          ? model.authState.smallProfilePicture
+                          : model.friendState.friends[friendID].profilePicture,
+                      padding: 0,
+                    ),
                     SizedBox(
                       width: 10,
                     ),

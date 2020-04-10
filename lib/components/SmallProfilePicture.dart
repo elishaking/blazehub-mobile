@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:blazehub/values/colors.dart';
 import 'package:flutter/material.dart';
 
 class SmallProfilePicture extends StatelessWidget {
@@ -14,9 +15,22 @@ class SmallProfilePicture extends StatelessWidget {
       child: SizedBox(
         // width: 20,
         // height: 20,
-        child: CircleAvatar(
-          backgroundImage: MemoryImage(smallProfilePicture),
-        ),
+        child: smallProfilePicture == null
+            ? Stack(
+                alignment: Alignment.center,
+                children: <Widget>[
+                  CircleAvatar(
+                    backgroundColor: AppColors.primary,
+                  ),
+                  Icon(
+                    Icons.person,
+                    color: Colors.white54,
+                  ),
+                ],
+              )
+            : CircleAvatar(
+                backgroundImage: MemoryImage(smallProfilePicture),
+              ),
       ),
     );
   }
