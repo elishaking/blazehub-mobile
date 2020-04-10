@@ -1,6 +1,5 @@
 import 'package:blazehub/models/app.dart';
 import 'package:blazehub/pages/home.dart';
-import './pages/chat.dart';
 import 'package:blazehub/reducers/root.dart';
 import 'package:blazehub/values/colors.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +43,7 @@ class MyApp extends StatelessWidget {
                 ),
           ),
         ),
-        home: Chat(),
+        home: Home(),
       ),
     );
   }
