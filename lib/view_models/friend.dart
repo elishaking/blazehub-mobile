@@ -24,6 +24,16 @@ class FriendViewModel {
     return true;
   }
 
+  Future<bool> getFriendsWithPictures() async {
+    final friends =
+        await friendService.getFriendsWithPictures(friendState.friends);
+
+    if (friends == null) return false;
+
+    _store.dispatch(SetFriends(friends));
+    return true;
+  }
+
   Future<Map<String, AuthUser>> findUsersWithName(
       String nameQuery, String userID) {
     return friendService.findUsersWithName(nameQuery, userID);

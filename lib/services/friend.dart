@@ -55,7 +55,7 @@ class FriendService {
     } catch (err) {
       print(err);
 
-      return friends;
+      return null;
     }
   }
 
