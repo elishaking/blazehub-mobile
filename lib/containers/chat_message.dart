@@ -15,6 +15,8 @@ class ChatMessage extends StatelessWidget {
   final newMessage = {'text': ''};
   final TextEditingController _editingController = TextEditingController();
 
+  final ScrollController _messageListScrollController = ScrollController();
+
   ChatMessage(this.chatID, this.friendID);
 
   @override
@@ -47,6 +49,7 @@ class ChatMessage extends StatelessWidget {
                 ? MessageList(
                     model.chatState.chats[chatID].messages,
                     model.authState.user.id,
+                    _messageListScrollController,
                   )
                 : Center(
                     child: Text('Start Chatting...'),
@@ -81,6 +84,12 @@ class ChatMessage extends StatelessWidget {
                         model.addMessage(message, chatID).then((isSuccessful) {
                           if (isSuccessful) {
                             _editingController.clear();
+                            _messageListScrollController.animateTo(
+                              _messageListScrollController
+                                  .position.maxScrollExtent,
+                              duration: Duration(milliseconds: 700),
+                              curve: Curves.decelerate,
+                            );
                           }
                         });
                       }
@@ -99,14 +108,16 @@ class ChatMessage extends StatelessWidget {
 class MessageList extends StatelessWidget {
   final Map<String, Message> messages;
   final String userID;
+  final ScrollController scrollController;
 
-  MessageList(this.messages, this.userID);
+  MessageList(this.messages, this.userID, this.scrollController);
 
   @override
   Widget build(BuildContext context) {
     final keys = messages.keys.toList();
 
     return ListView.builder(
+      controller: scrollController,
       padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
       itemCount: messages.length,
       itemBuilder: (BuildContext context, int index) {
