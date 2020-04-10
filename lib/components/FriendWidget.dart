@@ -21,6 +21,7 @@ class FriendWidget extends StatelessWidget {
           ? Icon(Icons.person)
           : SmallProfilePicture(
               friend.profilePicture,
+              friendKey,
               padding: 0,
             ),
       title: Text(

@@ -53,7 +53,9 @@ class Home extends StatelessWidget {
                       ));
                     },
                     child: SmallProfilePicture(
-                        model.authState.smallProfilePicture),
+                      model.authState.smallProfilePicture,
+                      'user-head',
+                    ),
                   )
                 : Icon(Icons.person),
             title: Text('BlazeHub'),

@@ -19,19 +19,21 @@ class SmallProfilePictureView extends StatelessWidget {
       builder: (context, model) {
         return Scaffold(
           appBar: AppBar(),
-          body: Stack(
-            alignment: Alignment.center,
-            children: <Widget>[
-              Hero(
-                tag: heroTag,
-                child: Image.memory(
-                  smallProfilePicture,
-                  width: double.maxFinite,
-                  fit: BoxFit.cover,
+          body: Center(
+            child: Stack(
+              alignment: Alignment.center,
+              children: <Widget>[
+                Hero(
+                  tag: heroTag,
+                  child: Image.memory(
+                    smallProfilePicture,
+                    width: double.maxFinite,
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              ),
-              Spinner(),
-            ],
+                Spinner(),
+              ],
+            ),
           ),
         );
       },

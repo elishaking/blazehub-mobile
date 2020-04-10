@@ -46,7 +46,10 @@ class Profile extends StatelessWidget {
           return Scaffold(
             appBar: AppBar(
               leading: hasSmallProfilePicture
-                  ? SmallProfilePicture(model.authState.smallProfilePicture)
+                  ? SmallProfilePicture(
+                      model.authState.smallProfilePicture,
+                      'user-head',
+                    )
                   : Icon(Icons.person),
               centerTitle: true,
               title: Text(model.authState.user.firstName),

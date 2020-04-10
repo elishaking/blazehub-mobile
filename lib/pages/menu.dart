@@ -29,7 +29,10 @@ class Menu extends StatelessWidget {
                 ListTile(
                   contentPadding: EdgeInsets.symmetric(horizontal: 0),
                   leading: hasSmallProfilePicture
-                      ? SmallProfilePicture(model.authState.smallProfilePicture)
+                      ? SmallProfilePicture(
+                          model.authState.smallProfilePicture,
+                          'user-head',
+                        )
                       : Icon(Icons.person),
                   title: Text(
                       '${model.authState.user.firstName} ${model.authState.user.lastName}'),

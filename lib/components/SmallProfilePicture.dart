@@ -1,12 +1,16 @@
 import 'dart:typed_data';
 
+import 'package:blazehub/containers/small_profile_picture_view.dart';
 import 'package:blazehub/values/colors.dart';
 import 'package:flutter/material.dart';
 
 class SmallProfilePicture extends StatelessWidget {
   final Uint8List smallProfilePicture;
   final double padding;
-  const SmallProfilePicture(this.smallProfilePicture, {this.padding = 10});
+  final String uniqueID;
+
+  const SmallProfilePicture(this.smallProfilePicture, this.uniqueID,
+      {this.padding = 10});
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +32,20 @@ class SmallProfilePicture extends StatelessWidget {
                   ),
                 ],
               )
-            : CircleAvatar(
-                backgroundImage: MemoryImage(smallProfilePicture),
+            : GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) =>
+                        SmallProfilePictureView(smallProfilePicture, uniqueID),
+                    fullscreenDialog: true,
+                  ));
+                },
+                child: Hero(
+                  tag: uniqueID,
+                  child: CircleAvatar(
+                    backgroundImage: MemoryImage(smallProfilePicture),
+                  ),
+                ),
               ),
       ),
     );
