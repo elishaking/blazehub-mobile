@@ -44,7 +44,11 @@ class _SmallProfilePictureViewState extends State<SmallProfilePictureView> {
         }
 
         return Scaffold(
-          appBar: AppBar(),
+          backgroundColor: Colors.white24,
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+          ),
           body: Center(
               child: fullImage == null
                   ? Stack(
