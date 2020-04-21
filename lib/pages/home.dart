@@ -54,8 +54,8 @@ class Home extends StatelessWidget {
                     },
                     child: SmallProfilePicture(
                       model.authState.smallProfilePicture,
-                      SmallProfilePicture.AUTH_USER,
-                      model.authState.user.id,
+                      uniqueID: SmallProfilePicture.AUTH_USER,
+                      pictureID: model.authState.user.id,
                     ),
                   )
                 : Icon(Icons.person),

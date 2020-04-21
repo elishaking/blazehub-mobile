@@ -75,8 +75,8 @@ class PostState {
 }
 
 abstract class PostSource {
-  static const home = "home";
-  static const profile = "profile";
+  static const HOME = "home";
+  static const PROFILE = "profile";
 }
 
 class Comment {

@@ -49,8 +49,8 @@ class Profile extends StatelessWidget {
               leading: hasSmallProfilePicture
                   ? SmallProfilePicture(
                       model.authState.smallProfilePicture,
-                      SmallProfilePicture.AUTH_USER,
-                      model.authState.user.id,
+                      uniqueID: SmallProfilePicture.AUTH_USER,
+                      pictureID: model.authState.user.id,
                     )
                   : Icon(Icons.person),
               centerTitle: true,
@@ -201,7 +201,7 @@ class Profile extends StatelessWidget {
           PostWidget(
             post,
             model,
-            postSource: PostSource.profile,
+            postSource: PostSource.PROFILE,
           ),
         );
     });

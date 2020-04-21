@@ -15,7 +15,7 @@ class PostWidget extends StatefulWidget {
     this.post,
     this.model, {
     this.shouldDisplayBookmarkButton = true,
-    this.postSource = PostSource.home,
+    this.postSource = PostSource.HOME,
     Key key,
   }) : super(key: key);
 
@@ -123,8 +123,8 @@ class _PostWidgetState extends State<PostWidget> {
     return ListTile(
       leading: SmallProfilePicture(
         _postUserImage,
-        '${widget.postSource}-${widget.post.id}',
-        widget.post.user.id,
+        uniqueID: '${widget.postSource}-${widget.post.id}',
+        pictureID: widget.post.user.id,
       ),
       title: Text(
         '${widget.post.user.firstName} ${widget.post.user.lastName}',

@@ -19,8 +19,8 @@ class FriendWidget extends StatelessWidget {
       onTap: onTap,
       leading: SmallProfilePicture(
         friend.profilePicture,
-        friendKey,
-        friendKey,
+        uniqueID: friendKey,
+        pictureID: friendKey,
         padding: 0,
       ),
       title: Text(

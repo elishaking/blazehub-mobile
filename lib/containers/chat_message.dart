@@ -158,8 +158,8 @@ class MessageList extends StatelessWidget {
                       fromUser
                           ? model.authState.smallProfilePicture
                           : model.friendState.friends[friendID].profilePicture,
-                      'user-$index',
-                      fromUser ? userID : friendID,
+                      uniqueID: 'user-$index',
+                      pictureID: fromUser ? userID : friendID,
                       padding: 0,
                     ),
                     SizedBox(

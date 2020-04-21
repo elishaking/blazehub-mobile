@@ -13,8 +13,11 @@ class SmallProfilePicture extends StatelessWidget {
   final String pictureID;
 
   const SmallProfilePicture(
-      this.smallProfilePicture, this.uniqueID, this.pictureID,
-      {this.padding = 10});
+    this.smallProfilePicture, {
+    @required this.uniqueID,
+    @required this.pictureID,
+    this.padding = 10,
+  });
 
   @override
   Widget build(BuildContext context) {
