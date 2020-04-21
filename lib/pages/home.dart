@@ -36,6 +36,11 @@ class Home extends StatelessWidget {
     return StoreConnector<AppState, HomeViewModel>(
       converter: (Store<AppState> store) => HomeViewModel.create(store),
       builder: (BuildContext context, HomeViewModel model) {
+        // listen for new posts (if not listening)
+        model.listenForNewPosts();
+
+        final postKeys = model.postsState.posts.keys.toList();
+
         final hasSmallProfilePicture =
             model.authState.smallProfilePicture != null;
 
@@ -77,7 +82,20 @@ class Home extends StatelessWidget {
               SizedBox(
                 height: 20,
               ),
-              ..._buildPosts(model),
+              // ..._buildPosts(model),
+              ListView.builder(
+                primary: false,
+                shrinkWrap: true,
+                itemCount: postKeys.length,
+                itemBuilder: (context, index) {
+                  final postKey = postKeys[index];
+                  final post = model.postsState.posts[postKey];
+
+                  // print('home: ' + postKey);
+
+                  return PostWidget(post, model);
+                },
+              ),
             ],
           ),
           bottomNavigationBar: Hero(
