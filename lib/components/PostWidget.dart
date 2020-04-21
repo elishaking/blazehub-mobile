@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:blazehub/components/SmallProfilePicture.dart';
 import 'package:blazehub/view_models/post.dart';
 import 'package:flutter/material.dart';
 
@@ -14,12 +15,14 @@ class PostWidget extends StatefulWidget {
     this.post,
     this.model, {
     this.shouldDisplayBookmarkButton = true,
+    this.postSource = PostSource.home,
     Key key,
   }) : super(key: key);
 
   final Post post;
   final PostViewModel model;
   final bool shouldDisplayBookmarkButton;
+  final String postSource;
 
   @override
   _PostWidgetState createState() => _PostWidgetState();
@@ -118,11 +121,11 @@ class _PostWidgetState extends State<PostWidget> {
 
   ListTile _buildPostHeader() {
     return ListTile(
-      leading: _postUserImage == null
-          ? Icon(Icons.person)
-          : CircleAvatar(
-              backgroundImage: MemoryImage(_postUserImage),
-            ),
+      leading: SmallProfilePicture(
+        _postUserImage,
+        '${widget.postSource}-${widget.post.id}',
+        widget.post.user.id,
+      ),
       title: Text(
         '${widget.post.user.firstName} ${widget.post.user.lastName}',
         style: TextStyle(

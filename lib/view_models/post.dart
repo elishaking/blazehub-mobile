@@ -52,7 +52,8 @@ class PostViewModel extends FriendViewModel {
       final newPost = Post.fromJSON(newPostData);
 
       _store.dispatch(UpdatePosts({newPost.id: newPost}));
-      print(_store.state.postsState.posts.keys.length);
+      // print(_store.state.postsState.posts);
+      // print(_store.state.postsState.posts.keys.length);
     });
 
     listeningForNewPosts = true;

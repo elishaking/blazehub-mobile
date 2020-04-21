@@ -99,6 +99,8 @@ class Home extends StatelessWidget {
     final List<PostWidget> postsWidget = [];
 
     posts.forEach((postKey, post) {
+      print('home: ' + postKey);
+      // print(post.toJSON());
       postsWidget.add(
         PostWidget(post, model),
       );

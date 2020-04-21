@@ -74,6 +74,11 @@ class PostState {
   }
 }
 
+abstract class PostSource {
+  static const home = "home";
+  static const profile = "profile";
+}
+
 class Comment {
   final int date;
   final String text;

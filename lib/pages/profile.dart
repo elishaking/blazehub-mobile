@@ -3,6 +3,7 @@ import 'package:blazehub/components/PostWidget.dart';
 import 'package:blazehub/components/SmallProfilePicture.dart';
 import 'package:blazehub/components/Spinner.dart';
 import 'package:blazehub/containers/edit_profile.dart';
+import 'package:blazehub/models/posts.dart';
 import 'package:blazehub/pages/add_friend.dart';
 import 'package:blazehub/pages/menu.dart';
 import 'package:blazehub/values/colors.dart';
@@ -197,7 +198,11 @@ class Profile extends StatelessWidget {
     posts.forEach((postKey, post) {
       if (post.user.id == model.authState.user.id)
         postsWidget.add(
-          PostWidget(post, model),
+          PostWidget(
+            post,
+            model,
+            postSource: PostSource.profile,
+          ),
         );
     });
     return postsWidget;
