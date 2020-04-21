@@ -42,13 +42,12 @@ dev_dependencies:
     sdk: flutter
 
   flutter_launcher_icons:
+  # flutter pub pub run flutter_launcher_icons:main
 
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
+flutter_icons:
+  image_path: "assets/logo.png"
+  android: true
+  ios: true
 
-# The following section is specific to Flutter.
 flutter:
   uses-material-design: true
-
-  assets:
-    - assets/logo.png
