@@ -45,12 +45,15 @@ class ProfileViewModel extends PostViewModel {
     return true;
   }
 
-  Future<bool> getCoverPicture(String userID) async {
+  Future<bool> getCoverPicture(
+    String userID, {
+    bool isAuthUser = true,
+  }) async {
     final coverPicture = await profileService.getCoverPicture(userID);
 
     if (coverPicture == null) return false;
 
-    _store.dispatch(SetCoverPicture(coverPicture));
+    _store.dispatch(SetCoverPicture(coverPicture, isAuthUser));
     return true;
   }
 
@@ -58,12 +61,15 @@ class ProfileViewModel extends PostViewModel {
     return profileService.getProfilePicture(friendID);
   }
 
-  Future<bool> getProfileInfo(String userID) async {
+  Future<bool> getProfileInfo(
+    String userID, {
+    bool isAuthUser = true,
+  }) async {
     final profileInfo = await profileService.getProfileInfo(userID);
 
     if (profileInfo == null) return false;
 
-    _store.dispatch(SetProfileInfo(profileInfo));
+    _store.dispatch(SetProfileInfo(profileInfo, isAuthUser));
     return true;
   }
 
@@ -73,7 +79,7 @@ class ProfileViewModel extends PostViewModel {
 
     if (!isSuccessful) return false;
 
-    _store.dispatch(SetProfileInfo(profileInfo));
+    _store.dispatch(SetProfileInfo(profileInfo, true));
     return true;
   }
 }

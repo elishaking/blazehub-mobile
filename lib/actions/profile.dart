@@ -11,12 +11,14 @@ class SetProfilePicture {
 
 class SetCoverPicture {
   final Uint8List payload;
+  final bool isAuthUser;
 
-  SetCoverPicture(this.payload);
+  SetCoverPicture(this.payload, this.isAuthUser);
 }
 
 class SetProfileInfo {
   final Profile payload;
+  final bool isAuthUser;
 
-  SetProfileInfo(this.payload);
+  SetProfileInfo(this.payload, this.isAuthUser);
 }
