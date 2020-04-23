@@ -57,6 +57,10 @@ class Profile extends StatelessWidget {
             });
           }
 
+          final profileInfo = isAuthUser
+              ? model.profileState.profileInfo
+              : model.profileState.profileInfoNothAuth;
+
           return Scaffold(
             appBar: AppBar(
               leading: hasSmallProfilePicture
@@ -95,8 +99,8 @@ class Profile extends StatelessWidget {
                   alignment: Alignment.center,
                   child: Text(
                     hasProfile
-                        ? model.profileState.profileInfo.name
-                        : "${model.authState.user.firstName} ${model.authState.user.lastName}",
+                        ? profileInfo.name
+                        : "${user.firstName} ${user.lastName}",
                     style: Theme.of(context).textTheme.display1.merge(
                           TextStyle(
                             color: Colors.black,
