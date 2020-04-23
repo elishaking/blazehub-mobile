@@ -20,7 +20,7 @@ class FriendViewModel {
 
     if (friends == null) return false;
 
-    _store.dispatch(SetFriends(friends));
+    _store.dispatch(SetFriends(friends, userID: userID));
     return true;
   }
 
@@ -55,7 +55,8 @@ class FriendViewModel {
         username: friend.username,
       ),
     };
-    _store.dispatch(SetFriends(newFriend));
+    // FIXME: create a new action for this - **
+    _store.dispatch(SetFriends(newFriend, userID: userID));
     return true;
   }
 }

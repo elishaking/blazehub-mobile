@@ -42,6 +42,7 @@ class AppState {
           profileInfoNothAuth: null,
         ),
         friendState = FriendState(
+          userID: null,
           friends: null,
         ),
         chatState = ChatState(

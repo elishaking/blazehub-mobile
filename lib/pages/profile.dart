@@ -35,7 +35,10 @@ class Profile extends StatelessWidget {
               isAuthUser && model.profileState.coverPicture != null;
           final hasProfile =
               isAuthUser && model.profileState.profileInfo != null;
-          final hasFriends = isAuthUser && model.friendState.friends != null;
+
+          final hasFriends = isAuthUser &&
+              model.friendState.userID == model.authState.user.id &&
+              model.friendState.friends != null;
 
           final hasSmallProfilePicture =
               model.authState.smallProfilePicture != null;
