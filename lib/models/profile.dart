@@ -79,7 +79,9 @@ class ProfileState {
     Uint8List profilePicture,
     Uint8List profilePictureNotAuth,
     Uint8List coverPicture,
+    Uint8List coverPictureNotAuth,
     Profile profileInfo,
+    Profile profileInfoNothAuth,
   }) {
     return ProfileState(
       profilePicture: profilePicture ?? this.profilePicture,
