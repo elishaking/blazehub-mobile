@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:blazehub/components/SmallProfilePicture.dart';
+import 'package:blazehub/pages/profile.dart';
 import 'package:blazehub/view_models/post.dart';
 import 'package:flutter/material.dart';
 
@@ -134,6 +135,17 @@ class _PostWidgetState extends State<PostWidget> {
         ),
       ),
       subtitle: Text(getMonthDayFromInt(widget.post.date)),
+      onTap: () {
+        if (widget.post.user.id == widget.model.authState.user.id)
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => Profile()),
+          );
+        else
+          Navigator.of(context).push(
+            MaterialPageRoute(
+                builder: (context) => Profile(user: widget.post.user)),
+          );
+      },
     );
   }
 

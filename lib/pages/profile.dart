@@ -16,7 +16,7 @@ import 'package:blazehub/models/app.dart';
 import 'package:blazehub/view_models/profile.dart';
 
 class Profile extends StatelessWidget {
-  const Profile({user}) : _user = user;
+  const Profile({AuthUser user}) : _user = user;
 
   final AuthUser _user;
 
