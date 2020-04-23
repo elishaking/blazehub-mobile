@@ -199,24 +199,30 @@ class _CreatePostFormState extends State<CreatePostForm> {
                 ),
                 _postImage == null
                     ? Container()
-                    : Stack(
-                        children: <Widget>[
-                          Image.file(_postImage),
-                          Positioned(
-                            top: 10,
-                            right: 10,
-                            child: FloatingActionButton(
-                              mini: true,
-                              backgroundColor: Colors.black45,
-                              child: Icon(Icons.close),
-                              onPressed: () {
-                                setState(() {
-                                  _postImage = null;
-                                });
-                              },
+                    : Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Stack(
+                          children: <Widget>[
+                            ClipRRect(
+                              child: Image.file(_postImage),
+                              borderRadius: BorderRadius.circular(15),
                             ),
-                          )
-                        ],
+                            Positioned(
+                              top: 10,
+                              right: 10,
+                              child: FloatingActionButton(
+                                mini: true,
+                                backgroundColor: Colors.black45,
+                                child: Icon(Icons.close),
+                                onPressed: () {
+                                  setState(() {
+                                    _postImage = null;
+                                  });
+                                },
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                 SizedBox(
                   height: 10,
@@ -227,7 +233,10 @@ class _CreatePostFormState extends State<CreatePostForm> {
                   child: Row(
                     children: <Widget>[
                       IconButton(
-                        icon: Icon(Icons.image),
+                        icon: Icon(
+                          Icons.image,
+                          color: AppColors.primary,
+                        ),
                         onPressed: () {
                           _openImagePicker(context);
                         },
