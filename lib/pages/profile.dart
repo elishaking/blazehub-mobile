@@ -46,10 +46,10 @@ class Profile extends StatelessWidget {
             model.getProfilePicture(user.id, isAuthUser: isAuthUser);
           }
           if (!hasCoverPicture) {
-            model.getCoverPicture(user.id);
+            model.getCoverPicture(user.id, isAuthUser: isAuthUser);
           }
           if (!hasProfile) {
-            model.getProfileInfo(user.id);
+            model.getProfileInfo(user.id, isAuthUser: isAuthUser);
           }
           if (!hasFriends) {
             model.getFriends(user.id).then((isSuccessful) {
@@ -316,7 +316,11 @@ class _ProfilePicturesState extends State<ProfilePictures> {
             children: <Widget>[
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: Image.memory(widget.model.profileState.coverPicture),
+                child: Image.memory(
+                  widget.isAuthUser
+                      ? widget.model.profileState.coverPicture
+                      : widget.model.profileState.coverPictureNotAuth,
+                ),
               ),
               SizedBox(
                 height: widget.deviceWidth / 4,
