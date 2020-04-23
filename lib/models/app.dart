@@ -36,7 +36,9 @@ class AppState {
           profilePicture: null,
           profilePictureNotAuth: null,
           coverPicture: null,
+          coverPictureNotAuth: null,
           profileInfo: null,
+          profileInfoNothAuth: null,
         ),
         friendState = FriendState(
           friends: null,
