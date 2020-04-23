@@ -9,7 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 
 import 'package:blazehub/components/BottomNav.dart';
-import 'package:blazehub/components/PostWidget.dart';
+import 'package:blazehub/components/post_widget.dart';
 import 'package:blazehub/components/SmallProfilePicture.dart';
 import 'package:blazehub/components/Spinner.dart';
 import 'package:blazehub/models/posts.dart';
