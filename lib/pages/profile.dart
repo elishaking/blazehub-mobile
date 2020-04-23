@@ -118,7 +118,8 @@ class Profile extends StatelessWidget {
                 ),
                 _buildFriends(context, model, hasFriends),
                 // Text("Posts")
-                ..._buildPosts(model),
+                ..._buildPosts(
+                    model, isAuthUser ? model.authState.user.id : _user.id),
               ],
             ),
             bottomNavigationBar: Hero(
@@ -215,7 +216,7 @@ class Profile extends StatelessWidget {
     );
   }
 
-  List<PostWidget> _buildPosts(ProfileViewModel model) {
+  List<PostWidget> _buildPosts(ProfileViewModel model, String userID) {
     // TODO: Optimization: create a service method to fetch only the posts created
     // by logged in user
     final posts = model.postsState.posts;
@@ -225,7 +226,7 @@ class Profile extends StatelessWidget {
     final List<PostWidget> postsWidget = [];
 
     posts.forEach((postKey, post) {
-      if (post.user.id == model.authState.user.id)
+      if (post.user.id == userID)
         postsWidget.add(
           PostWidget(
             post,
