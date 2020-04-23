@@ -33,6 +33,7 @@ class AppState {
           posts: Map<String, Post>(),
         ),
         profileState = ProfileState(
+          isAuthUser: false,
           profilePicture: null,
           profilePictureNotAuth: null,
           coverPicture: null,

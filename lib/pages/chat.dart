@@ -14,7 +14,8 @@ class Chat extends StatelessWidget {
     return StoreConnector<AppState, ChatViewModel>(
       converter: (store) => ChatViewModel.create(store),
       builder: (context, model) {
-        final hasFriends = model.friendState.friends != null;
+        final hasFriends =
+            model.profileState.isAuthUser && model.friendState.friends != null;
 
         if (!hasFriends) {
           model.getFriends(model.authState.user.id).then((isSuccessful) {

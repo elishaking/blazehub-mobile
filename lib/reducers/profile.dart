@@ -8,9 +8,11 @@ ProfileState profileReducer(ProfileState state, action) {
 
       return dispatchedAction.isAuthUser
           ? state.copyWith(
+              isAuthUser: true,
               profilePicture: dispatchedAction.payload,
             )
           : state.copyWith(
+              isAuthUser: false,
               profilePictureNotAuth: dispatchedAction.payload,
             );
 
@@ -19,9 +21,11 @@ ProfileState profileReducer(ProfileState state, action) {
 
       return dispatchedAction.isAuthUser
           ? state.copyWith(
+              isAuthUser: true,
               coverPicture: dispatchedAction.payload,
             )
           : state.copyWith(
+              isAuthUser: false,
               coverPictureNotAuth: dispatchedAction.payload,
             );
 
@@ -30,9 +34,11 @@ ProfileState profileReducer(ProfileState state, action) {
 
       return dispatchedAction.isAuthUser
           ? state.copyWith(
+              isAuthUser: true,
               profileInfo: dispatchedAction.payload,
             )
           : state.copyWith(
+              isAuthUser: false,
               profileInfoNothAuth: dispatchedAction.payload,
             );
 

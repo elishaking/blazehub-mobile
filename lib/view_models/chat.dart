@@ -1,5 +1,6 @@
 import 'package:blazehub/actions/chat.dart';
 import 'package:blazehub/models/chat.dart';
+import 'package:blazehub/models/profile.dart';
 import 'package:blazehub/services/chat.dart';
 import 'package:redux/redux.dart';
 
@@ -13,13 +14,16 @@ var messageListener;
 class ChatViewModel extends FriendViewModel {
   final Store<AppState> _store;
   final ChatState chatState;
+  final ProfileState profileState;
 
-  ChatViewModel(this._store, {this.chatState}) : super(_store);
+  ChatViewModel(this._store, {this.chatState, this.profileState})
+      : super(_store);
 
   factory ChatViewModel.create(Store<AppState> store) {
     return ChatViewModel(
       store,
       chatState: store.state.chatState,
+      profileState: store.state.profileState,
     );
   }
 
