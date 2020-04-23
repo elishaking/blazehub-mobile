@@ -4,9 +4,14 @@ import 'package:blazehub/models/profile.dart';
 ProfileState profileReducer(ProfileState state, action) {
   switch (action.runtimeType) {
     case SetProfilePicture:
-      return state.copyWith(
-        profilePicture: (action as SetProfilePicture).payload,
-      );
+      final action = (action as SetProfilePicture);
+      return action.isAuthUser
+          ? state.copyWith(
+              profilePicture: action.payload,
+            )
+          : state.copyWith(
+              profilePicture: action.payload,
+            );
 
     case SetCoverPicture:
       return state.copyWith(

@@ -33,12 +33,15 @@ class ProfileViewModel extends PostViewModel {
     );
   }
 
-  Future<bool> getProfilePicture(String userID) async {
+  Future<bool> getProfilePicture(
+    String userID, {
+    bool isAuthUser = true,
+  }) async {
     final profilePicture = await profileService.getProfilePicture(userID);
 
     if (profilePicture == null) return false;
 
-    _store.dispatch(SetProfilePicture(profilePicture));
+    _store.dispatch(SetProfilePicture(profilePicture, isAuthUser));
     return true;
   }
 

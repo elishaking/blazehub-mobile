@@ -34,6 +34,7 @@ class AppState {
         ),
         profileState = ProfileState(
           profilePicture: null,
+          profilePictureNotAuth: null,
           coverPicture: null,
           profileInfo: null,
         ),

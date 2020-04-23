@@ -3,6 +3,7 @@ import 'package:blazehub/components/post_widget.dart';
 import 'package:blazehub/components/SmallProfilePicture.dart';
 import 'package:blazehub/components/Spinner.dart';
 import 'package:blazehub/containers/edit_profile.dart';
+import 'package:blazehub/models/auth.dart';
 import 'package:blazehub/models/posts.dart';
 import 'package:blazehub/pages/add_friend.dart';
 import 'package:blazehub/pages/menu.dart';
@@ -15,6 +16,10 @@ import 'package:blazehub/models/app.dart';
 import 'package:blazehub/view_models/profile.dart';
 
 class Profile extends StatelessWidget {
+  const Profile({user}) : _user = user;
+
+  final AuthUser _user;
+
   @override
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
@@ -22,24 +27,32 @@ class Profile extends StatelessWidget {
     return StoreConnector<AppState, ProfileViewModel>(
         converter: (store) => ProfileViewModel.create(store),
         builder: (context, model) {
-          final hasProfilePicture = model.profileState.profilePicture != null;
-          final hasCoverPicture = model.profileState.coverPicture != null;
-          final hasProfile = model.profileState.profileInfo != null;
+          final isAuthUser = _user == null;
+
+          final hasProfilePicture =
+              isAuthUser && model.profileState.profilePicture != null;
+          final hasCoverPicture =
+              isAuthUser && model.profileState.coverPicture != null;
+          final hasProfile =
+              isAuthUser && model.profileState.profileInfo != null;
+          final hasFriends = isAuthUser && model.friendState.friends != null;
+
           final hasSmallProfilePicture =
               model.authState.smallProfilePicture != null;
-          final hasFriends = model.friendState.friends != null;
+
+          final user = _user ?? model.authState.user;
 
           if (!hasProfilePicture) {
-            model.getProfilePicture(model.authState.user.id);
+            model.getProfilePicture(user.id, isAuthUser: isAuthUser);
           }
           if (!hasCoverPicture) {
-            model.getCoverPicture(model.authState.user.id);
+            model.getCoverPicture(user.id);
           }
           if (!hasProfile) {
-            model.getProfileInfo(model.authState.user.id);
+            model.getProfileInfo(user.id);
           }
           if (!hasFriends) {
-            model.getFriends(model.authState.user.id).then((isSuccessful) {
+            model.getFriends(user.id).then((isSuccessful) {
               if (isSuccessful) model.getFriendsWithPictures();
             });
           }
@@ -54,7 +67,7 @@ class Profile extends StatelessWidget {
                     )
                   : Icon(Icons.person),
               centerTitle: true,
-              title: Text(model.authState.user.firstName),
+              title: Text(user.firstName),
               actions: <Widget>[
                 IconButton(
                   icon: Icon(Icons.menu),
@@ -69,7 +82,7 @@ class Profile extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
               children: <Widget>[
                 hasProfilePicture && hasCoverPicture
-                    ? ProfilePictures(model, deviceWidth)
+                    ? ProfilePictures(model, deviceWidth, isAuthUser)
                     : Container(
                         padding: EdgeInsets.symmetric(vertical: 10),
                         alignment: Alignment.center,
@@ -285,8 +298,9 @@ class Profile extends StatelessWidget {
 class ProfilePictures extends StatefulWidget {
   final ProfileViewModel model;
   final double deviceWidth;
+  final bool isAuthUser;
 
-  const ProfilePictures(this.model, this.deviceWidth);
+  const ProfilePictures(this.model, this.deviceWidth, this.isAuthUser);
 
   @override
   _ProfilePicturesState createState() => _ProfilePicturesState();
@@ -322,8 +336,11 @@ class _ProfilePicturesState extends State<ProfilePictures> {
               decoration: BoxDecoration(color: Colors.white),
               // alignment: Alignment.center,
               child: CircleAvatar(
-                backgroundImage:
-                    MemoryImage(widget.model.profileState.profilePicture),
+                backgroundImage: MemoryImage(
+                  widget.isAuthUser
+                      ? widget.model.profileState.profilePicture
+                      : widget.model.profileState.profilePictureNotAuth,
+                ),
               ),
             ),
           ),

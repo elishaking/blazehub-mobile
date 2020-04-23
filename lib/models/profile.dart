@@ -60,22 +60,27 @@ class Profile {
 
 class ProfileState {
   Uint8List profilePicture;
+  Uint8List profilePictureNotAuth;
   Uint8List coverPicture;
   Profile profileInfo;
 
   ProfileState({
     @required this.profilePicture,
+    @required this.profilePictureNotAuth,
     @required this.coverPicture,
     @required this.profileInfo,
   });
 
   ProfileState copyWith({
     Uint8List profilePicture,
+    Uint8List profilePictureNotAuth,
     Uint8List coverPicture,
     Profile profileInfo,
   }) {
     return ProfileState(
       profilePicture: profilePicture ?? this.profilePicture,
+      profilePictureNotAuth:
+          profilePictureNotAuth ?? this.profilePictureNotAuth,
       coverPicture: coverPicture ?? this.coverPicture,
       profileInfo: profileInfo ?? this.profileInfo,
     );
