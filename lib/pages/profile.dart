@@ -15,6 +15,8 @@ import 'package:blazehub/components/BottomNav.dart';
 import 'package:blazehub/models/app.dart';
 import 'package:blazehub/view_models/profile.dart';
 
+bool _requested = false;
+
 class Profile extends StatelessWidget {
   const Profile({AuthUser user}) : _user = user;
 
@@ -45,24 +47,30 @@ class Profile extends StatelessWidget {
 
           final user = _user ?? model.authState.user;
 
-          if (!hasProfilePicture) {
-            model.getProfilePicture(user.id, isAuthUser: isAuthUser);
+          if (!hasProfilePicture && !_requested) {
+            model
+                .getProfilePicture(user.id, isAuthUser: isAuthUser)
+                .then((onValue) => print(onValue));
           }
-          if (!hasCoverPicture) {
+          if (!hasCoverPicture && !_requested) {
             model.getCoverPicture(user.id, isAuthUser: isAuthUser);
           }
-          if (!hasProfile) {
+          if (!hasProfile && !_requested) {
             model.getProfileInfo(user.id, isAuthUser: isAuthUser);
           }
-          if (!hasFriends) {
+          if (!hasFriends && !_requested) {
             model.getFriends(user.id).then((isSuccessful) {
               if (isSuccessful) model.getFriendsWithPictures();
             });
           }
 
+          _requested = true;
+
           final profileInfo = isAuthUser
               ? model.profileState.profileInfo
               : model.profileState.profileInfoNothAuth;
+
+          print("profile: rebuilding...");
 
           return Scaffold(
             appBar: AppBar(
