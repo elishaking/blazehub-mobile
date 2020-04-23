@@ -108,81 +108,7 @@ class Profile extends StatelessWidget {
                 SizedBox(
                   height: 10,
                 ),
-                hasProfile
-                    ? Container(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: AppColors.light),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Column(
-                          children: <Widget>[
-                            ListTile(
-                              contentPadding: EdgeInsets.all(0),
-                              leading: Icon(Icons.book),
-                              title: Text(model.profileState.profileInfo.bio),
-                            ),
-                            Container(
-                              height: 1,
-                              color: AppColors.light,
-                              margin: EdgeInsets.only(top: 10),
-                            ),
-                            ListTile(
-                              contentPadding: EdgeInsets.all(0),
-                              leading: Icon(Icons.location_city),
-                              title:
-                                  Text(model.profileState.profileInfo.location),
-                            ),
-                            Container(
-                              height: 1,
-                              color: AppColors.light,
-                              margin: EdgeInsets.only(top: 10),
-                            ),
-                            ListTile(
-                              contentPadding: EdgeInsets.all(0),
-                              leading: Icon(Icons.web),
-                              title:
-                                  Text(model.profileState.profileInfo.website),
-                            ),
-                            Container(
-                              height: 1,
-                              color: AppColors.light,
-                              margin: EdgeInsets.only(top: 10),
-                            ),
-                            ListTile(
-                              contentPadding: EdgeInsets.all(0),
-                              leading: Icon(Icons.date_range),
-                              title: Text(model.profileState.profileInfo.birth),
-                            ),
-                            Container(
-                              height: 1,
-                              color: AppColors.light,
-                              margin: EdgeInsets.symmetric(vertical: 10),
-                            ),
-                            RaisedButton(
-                              onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => EditProfile(model),
-                                  fullscreenDialog: true,
-                                ));
-                              },
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Icon(Icons.edit),
-                                  SizedBox(
-                                    width: 16,
-                                  ),
-                                  Text('Edit Profile'),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      )
-                    : Container(),
-
+                _buildProfileInfo(context, model, hasProfile),
                 SizedBox(
                   height: 30,
                 ),
@@ -197,6 +123,92 @@ class Profile extends StatelessWidget {
             ),
           );
         });
+  }
+
+  Widget _buildProfileInfo(
+    BuildContext context,
+    ProfileViewModel model,
+    bool hasProfile,
+  ) {
+    if (!hasProfile) return Container();
+
+    final isAuthUser = _user == null;
+
+    final profileInfo = isAuthUser
+        ? model.profileState.profileInfo
+        : model.profileState.profileInfoNothAuth;
+
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      decoration: BoxDecoration(
+        border: Border.all(color: AppColors.light),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        children: <Widget>[
+          ListTile(
+            contentPadding: EdgeInsets.all(0),
+            leading: Icon(Icons.book),
+            title: Text(profileInfo.bio),
+          ),
+          Container(
+            height: 1,
+            color: AppColors.light,
+            margin: EdgeInsets.only(top: 10),
+          ),
+          ListTile(
+            contentPadding: EdgeInsets.all(0),
+            leading: Icon(Icons.location_city),
+            title: Text(profileInfo.location),
+          ),
+          Container(
+            height: 1,
+            color: AppColors.light,
+            margin: EdgeInsets.only(top: 10),
+          ),
+          ListTile(
+            contentPadding: EdgeInsets.all(0),
+            leading: Icon(Icons.web),
+            title: Text(profileInfo.website),
+          ),
+          Container(
+            height: 1,
+            color: AppColors.light,
+            margin: EdgeInsets.only(top: 10),
+          ),
+          ListTile(
+            contentPadding: EdgeInsets.all(0),
+            leading: Icon(Icons.date_range),
+            title: Text(profileInfo.birth),
+          ),
+          if (isAuthUser) ...[
+            Container(
+              height: 1,
+              color: AppColors.light,
+              margin: EdgeInsets.symmetric(vertical: 10),
+            ),
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => EditProfile(model),
+                  fullscreenDialog: true,
+                ));
+              },
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Icon(Icons.edit),
+                  SizedBox(
+                    width: 16,
+                  ),
+                  Text('Edit Profile'),
+                ],
+              ),
+            )
+          ]
+        ],
+      ),
+    );
   }
 
   List<PostWidget> _buildPosts(ProfileViewModel model) {
