@@ -13,16 +13,20 @@ final postStream = postsService.newPostAdded();
 bool listeningForNewPosts = false;
 var postListener;
 
-bool listeningForComments = false;
+bool listeningForNewComments = false;
 var commentListener;
 
 class PostViewModel extends FriendViewModel {
   final Store<AppState> _store;
   final AuthState authState;
+  final PostState postsState;
 
   Stream postCommentsStream;
 
-  PostViewModel(this._store, this.authState) : super(_store);
+  PostViewModel(this._store)
+      : this.authState = _store.state.authState,
+        this.postsState = _store.state.postsState,
+        super(_store);
 
   Future<bool> createPost(Post post, {String postID}) {
     return postsService.createPost(post, postID: postID);
@@ -36,27 +40,35 @@ class PostViewModel extends FriendViewModel {
     // TODO: dispose this stream
     if (listeningForNewPosts) return;
 
-    postListener = postStream.listen((onData) {
+    postListener = postStream.listen((onData) async {
       // print(onData.snapshot.value);
       final newPostData = onData.snapshot.value;
       newPostData['id'] = onData.snapshot.key;
 
+      final postBookmarked = await postsService.isPostBookmarked(
+          onData.snapshot.key, authState.user.id);
+      newPostData['isBookmarked'] = postBookmarked;
+
       final newPost = Post.fromJSON(newPostData);
 
-      _store.dispatch(SetPosts({newPost.id: newPost}));
-      print(_store.state.postsState.posts.keys.length);
+      _store.dispatch(UpdatePosts({newPost.id: newPost}));
+      // print(_store.state.postsState.posts);
+      // print(_store.state.postsState.posts.keys.length);
     });
 
     listeningForNewPosts = true;
   }
 
   void cancelPostListener() {
-    postListener.cancel();
-    listeningForNewPosts = false;
+    if (listeningForNewPosts) {
+      postListener.cancel();
+
+      listeningForNewPosts = false;
+    }
   }
 
   Stream listenForComments(String postID) {
-    if (listeningForComments) return postCommentsStream;
+    if (listeningForNewComments) return postCommentsStream;
 
     postCommentsStream = postsService.newCommentAdded(postID);
     commentListener = postCommentsStream.listen((onData) {
@@ -69,15 +81,17 @@ class PostViewModel extends FriendViewModel {
       print(_store.state.postsState.posts[postID].comments.keys.length);
     });
 
-    listeningForComments = true;
+    listeningForNewComments = true;
 
     return postCommentsStream;
   }
 
   void cancelCommentListener() {
-    commentListener.cancel();
+    if (listeningForNewComments) {
+      commentListener.cancel();
 
-    listeningForComments = false;
+      listeningForNewComments = false;
+    }
   }
 
   Future<bool> togglePostLike(String postID, String userID, bool liked) async {
@@ -98,8 +112,34 @@ class PostViewModel extends FriendViewModel {
     return false;
   }
 
+  Future<bool> togglePostBookmark(
+      String postID, String userID, bool isBookmarked) async {
+    final isSuccessful =
+        await postsService.toggleBookmark(postID, userID, isBookmarked);
+
+    if (isSuccessful) {
+      final newPost = _store.state.postsState.posts[postID];
+      newPost.isBookmarked = !isBookmarked;
+
+      _store.dispatch(UpdatePost(newPost));
+
+      return true;
+    }
+
+    return false;
+  }
+
   Future<bool> addPostComment(Comment comment, String postID) async {
     return await postsService.addComment(comment, postID);
+  }
+
+  Future<bool> getBookmarks(String userID) async {
+    final bookmarks = await postsService.getBookmarks(userID);
+    if (bookmarks == null) return false;
+
+    _store.dispatch(SetPosts(bookmarks));
+
+    return true;
   }
 
   Future<String> getPostImage(String postID) async {
@@ -108,5 +148,9 @@ class PostViewModel extends FriendViewModel {
 
   Future<Uint8List> getPostUserImage(String postUserID) {
     return postsService.getPostUserImage(postUserID);
+  }
+
+  void resetPosts() {
+    _store.dispatch(SetPosts(null));
   }
 }

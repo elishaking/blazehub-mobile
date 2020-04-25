@@ -1,19 +1,30 @@
+import 'package:blazehub/components/SmallProfilePicture.dart';
+import 'package:blazehub/models/friend.dart';
 import 'package:blazehub/view_models/friend.dart';
 import 'package:flutter/material.dart';
 
 class FriendWidget extends StatelessWidget {
-  const FriendWidget(this.model, this.friendKey);
+  FriendWidget(this.model, this.friendKey, {this.onTap})
+      : friend = model.friendState.friends[friendKey];
 
   final String friendKey;
   final FriendViewModel model;
+  final Friend friend;
+  final Function onTap;
 
   @override
   Widget build(BuildContext context) {
+    // print(friend.profilePicture);
     return ListTile(
-      onTap: () {},
-      leading: Icon(Icons.person),
+      onTap: onTap,
+      leading: SmallProfilePicture(
+        friend.profilePicture,
+        uniqueID: friendKey,
+        pictureID: friendKey,
+        padding: 0,
+      ),
       title: Text(
-        model.friendState.friends[friendKey].name,
+        friend.name,
       ),
     );
   }

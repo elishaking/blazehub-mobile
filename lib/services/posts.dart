@@ -55,6 +55,41 @@ class PostsService {
     }
   }
 
+  Future<bool> toggleBookmark(
+      String postID, String userID, bool isBookmarked) async {
+    try {
+      final toggleBookmarkRef =
+          _dbRef.child('bookmarks').child(userID).child(postID);
+
+      if (isBookmarked) {
+        await toggleBookmarkRef.remove();
+      } else {
+        await toggleBookmarkRef.set(true);
+      }
+
+      return true;
+    } catch (err) {
+      print(err);
+
+      return false;
+    }
+  }
+
+  Future<bool> isPostBookmarked(String postID, String userID) async {
+    try {
+      final postBookmarkedSnapshot =
+          await _dbRef.child('bookmarks').child(userID).child(postID).once();
+
+      return postBookmarkedSnapshot.value == null
+          ? false
+          : postBookmarkedSnapshot.value;
+    } catch (err) {
+      print(err);
+
+      return false;
+    }
+  }
+
   Future<bool> addComment(Comment comment, String postID) async {
     try {
       await _dbRef
@@ -73,6 +108,39 @@ class PostsService {
 
   Stream<Event> newCommentAdded(String postID) {
     return _dbRef.child('posts').child(postID).child('comments').onChildAdded;
+  }
+
+  Future<Map<String, Post>> getBookmarks(String userID) async {
+    try {
+      final bookmarksSnapshot =
+          await _dbRef.child('bookmarks').child(userID).once();
+
+      if (bookmarksSnapshot.value == null) return null;
+
+      final bookmarksPostRef = List<Future<DataSnapshot>>();
+      bookmarksSnapshot.value.forEach((postKey, post) {
+        bookmarksPostRef.add(_dbRef.child('posts').child(postKey).once());
+      });
+
+      final bookmarkedPostSnapshots = await Future.wait(bookmarksPostRef);
+
+      final bookmarks = Map<String, Post>();
+      bookmarkedPostSnapshots.forEach((bookmarkedPostSnapshot) {
+        bookmarks.putIfAbsent(bookmarkedPostSnapshot.key, () {
+          final newBookmarkedPost = Post.fromJSON(bookmarkedPostSnapshot.value);
+          newBookmarkedPost.id = bookmarkedPostSnapshot.key;
+          newBookmarkedPost.isBookmarked = true;
+
+          return newBookmarkedPost;
+        });
+      });
+
+      return bookmarks;
+    } catch (err) {
+      print(err);
+
+      return null;
+    }
   }
 
   Future<String> getPostImage(String postID) async {

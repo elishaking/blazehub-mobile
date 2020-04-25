@@ -1,5 +1,7 @@
 import 'dart:typed_data';
 
+import 'package:blazehub/components/SmallProfilePicture.dart';
+import 'package:blazehub/pages/profile.dart';
 import 'package:blazehub/view_models/post.dart';
 import 'package:flutter/material.dart';
 
@@ -13,11 +15,15 @@ class PostWidget extends StatefulWidget {
   const PostWidget(
     this.post,
     this.model, {
+    this.shouldDisplayBookmarkButton = true,
+    this.postSource = PostSource.HOME,
     Key key,
   }) : super(key: key);
 
   final Post post;
   final PostViewModel model;
+  final bool shouldDisplayBookmarkButton;
+  final String postSource;
 
   @override
   _PostWidgetState createState() => _PostWidgetState();
@@ -116,11 +122,11 @@ class _PostWidgetState extends State<PostWidget> {
 
   ListTile _buildPostHeader() {
     return ListTile(
-      leading: _postUserImage == null
-          ? Icon(Icons.person)
-          : CircleAvatar(
-              backgroundImage: MemoryImage(_postUserImage),
-            ),
+      leading: SmallProfilePicture(
+        _postUserImage,
+        uniqueID: '${widget.postSource}-${widget.post.id}',
+        pictureID: widget.post.user.id,
+      ),
       title: Text(
         '${widget.post.user.firstName} ${widget.post.user.lastName}',
         style: TextStyle(
@@ -129,6 +135,18 @@ class _PostWidgetState extends State<PostWidget> {
         ),
       ),
       subtitle: Text(getMonthDayFromInt(widget.post.date)),
+      onTap: () {
+        updateRequested(false);
+        if (widget.post.user.id == widget.model.authState.user.id)
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => Profile()),
+          );
+        else
+          Navigator.of(context).push(
+            MaterialPageRoute(
+                builder: (context) => Profile(user: widget.post.user)),
+          );
+      },
     );
   }
 
@@ -177,14 +195,26 @@ class _PostWidgetState extends State<PostWidget> {
           Flexible(
             child: Container(),
           ),
-          IconButton(
-            color: widget.post.isBookmarked ? AppColors.primary : Colors.grey,
-            icon: Icon(
-              Icons.bookmark,
-              size: 20,
-            ),
-            onPressed: () {},
-          ),
+          widget.shouldDisplayBookmarkButton
+              ? IconButton(
+                  color: widget.post.isBookmarked
+                      ? AppColors.primary
+                      : Colors.grey,
+                  icon: Icon(
+                    Icons.bookmark,
+                    size: 20,
+                  ),
+                  onPressed: () {
+                    widget.model
+                        .togglePostBookmark(
+                          widget.post.id,
+                          widget.model.authState.user.id,
+                          widget.post.isBookmarked,
+                        )
+                        .then((isSuccessful) => setState(() {}));
+                  },
+                )
+              : Container(),
         ],
       ),
     );

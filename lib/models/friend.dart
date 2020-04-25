@@ -1,12 +1,16 @@
+import 'dart:typed_data';
+
 import 'package:flutter/foundation.dart';
 
 class Friend {
   final String name;
   final String username;
+  Uint8List profilePicture;
 
   Friend({
     @required this.name,
     @required this.username,
+    this.profilePicture,
   });
 
   factory Friend.fromJSON(Map json) {
@@ -25,11 +29,15 @@ class Friend {
 }
 
 class FriendState {
+  String userID;
   Map<String, Friend> friends;
 
-  FriendState({@required this.friends});
+  FriendState({
+    @required this.friends,
+    @required this.userID,
+  });
 
-  FriendState copyWith({Map<String, Friend> friends}) {
+  FriendState copyWith({String userID, Map<String, Friend> friends}) {
     if (this.friends == null) this.friends = Map();
 
     final newFriends = this.friends.map(
@@ -38,7 +46,17 @@ class FriendState {
 
     if (friends != null) newFriends.addEntries(friends.entries);
 
-    return FriendState(friends: newFriends);
+    return FriendState(
+      userID: userID ?? this.userID,
+      friends: newFriends,
+    );
+  }
+
+  FriendState replaceWith({String userID, Map<String, Friend> friends}) {
+    return FriendState(
+      userID: userID ?? this.userID,
+      friends: friends ?? this.friends,
+    );
   }
 }
 

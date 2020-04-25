@@ -4,8 +4,13 @@ import 'package:blazehub/models/posts.dart';
 PostState postsReducer(PostState postState, action) {
   switch (action.runtimeType) {
     case SetPosts:
-      return postState.copyWith(
+      return postState.replaceWith(
         posts: (action as SetPosts).payload,
+      );
+
+    case UpdatePosts:
+      return postState.copyWith(
+        posts: (action as UpdatePosts).payload,
       );
 
     case UpdatePost:

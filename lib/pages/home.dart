@@ -1,14 +1,15 @@
 import 'dart:io';
 import 'dart:convert';
 
+import 'package:blazehub/pages/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 
-import 'package:blazehub/components/BottomNav.dart';
-import 'package:blazehub/components/PostWidget.dart';
+import 'package:blazehub/components/bottom_nav.dart';
+import 'package:blazehub/components/post_widget.dart';
 import 'package:blazehub/components/SmallProfilePicture.dart';
 import 'package:blazehub/components/Spinner.dart';
 import 'package:blazehub/models/posts.dart';
@@ -35,11 +36,18 @@ class Home extends StatelessWidget {
     return StoreConnector<AppState, HomeViewModel>(
       converter: (Store<AppState> store) => HomeViewModel.create(store),
       builder: (BuildContext context, HomeViewModel model) {
+        // listen for new posts (if not listening)
+        model.listenForNewPosts();
+
+        final postKeys = model.postsState.posts.keys.toList();
+
         final hasSmallProfilePicture =
             model.authState.smallProfilePicture != null;
 
         if (!hasSmallProfilePicture)
           model.getSmallProfilePicture(model.authState.user.id);
+
+        print("home: rebuilding...");
 
         return Scaffold(
           appBar: AppBar(
@@ -52,10 +60,22 @@ class Home extends StatelessWidget {
                       ));
                     },
                     child: SmallProfilePicture(
-                        model.authState.smallProfilePicture),
+                      model.authState.smallProfilePicture,
+                      uniqueID: SmallProfilePicture.AUTH_USER,
+                      pictureID: model.authState.user.id,
+                    ),
                   )
                 : Icon(Icons.person),
             title: Text('BlazeHub'),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.menu),
+                onPressed: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) => Menu()));
+                },
+              )
+            ],
           ),
           body: ListView(
             padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
@@ -65,6 +85,19 @@ class Home extends StatelessWidget {
                 height: 20,
               ),
               ..._buildPosts(model),
+              // ListView.builder(
+              //   primary: false,
+              //   shrinkWrap: true,
+              //   itemCount: postKeys.length,
+              //   itemBuilder: (context, index) {
+              //     final postKey = postKeys[index];
+              //     final post = model.postsState.posts[postKey];
+
+              //     // print('home: ' + postKey);
+
+              //     return PostWidget(post, model);
+              //   },
+              // ),
             ],
           ),
           bottomNavigationBar: Hero(
@@ -86,6 +119,8 @@ class Home extends StatelessWidget {
     final List<PostWidget> postsWidget = [];
 
     posts.forEach((postKey, post) {
+      // print('home: ' + postKey);
+      // print(post.toJSON());
       postsWidget.add(
         PostWidget(post, model),
       );
@@ -166,24 +201,30 @@ class _CreatePostFormState extends State<CreatePostForm> {
                 ),
                 _postImage == null
                     ? Container()
-                    : Stack(
-                        children: <Widget>[
-                          Image.file(_postImage),
-                          Positioned(
-                            top: 10,
-                            right: 10,
-                            child: FloatingActionButton(
-                              mini: true,
-                              backgroundColor: Colors.black45,
-                              child: Icon(Icons.close),
-                              onPressed: () {
-                                setState(() {
-                                  _postImage = null;
-                                });
-                              },
+                    : Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Stack(
+                          children: <Widget>[
+                            ClipRRect(
+                              child: Image.file(_postImage),
+                              borderRadius: BorderRadius.circular(15),
                             ),
-                          )
-                        ],
+                            Positioned(
+                              top: 10,
+                              right: 10,
+                              child: FloatingActionButton(
+                                mini: true,
+                                backgroundColor: Colors.black45,
+                                child: Icon(Icons.close),
+                                onPressed: () {
+                                  setState(() {
+                                    _postImage = null;
+                                  });
+                                },
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                 SizedBox(
                   height: 10,
@@ -194,7 +235,10 @@ class _CreatePostFormState extends State<CreatePostForm> {
                   child: Row(
                     children: <Widget>[
                       IconButton(
-                        icon: Icon(Icons.image),
+                        icon: Icon(
+                          Icons.image,
+                          color: AppColors.primary,
+                        ),
                         onPressed: () {
                           _openImagePicker(context);
                         },
@@ -311,5 +355,13 @@ class _CreatePostFormState extends State<CreatePostForm> {
         );
       },
     );
+  }
+
+  @override
+  void dispose() {
+    widget.model.cancelPostListener();
+    widget.model.cancelCommentListener();
+
+    super.dispose();
   }
 }

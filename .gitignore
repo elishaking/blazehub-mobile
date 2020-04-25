@@ -40,3 +40,7 @@ lib/generated_plugin_registrant.dart
 google-services.json
 
 data/
+
+*.aab
+*.apk
+release/

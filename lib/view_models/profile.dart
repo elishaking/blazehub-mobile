@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:blazehub/actions/profile.dart';
 import 'package:blazehub/models/posts.dart';
 import 'package:blazehub/models/profile.dart';
@@ -20,7 +22,7 @@ class ProfileViewModel extends PostViewModel {
     this.profileState,
     this.postsState,
   })  : _store = store,
-        super(store, authState);
+        super(store);
 
   factory ProfileViewModel.create(Store<AppState> store) {
     return ProfileViewModel(
@@ -31,30 +33,43 @@ class ProfileViewModel extends PostViewModel {
     );
   }
 
-  Future<bool> getProfilePicture(String userID) async {
+  Future<bool> getProfilePicture(
+    String userID, {
+    bool isAuthUser = true,
+  }) async {
     final profilePicture = await profileService.getProfilePicture(userID);
 
     if (profilePicture == null) return false;
 
-    _store.dispatch(SetProfilePicture(profilePicture));
+    _store.dispatch(SetProfilePicture(profilePicture, isAuthUser));
     return true;
   }
 
-  Future<bool> getCoverPicture(String userID) async {
+  Future<bool> getCoverPicture(
+    String userID, {
+    bool isAuthUser = true,
+  }) async {
     final coverPicture = await profileService.getCoverPicture(userID);
 
     if (coverPicture == null) return false;
 
-    _store.dispatch(SetCoverPicture(coverPicture));
+    _store.dispatch(SetCoverPicture(coverPicture, isAuthUser));
     return true;
   }
 
-  Future<bool> getProfileInfo(String userID) async {
+  Future<Uint8List> getFriendProfilePicture(String friendID) async {
+    return profileService.getProfilePicture(friendID);
+  }
+
+  Future<bool> getProfileInfo(
+    String userID, {
+    bool isAuthUser = true,
+  }) async {
     final profileInfo = await profileService.getProfileInfo(userID);
 
     if (profileInfo == null) return false;
 
-    _store.dispatch(SetProfileInfo(profileInfo));
+    _store.dispatch(SetProfileInfo(profileInfo, isAuthUser));
     return true;
   }
 
@@ -64,7 +79,7 @@ class ProfileViewModel extends PostViewModel {
 
     if (!isSuccessful) return false;
 
-    _store.dispatch(SetProfileInfo(profileInfo));
+    _store.dispatch(SetProfileInfo(profileInfo, true));
     return true;
   }
 }

@@ -4,19 +4,43 @@ import 'package:blazehub/models/profile.dart';
 ProfileState profileReducer(ProfileState state, action) {
   switch (action.runtimeType) {
     case SetProfilePicture:
-      return state.copyWith(
-        profilePicture: (action as SetProfilePicture).payload,
-      );
+      final dispatchedAction = (action as SetProfilePicture);
+
+      return dispatchedAction.isAuthUser
+          ? state.copyWith(
+              isAuthUser: true,
+              profilePicture: dispatchedAction.payload,
+            )
+          : state.copyWith(
+              isAuthUser: false,
+              profilePictureNotAuth: dispatchedAction.payload,
+            );
 
     case SetCoverPicture:
-      return state.copyWith(
-        coverPicture: (action as SetCoverPicture).payload,
-      );
+      final dispatchedAction = (action as SetCoverPicture);
+
+      return dispatchedAction.isAuthUser
+          ? state.copyWith(
+              isAuthUser: true,
+              coverPicture: dispatchedAction.payload,
+            )
+          : state.copyWith(
+              isAuthUser: false,
+              coverPictureNotAuth: dispatchedAction.payload,
+            );
 
     case SetProfileInfo:
-      return state.copyWith(
-        profileInfo: (action as SetProfileInfo).payload,
-      );
+      final dispatchedAction = (action as SetProfileInfo);
+
+      return dispatchedAction.isAuthUser
+          ? state.copyWith(
+              isAuthUser: true,
+              profileInfo: dispatchedAction.payload,
+            )
+          : state.copyWith(
+              isAuthUser: false,
+              profileInfoNothAuth: dispatchedAction.payload,
+            );
 
     default:
       return state;

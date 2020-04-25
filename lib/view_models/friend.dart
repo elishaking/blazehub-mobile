@@ -20,6 +20,16 @@ class FriendViewModel {
 
     if (friends == null) return false;
 
+    _store.dispatch(SetFriends(friends, userID: userID));
+    return true;
+  }
+
+  Future<bool> getFriendsWithPictures() async {
+    final friends = await friendService
+        .getFriendsWithPictures(_store.state.friendState.friends);
+
+    if (friends == null) return false;
+
     _store.dispatch(SetFriends(friends));
     return true;
   }
@@ -45,7 +55,8 @@ class FriendViewModel {
         username: friend.username,
       ),
     };
-    _store.dispatch(SetFriends(newFriend));
+    // FIXME: create a new action for this - **
+    _store.dispatch(SetFriends(newFriend, userID: userID));
     return true;
   }
 }

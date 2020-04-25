@@ -1,4 +1,5 @@
-import 'package:blazehub/pages/Menu.dart';
+// import 'package:blazehub/pages/Menu.dart';
+import 'package:blazehub/pages/chat.dart';
 import 'package:blazehub/pages/home.dart';
 import 'package:blazehub/pages/profile.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,8 @@ class BottomNav extends StatelessWidget {
     return BottomNavigationBar(
       currentIndex: currentIndex,
       onTap: (index) {
+        if (currentIndex == 1) updateRequested(false);
+
         Navigator.of(context)
             .pushReplacement(MaterialPageRoute(builder: (BuildContext context) {
           if (index == 0)
@@ -20,10 +23,10 @@ class BottomNav extends StatelessWidget {
           else if (index == 1)
             return Profile();
           else
-            return Menu();
+            return Chat();
         }));
       },
-      items: [
+      items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           title: Text('Home'),
           icon: Icon(Icons.home),
@@ -33,9 +36,13 @@ class BottomNav extends StatelessWidget {
           icon: Icon(Icons.person),
         ),
         BottomNavigationBarItem(
-          title: Text('Menu'),
-          icon: Icon(Icons.menu),
+          title: Text('Chat'),
+          icon: Icon(Icons.chat_bubble),
         ),
+        // BottomNavigationBarItem(
+        //   title: Text('Menu'),
+        //   icon: Icon(Icons.menu),
+        // ),
       ],
     );
   }

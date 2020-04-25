@@ -64,10 +64,19 @@ class PostState {
     // this.posts.map(
     //       (postKey, post) => MapEntry(postKey, post),
     //     );
-    newPosts.addEntries(this.posts.entries);
+    if (this.posts != null) newPosts.addEntries(this.posts.entries);
 
     return PostState(posts: newPosts);
   }
+
+  PostState replaceWith({Map<String, Post> posts}) {
+    return PostState(posts: posts);
+  }
+}
+
+abstract class PostSource {
+  static const HOME = "home";
+  static const PROFILE = "profile";
 }
 
 class Comment {

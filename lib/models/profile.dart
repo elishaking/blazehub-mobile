@@ -59,25 +59,42 @@ class Profile {
 }
 
 class ProfileState {
+  bool isAuthUser;
   Uint8List profilePicture;
+  Uint8List profilePictureNotAuth;
   Uint8List coverPicture;
+  Uint8List coverPictureNotAuth;
   Profile profileInfo;
+  Profile profileInfoNothAuth;
 
   ProfileState({
+    @required this.isAuthUser,
     @required this.profilePicture,
+    @required this.profilePictureNotAuth,
     @required this.coverPicture,
+    @required this.coverPictureNotAuth,
     @required this.profileInfo,
+    @required this.profileInfoNothAuth,
   });
 
   ProfileState copyWith({
+    bool isAuthUser,
     Uint8List profilePicture,
+    Uint8List profilePictureNotAuth,
     Uint8List coverPicture,
+    Uint8List coverPictureNotAuth,
     Profile profileInfo,
+    Profile profileInfoNothAuth,
   }) {
     return ProfileState(
+      isAuthUser: isAuthUser ?? this.isAuthUser,
       profilePicture: profilePicture ?? this.profilePicture,
+      profilePictureNotAuth:
+          profilePictureNotAuth ?? this.profilePictureNotAuth,
       coverPicture: coverPicture ?? this.coverPicture,
+      coverPictureNotAuth: coverPictureNotAuth ?? this.coverPictureNotAuth,
       profileInfo: profileInfo ?? this.profileInfo,
+      profileInfoNothAuth: profileInfoNothAuth ?? this.profileInfoNothAuth,
     );
   }
 }
