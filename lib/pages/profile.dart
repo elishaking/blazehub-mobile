@@ -11,7 +11,7 @@ import 'package:blazehub/values/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
-import 'package:blazehub/components/BottomNav.dart';
+import 'package:blazehub/components/bottom_nav.dart';
 import 'package:blazehub/models/app.dart';
 import 'package:blazehub/view_models/profile.dart';
 

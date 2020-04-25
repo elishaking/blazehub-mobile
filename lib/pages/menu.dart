@@ -1,4 +1,4 @@
-import 'package:blazehub/components/BottomNav.dart';
+import 'package:blazehub/components/bottom_nav.dart';
 import 'package:blazehub/components/SmallProfilePicture.dart';
 import 'package:blazehub/models/app.dart';
 import 'package:blazehub/pages/add_friend.dart';

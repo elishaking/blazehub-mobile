@@ -1,4 +1,4 @@
-import 'package:blazehub/components/BottomNav.dart';
+import 'package:blazehub/components/bottom_nav.dart';
 import 'package:blazehub/components/FriendWidget.dart';
 import 'package:blazehub/components/Spinner.dart';
 import 'package:blazehub/containers/chat_message.dart';
