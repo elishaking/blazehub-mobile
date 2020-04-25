@@ -7,8 +7,6 @@ class ProfileService {
   final _dbRef = FirebaseDatabase.instance.reference();
 
   Future<Uint8List> getProfilePicture(String userID) async {
-
-    print("called");
     try {
       final profilePictureSnapshot = await _dbRef
           .child('profile-photos')

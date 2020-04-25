@@ -136,6 +136,7 @@ class _PostWidgetState extends State<PostWidget> {
       ),
       subtitle: Text(getMonthDayFromInt(widget.post.date)),
       onTap: () {
+        updateRequested(false);
         if (widget.post.user.id == widget.model.authState.user.id)
           Navigator.of(context).push(
             MaterialPageRoute(builder: (context) => Profile()),

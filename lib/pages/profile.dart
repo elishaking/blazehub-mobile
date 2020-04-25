@@ -21,6 +21,10 @@ updateRequested(bool val) {
   _requested = val;
 }
 
+int _profilePicturesLoaded = 0;
+bool _loadedProfilePicture = false;
+bool _loadedCoverPicture = false;
+
 class Profile extends StatelessWidget {
   const Profile({AuthUser user}) : _user = user;
 
@@ -30,47 +34,64 @@ class Profile extends StatelessWidget {
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
 
+    print("profile: build method");
+
+    _profilePicturesLoaded = 0;
+    _loadedProfilePicture = false;
+    _loadedCoverPicture = false;
+
+    final StoreConverter<AppState, ProfileViewModel> storeConverter =
+        (store) => ProfileViewModel.create(store);
+    final ProfileViewModel viewModel =
+        storeConverter(StoreProvider.of(context));
+
+    final isAuthUser = _user == null;
+
+    final hasProfilePicture =
+        isAuthUser && viewModel.profileState.profilePicture != null;
+    final hasCoverPicture =
+        isAuthUser && viewModel.profileState.coverPicture != null;
+    final hasProfile = isAuthUser && viewModel.profileState.profileInfo != null;
+
+    final hasFriends = isAuthUser &&
+        viewModel.friendState.userID == viewModel.authState.user.id &&
+        viewModel.friendState.friends != null;
+
+    final hasSmallProfilePicture =
+        viewModel.authState.smallProfilePicture != null;
+
+    final user = _user ?? viewModel.authState.user;
+
+    if (!hasProfilePicture) {
+      viewModel
+          .getProfilePicture(user.id, isAuthUser: isAuthUser)
+          .then((isSuccessful) {
+        if (isSuccessful) _loadedProfilePicture = true;
+        _profilePicturesLoaded++;
+      });
+    }
+    if (!hasCoverPicture) {
+      viewModel
+          .getCoverPicture(user.id, isAuthUser: isAuthUser)
+          .then((isSuccessful) {
+        if (isSuccessful) _loadedCoverPicture = true;
+        _profilePicturesLoaded++;
+      });
+    }
+    if (!hasProfile) {
+      viewModel.getProfileInfo(user.id, isAuthUser: isAuthUser);
+    }
+    if (!hasFriends) {
+      viewModel.getFriends(user.id).then((isSuccessful) {
+        if (isSuccessful) viewModel.getFriendsWithPictures();
+      });
+    }
+
+    _requested = true;
+
     return StoreConnector<AppState, ProfileViewModel>(
         converter: (store) => ProfileViewModel.create(store),
         builder: (context, model) {
-          final isAuthUser = _user == null;
-
-          final hasProfilePicture =
-              isAuthUser && model.profileState.profilePicture != null;
-          final hasCoverPicture =
-              isAuthUser && model.profileState.coverPicture != null;
-          final hasProfile =
-              isAuthUser && model.profileState.profileInfo != null;
-
-          final hasFriends = isAuthUser &&
-              model.friendState.userID == model.authState.user.id &&
-              model.friendState.friends != null;
-
-          final hasSmallProfilePicture =
-              model.authState.smallProfilePicture != null;
-
-          final user = _user ?? model.authState.user;
-
-          print(_requested);
-          print(hasProfilePicture);
-          print(!hasProfilePicture && !_requested);
-          if (!hasProfilePicture && !_requested) {
-            model.getProfilePicture(user.id, isAuthUser: isAuthUser);
-          }
-          if (!hasCoverPicture && !_requested) {
-            model.getCoverPicture(user.id, isAuthUser: isAuthUser);
-          }
-          if (!hasProfile && !_requested) {
-            model.getProfileInfo(user.id, isAuthUser: isAuthUser);
-          }
-          if (!hasFriends && !_requested) {
-            model.getFriends(user.id).then((isSuccessful) {
-              if (isSuccessful) model.getFriendsWithPictures();
-            });
-          }
-
-          _requested = true;
-
           final profileInfo = isAuthUser
               ? model.profileState.profileInfo
               : model.profileState.profileInfoNothAuth;
@@ -101,13 +122,7 @@ class Profile extends StatelessWidget {
             body: ListView(
               padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
               children: <Widget>[
-                hasProfilePicture && hasCoverPicture
-                    ? ProfilePictures(model, deviceWidth, isAuthUser)
-                    : Container(
-                        padding: EdgeInsets.symmetric(vertical: 10),
-                        alignment: Alignment.center,
-                        child: Spinner(),
-                      ),
+                ProfilePictures(model, deviceWidth, isAuthUser),
                 SizedBox(
                   height: 10,
                 ),
@@ -342,6 +357,21 @@ class ProfilePictures extends StatefulWidget {
 class _ProfilePicturesState extends State<ProfilePictures> {
   @override
   Widget build(BuildContext context) {
+    // final hasProfilePicture = widget.isAuthUser
+    //     ? widget.model.profileState.profilePicture != null
+    //     : widget.model.profileState.profileInfoNothAuth != null;
+
+    // final hasCoverPicture = widget.isAuthUser
+    //     ? widget.model.profileState.coverPicture != null
+    //     : widget.model.profileState.coverPictureNotAuth != null;
+
+    if (_profilePicturesLoaded != 2)
+      return Container(
+        padding: EdgeInsets.symmetric(vertical: 10),
+        alignment: Alignment.center,
+        child: Spinner(),
+      );
+
     return Stack(
       children: <Widget>[
         Container(
@@ -349,11 +379,16 @@ class _ProfilePicturesState extends State<ProfilePictures> {
             children: <Widget>[
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: Image.memory(
-                  widget.isAuthUser
-                      ? widget.model.profileState.coverPicture
-                      : widget.model.profileState.coverPictureNotAuth,
-                ),
+                child: _loadedCoverPicture
+                    ? Image.memory(
+                        widget.isAuthUser
+                            ? widget.model.profileState.coverPicture
+                            : widget.model.profileState.coverPictureNotAuth,
+                      )
+                    : Container(
+                        height: widget.deviceWidth / 2,
+                        color: AppColors.primary.withOpacity(0.7),
+                      ),
               ),
               SizedBox(
                 height: widget.deviceWidth / 4,
@@ -367,19 +402,21 @@ class _ProfilePicturesState extends State<ProfilePictures> {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(1000),
             child: Container(
-              width: widget.deviceWidth / 2,
-              height: widget.deviceWidth / 2,
-              padding: EdgeInsets.all(7),
-              decoration: BoxDecoration(color: Colors.white),
-              // alignment: Alignment.center,
-              child: CircleAvatar(
-                backgroundImage: MemoryImage(
-                  widget.isAuthUser
-                      ? widget.model.profileState.profilePicture
-                      : widget.model.profileState.profilePictureNotAuth,
-                ),
-              ),
-            ),
+                width: widget.deviceWidth / 2,
+                height: widget.deviceWidth / 2,
+                padding: EdgeInsets.all(7),
+                decoration: BoxDecoration(color: Colors.white),
+                // alignment: Alignment.center,
+                child: CircleAvatar(
+                  backgroundImage: _loadedProfilePicture
+                      ? MemoryImage(
+                          widget.isAuthUser
+                              ? widget.model.profileState.profilePicture
+                              : widget.model.profileState.profilePictureNotAuth,
+                        )
+                      : null,
+                  backgroundColor: AppColors.primary,
+                )),
           ),
         ),
         Positioned(
