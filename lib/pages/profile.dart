@@ -34,7 +34,7 @@ class Profile extends StatelessWidget {
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
 
-    print("profile: build method");
+    print("profile: build method called");
 
     _profilePicturesLoaded = 0;
     _loadedProfilePicture = false;
