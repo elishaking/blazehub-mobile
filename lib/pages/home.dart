@@ -47,6 +47,8 @@ class Home extends StatelessWidget {
         if (!hasSmallProfilePicture)
           model.getSmallProfilePicture(model.authState.user.id);
 
+        print("home: rebuilding...");
+
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,
@@ -82,20 +84,20 @@ class Home extends StatelessWidget {
               SizedBox(
                 height: 20,
               ),
-              // ..._buildPosts(model),
-              ListView.builder(
-                primary: false,
-                shrinkWrap: true,
-                itemCount: postKeys.length,
-                itemBuilder: (context, index) {
-                  final postKey = postKeys[index];
-                  final post = model.postsState.posts[postKey];
+              ..._buildPosts(model),
+              // ListView.builder(
+              //   primary: false,
+              //   shrinkWrap: true,
+              //   itemCount: postKeys.length,
+              //   itemBuilder: (context, index) {
+              //     final postKey = postKeys[index];
+              //     final post = model.postsState.posts[postKey];
 
-                  // print('home: ' + postKey);
+              //     // print('home: ' + postKey);
 
-                  return PostWidget(post, model);
-                },
-              ),
+              //     return PostWidget(post, model);
+              //   },
+              // ),
             ],
           ),
           bottomNavigationBar: Hero(
@@ -117,7 +119,7 @@ class Home extends StatelessWidget {
     final List<PostWidget> postsWidget = [];
 
     posts.forEach((postKey, post) {
-      print('home: ' + postKey);
+      // print('home: ' + postKey);
       // print(post.toJSON());
       postsWidget.add(
         PostWidget(post, model),

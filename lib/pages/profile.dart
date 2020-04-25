@@ -17,6 +17,10 @@ import 'package:blazehub/view_models/profile.dart';
 
 bool _requested = false;
 
+updateRequested(bool val) {
+  _requested = val;
+}
+
 class Profile extends StatelessWidget {
   const Profile({AuthUser user}) : _user = user;
 
@@ -47,10 +51,11 @@ class Profile extends StatelessWidget {
 
           final user = _user ?? model.authState.user;
 
+          print(_requested);
+          print(hasProfilePicture);
+          print(!hasProfilePicture && !_requested);
           if (!hasProfilePicture && !_requested) {
-            model
-                .getProfilePicture(user.id, isAuthUser: isAuthUser)
-                .then((onValue) => print(onValue));
+            model.getProfilePicture(user.id, isAuthUser: isAuthUser);
           }
           if (!hasCoverPicture && !_requested) {
             model.getCoverPicture(user.id, isAuthUser: isAuthUser);

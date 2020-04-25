@@ -9,6 +9,14 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:blazehub/models/app.dart';
 import 'package:blazehub/view_models/chat.dart';
 
+scrollToListEnd(ScrollController controller) {
+  controller.animateTo(
+    controller.position.maxScrollExtent,
+    duration: Duration(milliseconds: 700),
+    curve: Curves.decelerate,
+  );
+}
+
 class ChatMessage extends StatelessWidget {
   final String chatID;
   final String friendID;
@@ -31,6 +39,8 @@ class ChatMessage extends StatelessWidget {
         if (!hasMessages) {
           model.listenForMessages(chatID);
         }
+
+        print('chat-message-list: rebuilding...');
 
         return Scaffold(
           appBar: AppBar(
@@ -86,12 +96,8 @@ class ChatMessage extends StatelessWidget {
                         model.addMessage(message, chatID).then((isSuccessful) {
                           if (isSuccessful) {
                             _editingController.clear();
-                            _messageListScrollController.animateTo(
-                              _messageListScrollController
-                                  .position.maxScrollExtent,
-                              duration: Duration(milliseconds: 700),
-                              curve: Curves.decelerate,
-                            );
+
+                            scrollToListEnd(_messageListScrollController);
                           }
                         });
                       }
@@ -121,6 +127,8 @@ class MessageList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final keys = messages.keys.toList();
+
+    _scrollAfterBuild();
 
     return ListView.builder(
       controller: scrollController,
@@ -210,5 +218,10 @@ class MessageList extends StatelessWidget {
         );
       },
     );
+  }
+
+  Future<void> _scrollAfterBuild() async {
+    await Future.delayed(Duration(milliseconds: 0));
+    scrollController.jumpTo(scrollController.position.maxScrollExtent);
   }
 }

@@ -14,6 +14,8 @@ class BottomNav extends StatelessWidget {
     return BottomNavigationBar(
       currentIndex: currentIndex,
       onTap: (index) {
+        if (currentIndex == 1) updateRequested(false);
+
         Navigator.of(context)
             .pushReplacement(MaterialPageRoute(builder: (BuildContext context) {
           if (index == 0)
