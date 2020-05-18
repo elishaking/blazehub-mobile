@@ -30,6 +30,8 @@ class PostWidget extends StatefulWidget {
 }
 
 class _PostWidgetState extends State<PostWidget> {
+  bool loadingImage = true;
+
   @override
   void initState() {
     if (widget.post.postImage == null)
@@ -85,7 +87,17 @@ class _PostWidgetState extends State<PostWidget> {
     );
   }
 
-  Container _buildPostImage() {
+  Widget _buildPostImage() {
+    if (loadingImage && widget.post.imageUrl) {
+      return Container(
+        color: AppColors.light,
+        height: 170,
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
     if (widget.post.postImage == null) return Container();
 
     return Container(
