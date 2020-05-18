@@ -85,33 +85,30 @@ class _HomeState extends State<Home> {
       ),
       body: RefreshIndicator(
         onRefresh: () => Future.value(),
-        child: ListView(
-          padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-          children: <Widget>[
-            CreatePostForm(model),
-            SizedBox(
-              height: 20,
-            ),
-            // ..._buildPosts(model),
-            ListView.builder(
-              shrinkWrap: true,
-              primary: false,
-              itemCount: posts.length + 1,
-              itemBuilder: (context, index) {
-                if (index >= posts.length) {
-                  return Padding(
-                    padding: EdgeInsets.symmetric(vertical: 20),
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  );
-                }
+        child: ListView.builder(
+          padding: EdgeInsets.all(15),
+          itemCount: posts.length + 2,
+          itemBuilder: (context, index) {
+            if (index == 0)
+              return Column(
+                children: <Widget>[
+                  CreatePostForm(model),
+                  SizedBox(
+                    height: 15,
+                  )
+                ],
+              );
 
-                final post = posts[index];
-                return PostWidget(post, model);
-              },
-            ),
-          ],
+            if (index <= posts.length)
+              return PostWidget(posts[index - 1], model);
+
+            return Padding(
+              padding: EdgeInsets.symmetric(vertical: 20),
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          },
         ),
       ),
       bottomNavigationBar: Hero(
