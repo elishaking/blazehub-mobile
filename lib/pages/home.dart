@@ -31,7 +31,6 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    // final store = StoreProvider.of<AppState>(widget.context);
     model = HomeViewModel.create(store);
     hasSmallProfilePicture = model.authState.smallProfilePicture != null;
 
@@ -84,24 +83,36 @@ class _HomeState extends State<Home> {
           )
         ],
       ),
-      body: ListView(
-        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-        children: <Widget>[
-          CreatePostForm(model),
-          SizedBox(
-            height: 20,
-          ),
-          // ..._buildPosts(model),
-          ListView.builder(
-            shrinkWrap: true,
-            primary: false,
-            itemCount: posts.length,
-            itemBuilder: (context, index) {
-              final post = posts[index];
-              return PostWidget(post, model);
-            },
-          ),
-        ],
+      body: RefreshIndicator(
+        onRefresh: () => Future.value(),
+        child: ListView(
+          padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+          children: <Widget>[
+            CreatePostForm(model),
+            SizedBox(
+              height: 20,
+            ),
+            // ..._buildPosts(model),
+            ListView.builder(
+              shrinkWrap: true,
+              primary: false,
+              itemCount: posts.length + 1,
+              itemBuilder: (context, index) {
+                if (index >= posts.length) {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(vertical: 20),
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                }
+
+                final post = posts[index];
+                return PostWidget(post, model);
+              },
+            ),
+          ],
+        ),
       ),
       bottomNavigationBar: Hero(
         tag: 'bottomNav',
