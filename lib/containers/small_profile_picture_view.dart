@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:blazehub/components/SmallProfilePicture.dart';
-import 'package:blazehub/components/Spinner.dart';
+import 'package:blazehub/components/spinner.dart';
 import 'package:blazehub/models/app.dart';
 import 'package:blazehub/view_models/profile.dart';
 import 'package:flutter/material.dart';

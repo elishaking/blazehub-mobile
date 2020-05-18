@@ -1,5 +1,5 @@
 import 'package:blazehub/components/post_widget.dart';
-import 'package:blazehub/components/Spinner.dart';
+import 'package:blazehub/components/spinner.dart';
 import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';

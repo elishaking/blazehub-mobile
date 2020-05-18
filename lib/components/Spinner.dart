@@ -6,7 +6,7 @@ class Spinner extends StatelessWidget {
   final double width;
   final double opacity;
 
-  const Spinner({this.width, this.opacity = 1});
+  const Spinner({this.width = 4, this.opacity = 1});
 
   @override
   Widget build(BuildContext context) {

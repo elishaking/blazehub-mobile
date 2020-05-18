@@ -1,5 +1,5 @@
 import 'package:blazehub/components/BorderContainer.dart';
-import 'package:blazehub/components/Spinner.dart';
+import 'package:blazehub/components/spinner.dart';
 import 'package:blazehub/models/auth.dart';
 import 'package:blazehub/models/friend.dart';
 import 'package:blazehub/values/colors.dart';

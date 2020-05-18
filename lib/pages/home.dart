@@ -10,7 +10,7 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:blazehub/components/bottom_nav.dart';
 import 'package:blazehub/components/post_widget.dart';
 import 'package:blazehub/components/SmallProfilePicture.dart';
-import 'package:blazehub/components/Spinner.dart';
+import 'package:blazehub/components/spinner.dart';
 import 'package:blazehub/models/posts.dart';
 import 'package:blazehub/pages/profile.dart';
 import 'package:blazehub/values/colors.dart';
