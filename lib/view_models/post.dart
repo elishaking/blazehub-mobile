@@ -36,6 +36,17 @@ class PostViewModel extends FriendViewModel {
     return postsService.uploadPostImage(imageDataURL);
   }
 
+  Future<Map<String, Post>> getPosts() async {
+    try {
+      final posts = await postsService.getPosts();
+      _store.dispatch(UpdatePosts(posts));
+
+      return posts;
+    } catch (err) {
+      throw err;
+    }
+  }
+
   void listenForNewPosts() {
     // TODO: dispose this stream
     if (listeningForNewPosts) return;
