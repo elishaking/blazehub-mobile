@@ -38,6 +38,25 @@ class PostsService {
     return _dbRef.child('posts').onChildAdded;
   }
 
+  Future<Map<String, Post>> getPosts() async {
+    try {
+      final postsSnapshot = await _dbRef.child('posts').limitToLast(10).once();
+
+      final Map data = postsSnapshot.value;
+
+      if (data == null) return null;
+
+      final posts = Map<String, Post>();
+      data.forEach((key, post) {
+        posts[key] = Post.fromJSON(post)..id = key;
+      });
+
+      return posts;
+    } catch (err) {
+      throw err;
+    }
+  }
+
   Future<bool> toggleLike(String postID, String userID, bool liked) async {
     try {
       final toggleLikeRef =
