@@ -19,93 +19,86 @@ import 'package:blazehub/values/colors.dart';
 import 'package:blazehub/models/app.dart';
 import 'package:blazehub/view_models/home.dart';
 
-class _Post {
-  String text;
-
-  _Post({this.text});
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
 }
 
-class Home extends StatelessWidget {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final _post = _Post();
+class _HomeState extends State<Home> {
+  HomeViewModel model;
+  bool hasSmallProfilePicture = false;
 
-  final tabTitles = ['Home', 'Profile'];
+  @override
+  void initState() {
+    final store = StoreProvider.of<AppState>(context);
+    model = HomeViewModel.create(store);
+    hasSmallProfilePicture = model.authState.smallProfilePicture != null;
+    if (!hasSmallProfilePicture) {
+      model.getSmallProfilePicture(model.authState.user.id);
+    }
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, HomeViewModel>(
-      converter: (Store<AppState> store) => HomeViewModel.create(store),
-      builder: (BuildContext context, HomeViewModel model) {
-        // listen for new posts (if not listening)
-        model.listenForNewPosts();
+    print("home: rebuilding...");
 
-        final postKeys = model.postsState.posts.keys.toList();
-
-        final hasSmallProfilePicture =
-            model.authState.smallProfilePicture != null;
-
-        if (!hasSmallProfilePicture)
-          model.getSmallProfilePicture(model.authState.user.id);
-
-        print("home: rebuilding...");
-
-        return Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            leading: hasSmallProfilePicture
-                ? GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => Profile(),
-                      ));
-                    },
-                    child: SmallProfilePicture(
-                      model.authState.smallProfilePicture,
-                      uniqueID: SmallProfilePicture.AUTH_USER,
-                      pictureID: model.authState.user.id,
-                    ),
-                  )
-                : Icon(Icons.person),
-            title: Text('BlazeHub'),
-            actions: <Widget>[
-              IconButton(
-                icon: Icon(Icons.menu),
-                onPressed: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) => Menu()));
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        leading: hasSmallProfilePicture
+            ? GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => Profile(),
+                  ));
                 },
+                child: SmallProfilePicture(
+                  model.authState.smallProfilePicture,
+                  uniqueID: SmallProfilePicture.AUTH_USER,
+                  pictureID: model.authState.user.id,
+                ),
               )
-            ],
+            : Icon(Icons.person),
+        title: Text('BlazeHub'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => Menu()));
+            },
+          )
+        ],
+      ),
+      body: ListView(
+        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+        children: <Widget>[
+          CreatePostForm(model),
+          SizedBox(
+            height: 20,
           ),
-          body: ListView(
-            padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-            children: <Widget>[
-              CreatePostForm(model),
-              SizedBox(
-                height: 20,
-              ),
-              ..._buildPosts(model),
-              // ListView.builder(
-              //   primary: false,
-              //   shrinkWrap: true,
-              //   itemCount: postKeys.length,
-              //   itemBuilder: (context, index) {
-              //     final postKey = postKeys[index];
-              //     final post = model.postsState.posts[postKey];
+          ..._buildPosts(model),
+          // ListView.builder(
+          //   primary: false,
+          //   shrinkWrap: true,
+          //   itemCount: postKeys.length,
+          //   itemBuilder: (context, index) {
+          //     final postKey = postKeys[index];
+          //     final post = model.postsState.posts[postKey];
 
-              //     // print('home: ' + postKey);
+          //     // print('home: ' + postKey);
 
-              //     return PostWidget(post, model);
-              //   },
-              // ),
-            ],
-          ),
-          bottomNavigationBar: Hero(
-            tag: 'bottomNav',
-            child: BottomNav(0),
-          ),
-        );
-      },
+          //     return PostWidget(post, model);
+          //   },
+          // ),
+        ],
+      ),
+      bottomNavigationBar: Hero(
+        tag: 'bottomNav',
+        child: BottomNav(0),
+      ),
     );
   }
 
