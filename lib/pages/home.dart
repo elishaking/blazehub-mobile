@@ -2,9 +2,8 @@ import 'dart:io';
 import 'dart:convert';
 
 import 'package:blazehub/pages/menu.dart';
+import 'package:blazehub/store.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux/redux.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 
@@ -16,7 +15,6 @@ import 'package:blazehub/models/posts.dart';
 import 'package:blazehub/pages/profile.dart';
 import 'package:blazehub/values/colors.dart';
 
-import 'package:blazehub/models/app.dart';
 import 'package:blazehub/view_models/home.dart';
 
 class Home extends StatefulWidget {
@@ -27,14 +25,28 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   HomeViewModel model;
   bool hasSmallProfilePicture = false;
+  bool loadingPosts = true;
+
+  List<Post> posts = List<Post>();
 
   @override
   void initState() {
-    final store = StoreProvider.of<AppState>(context);
+    // final store = StoreProvider.of<AppState>(widget.context);
     model = HomeViewModel.create(store);
     hasSmallProfilePicture = model.authState.smallProfilePicture != null;
+
     if (!hasSmallProfilePicture) {
       model.getSmallProfilePicture(model.authState.user.id);
+    }
+
+    if (model.postsState.posts.length == 0) {
+      model.getPosts().then((newPosts) {
+        setState(() {
+          posts = newPosts.values.toList();
+        });
+      });
+    } else {
+      posts = model.postsState.posts.values.toList();
     }
 
     super.initState();
@@ -79,20 +91,16 @@ class _HomeState extends State<Home> {
           SizedBox(
             height: 20,
           ),
-          ..._buildPosts(model),
-          // ListView.builder(
-          //   primary: false,
-          //   shrinkWrap: true,
-          //   itemCount: postKeys.length,
-          //   itemBuilder: (context, index) {
-          //     final postKey = postKeys[index];
-          //     final post = model.postsState.posts[postKey];
-
-          //     // print('home: ' + postKey);
-
-          //     return PostWidget(post, model);
-          //   },
-          // ),
+          // ..._buildPosts(model),
+          ListView.builder(
+            shrinkWrap: true,
+            primary: false,
+            itemCount: posts.length,
+            itemBuilder: (context, index) {
+              final post = posts[index];
+              return PostWidget(post, model);
+            },
+          ),
         ],
       ),
       bottomNavigationBar: Hero(
