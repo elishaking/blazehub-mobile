@@ -162,12 +162,12 @@ class PostsService {
     }
   }
 
-  Future<String> getPostImage(String postID) async {
+  Future<Uint8List> getPostImage(String postID) async {
     try {
       final postImageSnapshot =
           await _dbRef.child('post-images').child(postID).once();
 
-      return postImageSnapshot.value;
+      return Uri.parse(postImageSnapshot.value).data.contentAsBytes();
     } catch (err) {
       print(err);
 

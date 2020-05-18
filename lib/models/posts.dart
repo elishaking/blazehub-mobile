@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:blazehub/models/auth.dart';
 import 'package:flutter/foundation.dart';
 
@@ -6,6 +8,8 @@ class Post {
   String text;
   int date;
   bool imageUrl;
+  Uint8List postImage;
+  Uint8List postUserImage;
   bool isBookmarked;
   AuthUser user;
   Map<dynamic, dynamic> likes;
@@ -17,6 +21,8 @@ class Post {
     @required this.date,
     @required this.imageUrl,
     @required this.isBookmarked,
+    this.postImage,
+    this.postUserImage,
     this.user,
     this.likes,
     this.comments,

@@ -30,28 +30,23 @@ class PostWidget extends StatefulWidget {
 }
 
 class _PostWidgetState extends State<PostWidget> {
-  Uint8List _postImage;
-  Uint8List _postUserImage;
-
   @override
   void initState() {
-    widget.model.getPostImage(widget.post.id).then((image) {
-      // TODO: reduce number of calls by adding this to redux - saves data
-      if (image != null) {
-        setState(() {
-          _postImage = Uri.parse(image).data.contentAsBytes();
-        });
-      }
-    });
+    if (widget.post.postImage == null)
+      widget.model.getPostImage(widget.post.id).then((image) {
+        if (image != null) {
+          setState(() {});
+        }
+      });
 
-    widget.model.getPostUserImage(widget.post.user.id).then((image) {
-      // TODO: reduce number of calls by adding this to redux - saves data
-      if (image != null) {
-        setState(() {
-          _postUserImage = image;
-        });
-      }
-    });
+    if (widget.post.postUserImage == null)
+      widget.model
+          .getPostUserImage(widget.post.user.id, widget.post.id)
+          .then((image) {
+        if (image != null) {
+          setState(() {});
+        }
+      });
 
     super.initState();
   }
@@ -91,7 +86,7 @@ class _PostWidgetState extends State<PostWidget> {
   }
 
   Container _buildPostImage() {
-    if (_postImage == null) return Container();
+    if (widget.post.postImage == null) return Container();
 
     return Container(
       decoration: BoxDecoration(
@@ -104,14 +99,14 @@ class _PostWidgetState extends State<PostWidget> {
         onTap: () {
           Navigator.of(context).push(MaterialPageRoute(
             builder: (BuildContext context) =>
-                ImageView(_postImage, widget.post.id),
+                ImageView(widget.post.postImage, widget.post.id),
             fullscreenDialog: true,
           ));
         },
         child: Hero(
           tag: widget.post.id,
           child: Image.memory(
-            _postImage,
+            widget.post.postImage,
             width: double.maxFinite,
             fit: BoxFit.cover,
           ),
@@ -123,7 +118,7 @@ class _PostWidgetState extends State<PostWidget> {
   ListTile _buildPostHeader() {
     return ListTile(
       leading: SmallProfilePicture(
-        _postUserImage,
+        widget.post.postUserImage,
         uniqueID: '${widget.postSource}-${widget.post.id}',
         pictureID: widget.post.user.id,
       ),

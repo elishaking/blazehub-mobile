@@ -153,12 +153,34 @@ class PostViewModel extends FriendViewModel {
     return true;
   }
 
-  Future<String> getPostImage(String postID) async {
-    return await postsService.getPostImage(postID);
+  Future<Uint8List> getPostImage(String postID) async {
+    try {
+      final postImage = await postsService.getPostImage(postID);
+      if (postImage == null) return null;
+
+      final post = _store.state.postsState.posts[postID];
+      post.postImage = postImage;
+      _store.dispatch(UpdatePost(post));
+
+      return postImage;
+    } catch (err) {
+      throw err;
+    }
   }
 
-  Future<Uint8List> getPostUserImage(String postUserID) {
-    return postsService.getPostUserImage(postUserID);
+  Future<Uint8List> getPostUserImage(String postUserID, String postID) async {
+    try {
+      final postUserImage = await postsService.getPostUserImage(postUserID);
+      if (postUserImage == null) return null;
+
+      final post = _store.state.postsState.posts[postID];
+      post.postUserImage = postUserImage;
+      _store.dispatch(UpdatePost(post));
+
+      return postUserImage;
+    } catch (err) {
+      throw err;
+    }
   }
 
   void resetPosts() {
