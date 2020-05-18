@@ -105,7 +105,7 @@ class _HomeState extends State<Home> {
             return Padding(
               padding: EdgeInsets.symmetric(vertical: 20),
               child: Center(
-                child: CircularProgressIndicator(),
+                child: Spinner(),
               ),
             );
           },

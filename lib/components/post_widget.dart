@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:blazehub/components/SmallProfilePicture.dart';
+import 'package:blazehub/components/Spinner.dart';
 import 'package:blazehub/pages/profile.dart';
 import 'package:blazehub/view_models/post.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +38,9 @@ class _PostWidgetState extends State<PostWidget> {
     if (widget.post.postImage == null)
       widget.model.getPostImage(widget.post.id).then((image) {
         if (image != null) {
-          setState(() {});
+          setState(() {
+            loadingImage = false;
+          });
         }
       });
 
@@ -93,7 +96,10 @@ class _PostWidgetState extends State<PostWidget> {
         color: AppColors.light,
         height: 170,
         child: Center(
-          child: CircularProgressIndicator(),
+          child: Spinner(
+            width: 7,
+            opacity: 0.5,
+          ),
         ),
       );
     }
